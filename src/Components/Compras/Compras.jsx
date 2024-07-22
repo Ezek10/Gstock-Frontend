@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Compras.module.css"
 import { Divider, Select, MenuItem, FormControl, Button, Box, Popper } from "@mui/material";
 import 'react-date-range/dist/styles.css';
@@ -8,7 +8,6 @@ import Payment from "../Payment/Payment";
 
 const Compras = React.forwardRef((props, ref) => {
 
-    const [ precioTotal, setPrecioTotal ] = useState()
     
     const [ newProduct, setNewProduct ] = useState({
         quantity: 1,
@@ -20,10 +19,19 @@ const Compras = React.forwardRef((props, ref) => {
         products: [{
             product_name: "",
             buy_price: "",
-            
         }],
     })
-    const [ cart, setCart ] = useState(newProduct)
+
+    const [ cart, setCart ] = useState({
+        quantity: 1,
+        supplier: {
+            name: "",
+        },
+        payment_method: "CASH",
+        date: "",
+        products: [],
+    })
+
 
     const [ errors, setErrors ] = useState({
         quantity: "",
@@ -32,33 +40,57 @@ const Compras = React.forwardRef((props, ref) => {
         }],
     })
 
+    useEffect(() => {
+        console.log(newProduct);
+    }, [newProduct])
+
     const changeHandler = (event) => {
         const property = event.target.name
-        let value = event.target.value
-        if (property==="supplier") {
+        const value = event.target.value
+
+        if (property === "supplier") {
             setNewProduct({...newProduct, supplier:{name: value}})
-        } else if (property==="quantity" || property==="buy_price" || property==="product_name") {
+            setCart({...newProduct, supplier:{name: value}})
+            return;
+        }
+
+        if (["product_name","buy_price","quantity"].includes(property)) {
+            const updatedNewProduct = {... newProduct}
+
             if (property!=="quantity") {
+                /// hay un error cad vez que se cambia el precio se añade un producto nuevo y esta aca cone se map
+                
                 const updatedProducts = newProduct.products.map((product) => {
                     return { ...product, [property]: value };
-                    
                 });
-                setNewProduct({ ...newProduct, products: updatedProducts });
-                console.log("Updated product:", newProduct);
-
+                updatedNewProduct.products = updatedProducts;
             } else {
-                setNewProduct({...newProduct, [property]: value})
+                validate({...newProduct, [property]: value})
+                updatedNewProduct[property] = value;
+                }
+            if (updatedNewProduct.quantity>0){
+                const productsArray = Array(parseInt(updatedNewProduct.quantity, 10)).fill(updatedNewProduct.products[0]);
+                updatedNewProduct.products = productsArray;
+            } else {
+                const productsArray = Array(parseInt(1, 10)).fill(updatedNewProduct.products[0]);
+                updatedNewProduct.products = productsArray;
             }
-            const productsArray = []
-            for (let i = 0; i < newProduct.quantity; i++) {
-                productsArray.push(newProduct.products[0])
-            }
-            setNewProduct(({...newProduct, products: productsArray }));
-            console.log(newProduct);
-            
+            setNewProduct(updatedNewProduct);            
         } 
-    }
+    }   
 
+    const addProdHandler = () => {
+        const updatedCart = {...cart}
+        const cartProducts = newProduct.products
+        updatedCart.products = updatedCart.products.concat(cartProducts)
+        if (updatedCart.products[0].product_name===""){
+            updatedCart.products.shift();
+        }
+        console.log(updatedCart);
+        
+        setCart(updatedCart)        
+        
+    }
 
 
     const validate = (newProduct) => {
@@ -73,17 +105,13 @@ const Compras = React.forwardRef((props, ref) => {
     }
 
     const handleDateChange = (selection) => {
-        setNewProduct(prevState => ({
-            ...prevState,
-            date: selection.startDate.getTime()
-        }));
+        setNewProduct({ ...newProduct, date: selection.startDate.getTime()});
+        setCart({ ...cart, date: selection.startDate.getTime()});
     }
 
     const handlePaymentChange = (selection) => {
-        setNewProduct(prevState => ({
-            ...prevState,
-            payment_method: selection
-        }));
+        setNewProduct({...newProduct, payment_method: selection});
+        setCart({...cart, payment_method: selection});
     }
 
     return (
@@ -167,7 +195,7 @@ const Compras = React.forwardRef((props, ref) => {
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={changeHandler}>Agregar producto</Button>
+                    onClick={addProdHandler}>Agregar producto</Button>
                 
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
