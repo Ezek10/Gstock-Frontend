@@ -1,0 +1,26 @@
+.containerGroupDetail {
+    background-color: rgb(201, 201, 201);
+    display: flex;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 30%;
+    height: 100vh;
+    margin-left: 0px;
+    padding-left: 2.5%;
+    padding-top: 1%;
+    padding-right: 1%;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+
+
+.letras {
+    font-size: 12px;
+    font-family: 'Calibri';
+    font-weight: bold;
+    margin: 0px;
+}

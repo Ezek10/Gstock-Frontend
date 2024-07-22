@@ -1,0 +1,40 @@
+.containerVentas {
+    background-color: rgb(201, 201, 201);
+    display: flex;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 30%;
+    height: 100vh;
+    margin-left: 0px;
+    padding-left: 2.5%;
+    padding-right: 1%;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.cuadroTotal {
+    min-height: 130px;
+    height: auto;
+    width: 85%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.letras {
+    font-size: 12px;
+    font-family: 'Calibri';
+    font-weight: bold;
+    margin: 0px;
+}
