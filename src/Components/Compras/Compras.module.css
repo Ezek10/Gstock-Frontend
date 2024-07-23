@@ -44,3 +44,45 @@
     margin-left: 2.5rem;
 }
 
+.cart {
+    font-size: 12px;
+    font-family: 'Calibri';
+    font-weight: bold;
+    margin: 0px;
+    max-height: 50%;
+    height: auto;
+    overflow-y: scroll;
+}
+
+.cart::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 100%;
+}
+
+.cart::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+
+.cart::-webkit-scrollbar-thumb {
+    background-color: rgb(141, 141, 141);
+    border-radius: 5px;
+    
+}
+
+.cart::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+}
+
+.deleteProduct {
+    background-color: red;
+    height: 10px;
+    min-width: 0px;
+    width: 10px;
+    margin: 0px 5px 0px 5px;
+    border: 1px solid white;
+}
+
+.deleteProduct:hover {
+    background-color: rgb(129, 0, 0);
+}

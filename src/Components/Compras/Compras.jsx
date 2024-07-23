@@ -5,6 +5,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
+import CloseIcon from '@mui/icons-material/Close';
 
 const Compras = React.forwardRef((props, ref) => {
 
@@ -114,6 +115,10 @@ const Compras = React.forwardRef((props, ref) => {
         setCart({...cart, payment_method: selection});
     }
 
+    const totalBuyPrice = cart.products.reduce((total, product) => {
+        return total + (parseFloat(product.buy_price || 0));
+    }, 0);
+
     return (
         <div ref={ref} className={style.containerCompras} tabIndex={-1}>
             <Button 
@@ -136,7 +141,7 @@ const Compras = React.forwardRef((props, ref) => {
                         color: "#fff",
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"}
-                }}>X</Button>
+                }}><CloseIcon/></Button>
             <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", margin: "" }}>Agregar una compra</h2>
             <div>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
@@ -199,10 +204,36 @@ const Compras = React.forwardRef((props, ref) => {
                 
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
-                    <div>
-
+                    <div id="cart" className={style.cart}>
+                        {cart.products.map((product, index) => (
+                            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
+                                <div key={index}> {product.product_name} </div>
+                                <div style={{marginRight: "20px", display: "flex", alignItems: "center" }}>${product.buy_price}
+                                <Button 
+                                    variant="outlined" 
+                                    size="small"
+                                    target="_blank"
+                                    sx={{
+                                        width: "10px",
+                                        height: "10px",
+                                        minWidth: 0,
+                                        marginLeft: "5px",
+                                        padding: "0px",
+                                        backgroundColor: "red",
+                                        borderColor: "white",
+                                        boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
+                                        '&:hover': {
+                                            backgroundColor: "rgb(129, 0, 0)",
+                                            borderColor: "white",
+                                        }
+                                    }}>
+                                    <CloseIcon sx={{fontSize: 10, fontWeight: "bold", color: "white" }}/>
+                                </Button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    <h1 style={{ margin: "0px", fontFamily: 'Calibri', color: "rgb(149, 148, 148)"}}>${newProduct.products.buy_price*newProduct.quantity}</h1>
+                    <h1 style={{ margin: "0px", fontFamily: 'Calibri', color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
                 </div>
 
                 <Button 
