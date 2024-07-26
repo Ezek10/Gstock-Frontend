@@ -1,17 +1,15 @@
 import axios from "axios"
 
-const headers = {
-    "customer": "admin",
-}
-
 export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
 export const getProductsStocks = () => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`https://api.gstock.francelsoft.com/product/stock`, { headers })
-            const products = response.data
-
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/product/stock`, {
+                headers: {
+                    "Authorization": "admin",}})
+            const products = response.data.result.content
+                    console.log(products);
             dispatch({
                 type: GET_PRODUCTS_STOCKS,
                 payload: products

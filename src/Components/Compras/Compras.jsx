@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./Compras.module.css"
-import { Divider, Select, MenuItem, FormControl, Button, Box, Popper } from "@mui/material";
+import { Divider, Button } from "@mui/material";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Calendar from "../Calendar/Calendar";
@@ -8,7 +8,6 @@ import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
 
 const Compras = React.forwardRef((props, ref) => {
-
     
     const [ newProduct, setNewProduct ] = useState({
         quantity: 1,
@@ -16,7 +15,7 @@ const Compras = React.forwardRef((props, ref) => {
             name: "",
         },
         payment_method: "CASH",
-        date: "",
+        date: Date.now(),
         products: [{
             product_name: "",
             buy_price: "",
@@ -29,7 +28,7 @@ const Compras = React.forwardRef((props, ref) => {
             name: "",
         },
         payment_method: "CASH",
-        date: "",
+        date: Date.now(),
         products: [],
     })
 
@@ -42,7 +41,6 @@ const Compras = React.forwardRef((props, ref) => {
     })
 
     useEffect(() => {
-        console.log(newProduct);
     }, [newProduct])
 
     const changeHandler = (event) => {
@@ -59,8 +57,6 @@ const Compras = React.forwardRef((props, ref) => {
             const updatedNewProduct = {... newProduct}
 
             if (property!=="quantity") {
-                /// hay un error cad vez que se cambia el precio se añade un producto nuevo y esta aca cone se map
-                
                 const updatedProducts = newProduct.products.map((product) => {
                     return { ...product, [property]: value };
                 });
@@ -87,12 +83,10 @@ const Compras = React.forwardRef((props, ref) => {
         if (updatedCart.products[0].product_name===""){
             updatedCart.products.shift();
         }
-        console.log(updatedCart);
-        
-        setCart(updatedCart)        
+     
+        setCart(updatedCart)     
         
     }
-
 
     const validate = (newProduct) => {
         let newErrors = {}
@@ -113,6 +107,13 @@ const Compras = React.forwardRef((props, ref) => {
     const handlePaymentChange = (selection) => {
         setNewProduct({...newProduct, payment_method: selection});
         setCart({...cart, payment_method: selection});
+    }
+
+    const deleteFromCart = (index) => {
+        const newUpdatedCart = {...cart}
+        newUpdatedCart.products.splice(index, 1)
+        setCart(newUpdatedCart)
+        console.log(newUpdatedCart);
     }
 
     const totalBuyPrice = cart.products.reduce((total, product) => {
@@ -143,7 +144,7 @@ const Compras = React.forwardRef((props, ref) => {
                         backgroundColor: "rgb(80, 80, 80)"}
                 }}><CloseIcon/></Button>
             <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", margin: "" }}>Agregar una compra</h2>
-            <div>
+
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Proveedor</p>
                     <input type="text" style={{ height: "15px" }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
@@ -181,38 +182,44 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <div>
+                {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product) => (
+                    <div>
+                        <p style={{ fontFamily: 'Calibri', fontSize: "15px", margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
                     <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
-                        <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
-                        <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
-                        <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
-                        <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" />
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
                     </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px", width: "87%", borderRadius: "5px"}}/>
-                </div>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
+                    <Divider variant="middle" component="li" sx={dividerStyle}/>
+                </div>))) : (<div></div>) }
                 
                 <Button 
                     variant="outlined" 
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={addProdHandler}>Agregar producto</Button>
+                    onClick={addProdHandler}>Agregar producto
+                </Button>
                 
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
                     <div id="cart" className={style.cart}>
-                        {cart.products.map((product, index) => (
-                            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
-                                <div key={index}> {product.product_name} </div>
+                        {cart.products.length > 0 ? (
+                            cart.products.map((product, index) => (
+                            <div key={index} style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
+                                <div> {product.product_name} </div>
                                 <div style={{marginRight: "20px", display: "flex", alignItems: "center" }}>${product.buy_price}
                                 <Button 
                                     variant="outlined" 
                                     size="small"
                                     target="_blank"
+                                    onClick={()=> deleteFromCart(index)}
                                     sx={{
                                         width: "10px",
                                         height: "10px",
@@ -230,8 +237,9 @@ const Compras = React.forwardRef((props, ref) => {
                                     <CloseIcon sx={{fontSize: 10, fontWeight: "bold", color: "white" }}/>
                                 </Button>
                                 </div>
-                            </div>
-                        ))}
+                            </div>)
+                            )) : (<p></p>
+                        )}
                     </div>
                     <h1 style={{ margin: "0px", fontFamily: 'Calibri', color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
                 </div>
@@ -241,11 +249,13 @@ const Compras = React.forwardRef((props, ref) => {
                     size="small"
                     target="_blank"
                     style={buttonStyle}>Finalizar compra</Button>
-
-            </div>
         </div>
     )
 })
+
+const getCurrentDay = () => {
+
+}
 
 const buttonStyle = {
     backgroundColor: "black",

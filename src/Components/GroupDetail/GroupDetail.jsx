@@ -2,6 +2,7 @@ import React from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Divider } from "@mui/material";
 import shadows from "@mui/material/styles/shadows";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
 
@@ -86,6 +87,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                         size="small"
                         target="_blank"
                         style={botonCopiar}>
+                        <ContentCopyIcon/>    
                     </Button>
                 </div>
 
@@ -107,6 +109,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                                 size="small"
                                 target="_blank"
                                 style={botonCopiar}>
+                                <ContentCopyIcon/>  
                             </Button>
                         </div>
                     </div>
@@ -152,10 +155,12 @@ const botonCopiar = {
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "20px",
-    height: "2em",
-    width: "2em",
+    height: "30px",
+    width: "30px",
     minWidth: "0px",
     marginLeft: "10px",
+    fontSize: "12px",
+    color: "white",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",

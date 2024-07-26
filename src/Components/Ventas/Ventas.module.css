@@ -9,16 +9,22 @@
     width: 30%;
     height: 100vh;
     margin-left: 0px;
-    padding-left: 2.5%;
-    padding-right: 1%;
+    padding-top: 2vh;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
     z-index: 10;
     box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.containerVentas input {
+    height: 15px;
 }
 
 .cuadroTotal {
     min-height: 130px;
-    height: auto;
-    width: 85%;
+    height: 20vh;
+    width: 95%;
     background-color: white;
     border-radius: 5px;
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
@@ -37,4 +43,132 @@
     font-family: 'Calibri';
     font-weight: bold;
     margin: 0px;
+    display: flex;
+    align-items: center;
+}
+
+.containerVentas::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 100%;
+    position: absolute;
+}
+
+.containerVentas::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+
+.containerVentas::-webkit-scrollbar-thumb {
+    background-color: rgb(141, 141, 141);
+    border-radius: 5px;
+    
+}
+
+.containerVentas::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+}
+
+.selector {
+    display: grid; 
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    align-content: center;
+    height: 15px;
+    margin: 12px 10px 12px 0px;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 15px;
+}
+ 
+ .selector select {
+    appearance: none;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    font-size: 14px;
+    padding-left: 20px;
+    outline: none;
+    font-weight: bold;
+ }
+
+ .selector select::-ms-expand {
+    display: none;
+}
+
+.selector option {
+    appearance: none;
+    border-radius: 20px;
+    border: none;
+    box-shadow: none;
+}
+ 
+.responsiveText {
+    font-size: 16px; /* Tamaño de letra por defecto */
+    font-family: 'Calibri';
+    margin: 0px;
+    color: rgb(149, 148, 148);
+    padding: 0%;
+  
+    /* Media queries para diferentes tamaños de pantalla */
+    @media (max-width: 600px) {
+      font-size: 12px; /* Tamaño de letra para pantallas pequeñas */
+    }
+  
+    @media (min-width: 601px) and (max-width: 1200px) {
+      font-size: 18px; /* Tamaño de letra para pantallas medianas */
+    }
+  
+    @media (min-width: 1201px) and (max-width: 1600px) {
+      font-size: 32px; /* Tamaño de letra para pantallas grandes */
+    }
+
+    @media (min-width: 1601px) {
+        font-size: 48px; /* Tamaño de letra para pantallas grandes */
+      }
+  }
+
+  .cart {
+    font-size: 12px;
+    font-family: 'Calibri';
+    font-weight: bold;
+    margin: 0px;
+    max-height: 50%;
+    height: 50%;
+    overflow-y: scroll;
+    align-content: flex-start;
+}
+
+.cart::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 100%;
+}
+
+.cart::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+
+.cart::-webkit-scrollbar-thumb {
+    background-color: rgb(141, 141, 141);
+    border-radius: 5px;
+    
+}
+
+.cart::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+}
+
+.deleteProduct {
+    background-color: red;
+    height: 10px;
+    min-width: 0px;
+    width: 10px;
+    margin: 0px 5px 0px 5px;
+    border: 1px solid white;
+}
+
+.deleteProduct:hover {
+    background-color: rgb(129, 0, 0);
 }

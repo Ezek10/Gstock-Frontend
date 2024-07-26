@@ -33,7 +33,7 @@ const Tabs = () => {
                         <div style={{ 
                                 display: "flex", 
                                 height: "20px",
-                                width: "50%", 
+                                width: "fit-content", 
                                 marginLeft: "1.3%",
                                 boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)", 
                                 paddingLeft: "5px", 
@@ -43,16 +43,18 @@ const Tabs = () => {
                                 borderRadius: "5px" }}>
                             <p className={style.letras}>Seleccione un producto de la tabla para acceder a los datos del grupo.</p>
                         </div>
-                        <TablaStock/>
-                        <Button 
-                            variant="outlined" 
-                            size="small"
-                            target="_blank"
-                            style={botonCopiar}>
-                            <ContentCopyIcon/>
-                        </Button>
+                        <div>
+                            <TablaStock/>
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={botonCopiar}>
+                                <ContentCopyIcon/>
+                            </Button>
+                        </div>
                     </div> }
-                {activetab===1 && <h1>Tabla de transacciones</h1> }
+                {activetab===1 && <h1 style={{fontFamily: "Calibri", fontSize: "24px"}}>En desarrollo...</h1> }
             </div>
         </div>
     )
@@ -60,8 +62,8 @@ const Tabs = () => {
 
 const botonCopiar = {
     position: "absolute",
-    top: "10.3%",
-    right: "-2%",
+    top: "7.8%",
+    right: "-1%",
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "5px",
