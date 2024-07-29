@@ -19,6 +19,11 @@ const Compras = React.forwardRef((props, ref) => {
         products: [{
             product_name: "",
             buy_price: "",
+            color: "",
+            serial_id: "",
+            battery_percent: 0,
+            state: "AVAILABLE",
+            observations: "",
         }],
     })
 
@@ -35,15 +40,13 @@ const Compras = React.forwardRef((props, ref) => {
 
     const [ errors, setErrors ] = useState({
         quantity: "",
-        products: [{
-            buy_price: "",
-        }],
+        buy_price: "",
     })
 
     useEffect(() => {
     }, [newProduct])
 
-    const changeHandler = (event) => {
+    const changeHandler = (event, index) => {
         const property = event.target.name
         const value = event.target.value
 
@@ -64,7 +67,7 @@ const Compras = React.forwardRef((props, ref) => {
             } else {
                 validate({...newProduct, [property]: value})
                 updatedNewProduct[property] = value;
-                }
+            }
             if (updatedNewProduct.quantity>0){
                 const productsArray = Array(parseInt(updatedNewProduct.quantity, 10)).fill(updatedNewProduct.products[0]);
                 updatedNewProduct.products = productsArray;
@@ -73,28 +76,38 @@ const Compras = React.forwardRef((props, ref) => {
                 updatedNewProduct.products = productsArray;
             }
             setNewProduct(updatedNewProduct);            
-        } 
+        }
+        console.log(index);
+        if (index>=0) {
+            const updateNewProd = cart.products
+            updateNewProd[index] = {...updateNewProd[index], [property]: value} 
+            setCart({...cart, products: updateNewProd})
+            console.log(newProduct, "prueba de index");
+        }
     }   
 
     const addProdHandler = () => {
         const updatedCart = {...cart}
         const cartProducts = newProduct.products
         updatedCart.products = updatedCart.products.concat(cartProducts)
-        if (updatedCart.products[0].product_name===""){
+        if (updatedCart.products[0] && updatedCart.products[0].product_name===""){
             updatedCart.products.shift();
         }
-     
-        setCart(updatedCart)     
-        
+        setCart(updatedCart)
     }
 
     const validate = (newProduct) => {
         let newErrors = {}
         const numberRegex = /^\d+$/;
-        if((numberRegex.test(newProduct.quantity))){
+        if(numberRegex.test(newProduct.quantity) && newProduct.quantity > 0){
             setErrors({...errors, quantity:""})
         } else {
-            newErrors["quantity"] = "Debe ser un número entero"
+            newErrors["quantity"] = "Debe ser un número entero mayor a 0"
+        }
+        if(numberRegex.test(newProduct.products.buy_price)){
+            setErrors({...errors, buy_price:""})
+        } else {
+            newErrors["buy_price"] = "Ingrese un número válido"
         }
         setErrors(newErrors)
     }
@@ -119,6 +132,8 @@ const Compras = React.forwardRef((props, ref) => {
     const totalBuyPrice = cart.products.reduce((total, product) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
+
+    
 
     return (
         <div ref={ref} className={style.containerCompras} tabIndex={-1}>
@@ -181,23 +196,6 @@ const Compras = React.forwardRef((props, ref) => {
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
-
-                {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product) => (
-                    <div>
-                        <p style={{ fontFamily: 'Calibri', fontSize: "15px", margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
-                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" />
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""/>
-                    </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
-                    <Divider variant="middle" component="li" sx={dividerStyle}/>
-                </div>))) : (<div></div>) }
                 
                 <Button 
                     variant="outlined" 
@@ -210,11 +208,12 @@ const Compras = React.forwardRef((props, ref) => {
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
                     <div id="cart" className={style.cart}>
-                        {cart.products.length > 0 ? (
-                            cart.products.map((product, index) => (
-                            <div key={index} style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
-                                <div> {product.product_name} </div>
-                                <div style={{marginRight: "20px", display: "flex", alignItems: "center" }}>${product.buy_price}
+                        {cart.products.length > 0 ? (cart.products.map((product, index) => (
+                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
+                                <div style={{ gridColumn: "span 2" }}>{product.product_name}</div>
+                                <div style={{marginLeft: "15px"}}>{product.color.toUpperCase()}</div>
+                                <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
+                                <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.buy_price}</div>
                                 <Button 
                                     variant="outlined" 
                                     size="small"
@@ -228,6 +227,7 @@ const Compras = React.forwardRef((props, ref) => {
                                         padding: "0px",
                                         backgroundColor: "red",
                                         borderColor: "white",
+                                        justifySelf: "flex-end",
                                         boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
                                         '&:hover': {
                                             backgroundColor: "rgb(129, 0, 0)",
@@ -236,7 +236,7 @@ const Compras = React.forwardRef((props, ref) => {
                                     }}>
                                     <CloseIcon sx={{fontSize: 10, fontWeight: "bold", color: "white" }}/>
                                 </Button>
-                                </div>
+
                             </div>)
                             )) : (<p></p>
                         )}
@@ -248,7 +248,32 @@ const Compras = React.forwardRef((props, ref) => {
                     variant="outlined" 
                     size="small"
                     target="_blank"
-                    style={buttonStyle}>Finalizar compra</Button>
+                    style={buttonStyle}>Finalizar compra
+                </Button>
+
+                <Divider variant="middle" component="li" sx={dividerStyle}/>
+
+                {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
+                    <div>
+                        <p style={{ fontFamily: 'Calibri', fontSize: "15px", margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
+                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
+                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
+                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
+                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
+                        <select name="state" onChange={e => changeHandler(e, index)}>
+                            <option value="AVAILABLE">Disponible</option>
+                            <option value="RESERVED">Reservado</option>
+                            <option value="DEFECTIVE">Defectuoso</option>
+                            <option value="BROKEN">Fallado</option>
+                        </select>
+                    </div>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
+                    {/* {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>} */}
+                </div>))) : (<div></div>) }
         </div>
     )
 })

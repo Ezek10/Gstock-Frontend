@@ -55,10 +55,7 @@ const Ventas = React.forwardRef((props, ref) => {
         },
         products: [],
         has_swap: false,
-        swap_products: [{
-            product_name: "",
-            buy_price: ""
-        }]
+        swap_products: []
     })
 
     const changeHandler = (event) => {
@@ -137,6 +134,14 @@ const Ventas = React.forwardRef((props, ref) => {
         console.log(newUpdatedCart);
     }
 
+    const deleteFromExchangeCart = (index) => {
+        const newUpdatedCart = {...cart}
+        newUpdatedCart.swap_products.splice(index, 1)
+        setCart(newUpdatedCart)
+        console.log(newUpdatedCart);
+    }
+
+
     const totalBuyPrice = cart.products.reduce((total, product) => {
         return total + (parseFloat(product.sell_price || 0));
     }, 0);
@@ -147,11 +152,10 @@ const Ventas = React.forwardRef((props, ref) => {
 
     const handleAddExchange = (exchangeCart) => {
         setExchangeProducts([...exchangeProducts, ...exchangeCart]);
-        console.log(exchangeProducts);
-        const updateCart = sellProduct.products.concat(exchangeProducts)
-
-        setSellProduct({...sellProduct, products: updateCart})
-        setCart({...cart, products: updateCart})
+        const updateCart = sellProduct.swap_products.concat(exchangeProducts)
+        setSellProduct({...sellProduct, swap_products: updateCart})
+        setCart({...cart, swap_products: updateCart})
+        console.log(updateCart);
 
     }
 
@@ -297,6 +301,38 @@ const Ventas = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     onClick={()=> deleteFromCart(index)}
+                                    sx={{
+                                        width: "10px",
+                                        height: "10px",
+                                        minWidth: 0,
+                                        marginLeft: "5px",
+                                        padding: "0px",
+                                        backgroundColor: "red",
+                                        borderColor: "white",
+                                        boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
+                                        '&:hover': {
+                                            backgroundColor: "rgb(129, 0, 0)",
+                                            borderColor: "white",
+                                        }
+                                    }}>
+                                    <CloseIcon sx={{fontSize: 10, fontWeight: "bold", color: "white" }}/>
+                                </Button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div id="cart" className={style.cart}>
+                    {cart.swap_products?.map((prod, index) => (
+                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", flexDirection: "row" }}>
+                                <div> {prod.product_name} </div>
+                                <div>{prod.color?.toUpperCase()}</div>
+                                <div></div>
+                                <div style={{marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>-${prod.buy_price}
+                                <Button 
+                                    variant="outlined" 
+                                    size="small"
+                                    target="_blank"
+                                    onClick={()=> deleteFromExchangeCart(index)}
                                     sx={{
                                         width: "10px",
                                         height: "10px",

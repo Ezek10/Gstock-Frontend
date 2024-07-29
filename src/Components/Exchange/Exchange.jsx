@@ -20,7 +20,6 @@ const Exchange = React.forwardRef((props, ref) => {
     const changeHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
-        console.log("hola");
         if (property) {
             setNewProdExchange({...newProdExchange, [property]: value})
         } else {
