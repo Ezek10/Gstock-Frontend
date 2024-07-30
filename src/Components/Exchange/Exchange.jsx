@@ -6,7 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 const Exchange = React.forwardRef((props, ref) => {
 
     const [ exchangeCart, setExchangeCart ] = useState([])
-
     const [ newProdExchange, setNewProdExchange ] = useState({
             product_name: "",
             buy_price: "",
@@ -18,22 +17,24 @@ const Exchange = React.forwardRef((props, ref) => {
     })
 
     const changeHandler = (event) => {
-        const property = event.target.name
-        const value = event.target.value
-        if (property) {
+
+        if (event) {
+            const property = event.target.name
+            const value = event.target.value
             setNewProdExchange({...newProdExchange, [property]: value})
-        } else {
-            const updatedCart = exchangeCart
-            updatedCart.push(newProdExchange)
-            setExchangeCart(updatedCart)
-            console.log(updatedCart);
+            return;
         }
+
+        const updatedCart = [...exchangeCart]
+        updatedCart.push(newProdExchange)
+        setExchangeCart(updatedCart)
     }
 
     const deleteFromCart = (index) => {
         const newUpdatedCart = exchangeCart
         newUpdatedCart.splice(index, 1)
         setExchangeCart(newUpdatedCart)
+        
         console.log(newUpdatedCart);
     }
 
@@ -46,8 +47,8 @@ const Exchange = React.forwardRef((props, ref) => {
     }, 0);
 
     const handleAddExchange = () => {
-        console.log(exchangeCart);
         props.exchangeCart(exchangeCart);
+        // setExchangeCart([])
     };
 
     return (
@@ -128,7 +129,7 @@ const Exchange = React.forwardRef((props, ref) => {
                 size="small"
                 target="_blank"
                 style={buttonStyle}
-                onClick={changeHandler}>Agregar producto
+                onClick={() => changeHandler()}>Agregar producto
             </Button>
 
             <div className={style.cuadroTotal}>

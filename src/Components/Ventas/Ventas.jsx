@@ -123,7 +123,6 @@ const Ventas = React.forwardRef((props, ref) => {
     }
 
     const handlePaymentChange = (selection) => {
-        console.log(sellProduct);
         setSellProduct({...sellProduct, payment_method: selection});
     }
 
@@ -140,25 +139,27 @@ const Ventas = React.forwardRef((props, ref) => {
         setCart(newUpdatedCart)
         console.log(newUpdatedCart);
     }
-
-
-    const totalBuyPrice = cart.products.reduce((total, product) => {
-        return total + (parseFloat(product.sell_price || 0));
-    }, 0);
-
+    
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
     const handleCloseExchange = () => setOpenExchange(false);
-
+    
     const handleAddExchange = (exchangeCart) => {
         setExchangeProducts([...exchangeProducts, ...exchangeCart]);
         const updateCart = sellProduct.swap_products.concat(exchangeProducts)
+        console.log(updateCart);
         setSellProduct({...sellProduct, swap_products: updateCart})
         setCart({...cart, swap_products: updateCart})
-        console.log(updateCart);
-
+        // console.log(cart);
+        
     }
 
+    const totalBuyPrice = cart.products.reduce((total, product) => {
+        return total + (parseFloat(product.sell_price || 0)) ;
+    }, 0) - cart.swap_products.reduce((total, product) => {
+        return total + (parseFloat(product.buy_price || 0)) ;
+    }, 0);
+    
     return(
         <div ref={ref} className={style.containerVentas} tabIndex={-1}>
             <Button 
@@ -292,9 +293,9 @@ const Ventas = React.forwardRef((props, ref) => {
                     <div id="cart" className={style.cart}>
                     {cart.products?.map((prod, index) => (
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", flexDirection: "row" }}>
-                                <div> {prod.product_name} </div>
+                                <div>{prod.product_name}</div>
                                 <div>{prod.color?.toUpperCase()}</div>
-                                <div></div>
+                                <div>{prod.battery_percent}</div>
                                 <div style={{marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>${prod.sell_price}
                                 <Button 
                                     variant="outlined" 
@@ -322,7 +323,7 @@ const Ventas = React.forwardRef((props, ref) => {
                         ))}
                     </div>
                     <div id="cart" className={style.cart}>
-                    {cart.swap_products?.map((prod, index) => (
+                    {cart.swap_products.length > 0 ? cart.swap_products?.map((prod, index) => (
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", flexDirection: "row" }}>
                                 <div> {prod.product_name} </div>
                                 <div>{prod.color?.toUpperCase()}</div>
@@ -351,7 +352,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                 </Button>
                                 </div>
                             </div>
-                        ))}
+                        )) : <div></div>}
                     </div>
                     <h1 className={style.responsiveText}>${totalBuyPrice}</h1>
                 </div>
