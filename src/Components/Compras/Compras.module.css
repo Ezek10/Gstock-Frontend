@@ -18,6 +18,19 @@
     overflow-y: auto;
 }
 
+.containerCompras input {
+    height: 15px;
+}
+
+.containerCompras select {
+    font-size: 12px;
+    width: max-content;
+    height: 18px;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Calibri';
+}
+
 .containerCompras::-webkit-scrollbar {
     width: 7px;
     border-radius: 100%;
@@ -35,7 +48,7 @@
 }
 
 .cuadroTotal {
-    min-height: 130px;
+    min-height: 180px;
     height: 20vh;
     width: 85%;
     background-color: white;
