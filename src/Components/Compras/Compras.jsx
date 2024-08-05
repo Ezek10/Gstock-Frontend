@@ -6,6 +6,9 @@ import 'react-date-range/dist/theme/default.css';
 import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
+import { Modal } from '@mui/base/Modal';
+import Fade from '@mui/material/Fade';
 
 const Compras = React.forwardRef((props, ref) => {
     
@@ -42,6 +45,10 @@ const Compras = React.forwardRef((props, ref) => {
         quantity: "",
         buy_price: "",
     })
+
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleCloseConfirm = () => setOpenConfirm(false);
 
     useEffect(() => {
     }, [newProduct])
@@ -82,7 +89,7 @@ const Compras = React.forwardRef((props, ref) => {
             const updateNewProd = cart.products
             updateNewProd[index] = {...updateNewProd[index], [property]: value} 
             setCart({...cart, products: updateNewProd})
-            console.log(newProduct, "prueba de index");
+            console.log(cart, "prueba de index");
         }
     }   
 
@@ -133,7 +140,30 @@ const Compras = React.forwardRef((props, ref) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
 
-    
+    const submitHandler = async (event) => {
+        event.preventDefault()
+        if (Object.values(errors).every((error) => error === "")) {
+            try {
+                await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/buy", cart)
+                alert("Compra cargada exitosamente")
+                setCart({
+                    quantity: 1,
+                    supplier: {
+                        name: "",
+                    },
+                    payment_method: "CASH",
+                    date: Date.now(),
+                    products: [],
+                })
+                setErrors({
+                    quantity: "",
+                    buy_price: "",
+                })
+            } catch(error){
+                window.alert("Error al cargar la compra", error)
+            }
+        }
+    }
 
     return (
         <div ref={ref} className={style.containerCompras} tabIndex={-1}>
@@ -248,8 +278,22 @@ const Compras = React.forwardRef((props, ref) => {
                     variant="outlined" 
                     size="small"
                     target="_blank"
+                    onClick={handleOpenConfirm}
                     style={buttonStyle}>Finalizar compra
                 </Button>
+
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openConfirm}
+                    onClose={handleCloseConfirm}
+                    closeAfterTransition>
+                    <Fade in={openConfirm}>
+                        <div className={style.confirmationModal}>
+                            
+                        </div>
+                    </Fade>
+                </Modal>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
@@ -272,15 +316,11 @@ const Compras = React.forwardRef((props, ref) => {
                         </select>
                     </div>
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
-                    {/* {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>} */}
+                    {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
                 </div>))) : (<div></div>) }
         </div>
     )
 })
-
-const getCurrentDay = () => {
-
-}
 
 const buttonStyle = {
     backgroundColor: "black",
