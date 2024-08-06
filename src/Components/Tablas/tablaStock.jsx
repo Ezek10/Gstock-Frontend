@@ -7,7 +7,7 @@ import Fade from '@mui/material/Fade';
 import GroupDetail from "../GroupDetail/GroupDetail";
 import { getProductsStocks } from "../../Redux/actions";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const TablaStock = () => {
 
@@ -30,7 +30,9 @@ const TablaStock = () => {
         dispatch(getProductsStocks())
     }, [dispatch])
     
-    const stocks = stock.result.content;
+    const stocks = useSelector((state) => state.products) || [];
+    console.log(stocks);
+    
 
     return(
         <div style={{ margin: "1.5%" }}>

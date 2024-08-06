@@ -1,8 +1,8 @@
 .containerCompras {
     background-color: rgb(201, 201, 201);
     display: flex;
-    position: fixed;
-    right: 0px;
+    position: relative;
+    left: calc(100% - 30%);
     top: 0px;
     flex-direction: column;
     align-items: flex-start;
@@ -122,11 +122,14 @@
 }
 
 .confirmationModal{
-    height: 150px;
-    width: 70%;
-    background-color: white;
+    position: absolute;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 20px;
+    padding: "10px";
+
 }
 
 /* .MuiBackdrop-root {
-    background-color: rgba(0, 0, 0, 0.5) !important; /* Cambia el color y la opacidad según tus necesidades
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Cambia el color y la opacidad según tus necesidades 
   } */
