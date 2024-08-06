@@ -1,8 +1,8 @@
 .containerCompras {
     background-color: rgb(201, 201, 201);
     display: flex;
-    position: fixed;
-    right: 0px;
+    position: relative;
+    left: calc(100% - 30%);
     top: 0px;
     flex-direction: column;
     align-items: flex-start;
@@ -120,3 +120,16 @@
 .deleteProduct:hover {
     background-color: rgb(129, 0, 0);
 }
+
+.confirmationModal{
+    position: absolute;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 20px;
+    padding: "10px";
+
+}
+
+/* .MuiBackdrop-root {
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Cambia el color y la opacidad según tus necesidades 
+  } */

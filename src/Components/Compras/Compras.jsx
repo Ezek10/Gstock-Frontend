@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import style from "./Compras.module.css"
-import { Divider, Button } from "@mui/material";
+import { Divider, Button, Dialog } from "@mui/material";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
+import { Modal } from '@mui/base/Modal';
+import Fade from '@mui/material/Fade';
+import zIndex from "@mui/material/styles/zIndex";
 
 const Compras = React.forwardRef((props, ref) => {
     
@@ -23,7 +27,7 @@ const Compras = React.forwardRef((props, ref) => {
             serial_id: "",
             battery_percent: 0,
             state: "AVAILABLE",
-            observations: "",
+            observations: "Sin observaciones",
         }],
     })
 
@@ -42,6 +46,10 @@ const Compras = React.forwardRef((props, ref) => {
         quantity: "",
         buy_price: "",
     })
+
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleCloseConfirm = () => setOpenConfirm(false);
 
     useEffect(() => {
     }, [newProduct])
@@ -82,7 +90,7 @@ const Compras = React.forwardRef((props, ref) => {
             const updateNewProd = cart.products
             updateNewProd[index] = {...updateNewProd[index], [property]: value} 
             setCart({...cart, products: updateNewProd})
-            console.log(newProduct, "prueba de index");
+            console.log(cart, "prueba de index");
         }
     }   
 
@@ -104,11 +112,11 @@ const Compras = React.forwardRef((props, ref) => {
         } else {
             newErrors["quantity"] = "Debe ser un número entero mayor a 0"
         }
-        if(numberRegex.test(newProduct.products.buy_price)){
-            setErrors({...errors, buy_price:""})
-        } else {
-            newErrors["buy_price"] = "Ingrese un número válido"
-        }
+        // if(numberRegex.test(newProduct.products.buy_price)){
+        //     setErrors({...errors, buy_price:""})
+        // } else {
+        //     newErrors["buy_price"] = "Ingrese un número válido"
+        // }
         setErrors(newErrors)
     }
 
@@ -133,7 +141,37 @@ const Compras = React.forwardRef((props, ref) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
 
-    
+    const submitHandler = async (event) => {
+        console.log(errors);
+        
+        if (Object.values(errors).every((error) => error === "")) {
+            try {
+                console.log(cart);
+                
+                await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/buy", cart, {
+                    headers: {
+                        "Authorization": "admin",}} )
+                alert("Compra cargada exitosamente")
+                setCart({
+                    quantity: 1,
+                    supplier: {
+                        name: "",
+                    },
+                    payment_method: "CASH",
+                    date: Date.now(),
+                    products: [],
+                })
+                setErrors({
+                    quantity: "",
+                    buy_price: "",
+                })
+            } catch(error){
+                console.log("error");
+                
+                window.alert("Error al cargar la compra", error)
+            }
+        }
+    }
 
     return (
         <div ref={ref} className={style.containerCompras} tabIndex={-1}>
@@ -248,13 +286,40 @@ const Compras = React.forwardRef((props, ref) => {
                     variant="outlined" 
                     size="small"
                     target="_blank"
+                    onClick={()=>handleOpenConfirm()}
                     style={buttonStyle}>Finalizar compra
                 </Button>
+
+                <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openConfirm}
+                    onClose={()=>handleCloseConfirm()}
+                    className={style.confirmationModal}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
+                            <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
+                            {cart.products.length > 0 ? (cart.products.map((product, index) => (
+                            <div key={index} style={{marginTop: "5px"}}>
+                                <p className={style.letras}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
+                            </div>)
+                            )) : (<p></p>)}
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={buttonStyle}
+                                onClick={()=> {submitHandler();handleCloseConfirm()}}>Confirmar
+                            </Button>
+                        </div>
+                </Dialog>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
-                    <div>
+                    <div key={product.product_name+"-"+index}>
                         <p style={{ fontFamily: 'Calibri', fontSize: "15px", margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
                     <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
@@ -272,22 +337,19 @@ const Compras = React.forwardRef((props, ref) => {
                         </select>
                     </div>
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
-                    {/* {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>} */}
+                    {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
                 </div>))) : (<div></div>) }
         </div>
     )
 })
-
-const getCurrentDay = () => {
-
-}
 
 const buttonStyle = {
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "20px",
     height: "2.5em",
-    width:"auto",
+    minWidth: "100px",
+    width: "fit-content",
     paddingX: "4px",
     marginTop: "5px",
     marginBottom: "5px",

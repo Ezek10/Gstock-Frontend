@@ -1,7 +1,7 @@
 import { GET_PRODUCTS_STOCKS } from "./actions"
 
 const initialState = {
-    products: {},
+    products: [],
 }
 
 const rootReducer = (state = initialState, action) => {
