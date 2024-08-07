@@ -171,3 +171,12 @@
 .deleteProduct:hover {
     background-color: rgb(129, 0, 0);
 }
+
+.confirmationModal{
+    position: absolute;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 20px;
+    padding: "10px";
+
+}

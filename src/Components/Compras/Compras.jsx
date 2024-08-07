@@ -7,9 +7,7 @@ import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
-import { Modal } from '@mui/base/Modal';
-import Fade from '@mui/material/Fade';
-import zIndex from "@mui/material/styles/zIndex";
+
 
 const Compras = React.forwardRef((props, ref) => {
     
