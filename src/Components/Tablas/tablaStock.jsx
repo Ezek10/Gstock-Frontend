@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { styled } from '@mui/system';
-import stock from "../../assets/stock"
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import GroupDetail from "../GroupDetail/GroupDetail";
@@ -30,9 +29,7 @@ const TablaStock = () => {
         dispatch(getProductsStocks())
     }, [dispatch])
     
-    const stocks = useSelector((state) => state.products) || [];
-    console.log(stocks);
-    
+    const stocks = useSelector((state) => state.products) || [];    
 
     return(
         <div style={{ margin: "1.5%" }}>

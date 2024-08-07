@@ -1,13 +1,10 @@
 import React from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Divider } from "@mui/material";
-import shadows from "@mui/material/styles/shadows";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
 
-    console.log(product);
-    console.log(product.stocks[0].supplier.color);
     const aux = []
     const stock = product.stocks;
 
@@ -64,7 +61,6 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                     {stock.map((prov, provIndex) => {
                         if (!aux.includes(prov.supplier.name)) {
                             aux.push(prov.supplier.name)
-                            console.log(aux);
                             return(
                             <p style={{fontSize: "15px", fontFamily: "Calibri", fontWeight: "bold", margin: "0px 0px 0px 10px", color: prov.supplier.color}}>{prov.supplier.name}</p>)
                         }

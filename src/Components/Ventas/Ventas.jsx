@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import style from "./Ventas.module.css"
-import { Divider, Button } from "@mui/material";
+import { Divider, Button, Dialog } from "@mui/material";
 import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
-import TextField from '@mui/material/TextField';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { getProductsStocks } from "../../Redux/actions";
 import axios from "axios";
@@ -12,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Exchange from "../Exchange/Exchange";
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
+import { useDispatch, useSelector } from "react-redux";
 
 const Ventas = React.forwardRef((props, ref) => {
     
@@ -37,6 +37,7 @@ const Ventas = React.forwardRef((props, ref) => {
 
     const [ inStock, setInStock ] = useState([])
     const [ product, setProduct ] = useState({})
+    const dispatch = useDispatch()
     const [ nameProd, setNameProd ] = useState("")
     const [ sellPrice, setSellPrice ] = useState(0)
     const [exchangeProducts, setExchangeProducts] = useState([]);
@@ -82,7 +83,10 @@ const Ventas = React.forwardRef((props, ref) => {
             const newCart = [{
                 product_name: nameProd,
                 id: product.id,
-                sell_price: sellPrice
+                sell_price: sellPrice,
+                color: product.color,
+                serial_id: product.serial_id,
+                battery_percent: product.battery_percent
             }]
             if (sellProduct!=="") {
                 const updateCart = sellProduct.products.concat(newCart)
@@ -93,19 +97,22 @@ const Ventas = React.forwardRef((props, ref) => {
                 setCart({...cart, products: newCart})
             }
         }
-        console.log(sellProduct);
         return;
     }
 
     useEffect(() => {
-        console.log(product);
     }, [sellProduct])
 
+    useEffect(() => {
+        dispatch(getProductsStocks())
+    }, [dispatch])
+
+    const stocks = useSelector((state) => state.products) || [];
+
     const productList = (event) => {
-        const prod = stock.result.content
+        const prod = stocks
         const value = event.target.value
         setNameProd(value)
-        console.log(prod);
         let aux = []
         if (value!=="") {
             const filteredItems = prod.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
@@ -130,7 +137,6 @@ const Ventas = React.forwardRef((props, ref) => {
         const newUpdatedCart = {...cart}
         newUpdatedCart.products.splice(index, 1)
         setCart(newUpdatedCart)
-        console.log(newUpdatedCart);
     }
 
     const deleteFromExchangeCart = (index) => {
@@ -140,18 +146,29 @@ const Ventas = React.forwardRef((props, ref) => {
         console.log(newUpdatedCart);
     }
     
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleCloseConfirm = () => setOpenConfirm(false);
+
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
     const handleCloseExchange = () => setOpenExchange(false);
     
     const handleAddExchange = (exchangeCart) => {
-        setExchangeProducts([...exchangeProducts, ...exchangeCart]);
-        const updateCart = sellProduct.swap_products.concat(exchangeProducts)
-        console.log(updateCart);
-        setSellProduct({...sellProduct, swap_products: updateCart})
-        setCart({...cart, swap_products: updateCart})
-        // console.log(cart);
-        
+        setExchangeProducts(prevExchangeProducts => {
+            const newExchangeProducts = [...prevExchangeProducts, ...exchangeCart];
+            
+            setSellProduct(prevSellProduct => {
+                const updateCart = [...prevSellProduct.swap_products, ...newExchangeProducts];
+                return {...prevSellProduct, swap_products: updateCart};
+            });
+
+            setCart(prevCart => {
+                const updateCart = [...prevCart.swap_products, ...newExchangeProducts];
+                return {...prevCart, swap_products: updateCart};
+            });
+        return newExchangeProducts;
+        });
     }
 
     const totalBuyPrice = cart.products.reduce((total, product) => {
@@ -159,6 +176,39 @@ const Ventas = React.forwardRef((props, ref) => {
     }, 0) - cart.swap_products.reduce((total, product) => {
         return total + (parseFloat(product.buy_price || 0)) ;
     }, 0);
+
+    const submitHandler = async (event) => {
+        console.log(errors);
+        
+        if (Object.values(errors).every((error) => error === "")) {
+            try {
+                console.log(cart);
+                
+                await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/sell", cart, {
+                    headers: {
+                        "Authorization": "admin",}} )
+                alert("Compra cargada exitosamente")
+                setCart({
+                    quantity: 1,
+                    supplier: {
+                        name: "",
+                    },
+                    payment_method: "CASH",
+                    date: Date.now(),
+                    products: [],
+                })
+                setErrors({
+                    quantity: "",
+                    buy_price: "",
+                })
+            } catch(error){
+                console.log("error");
+                
+                window.alert("Error al cargar la compra", error)
+            }
+        }
+    }
+    
     
     return(
         <div ref={ref} className={style.containerVentas} tabIndex={-1}>
@@ -226,14 +276,18 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "15px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Producto</p>
-                    <input type="text" style={{ margin: "0px 0px 0px 21px" }} value={nameProd} onChange={productList}/> 
+                    <select name="product" value={product.product_name} onChange={productList} style={{ height: "19px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
+                        {stocks.map((prod) => (
+                            <option key={prod.name} value={prod.name}>{prod.name}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p className={style.letras}>IMEI</p>
-                    <select type="text" value={product.serial_id} onChange={changeHandler} name="serial_id" style={{ height: "19px", margin: "12px 10px 12px 10px", width: "60px", borderRadius: "20px", border: "0px" }}>
+                    <select type="text" value={product.serial_id} onChange={changeHandler} name="serial_id" style={{ height: "19px", margin: "12px 10px 12px 10px", width: "60px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         {inStock?.map(option => (
                             <option key={option.serial_id} value={option.serial_id}>
                                 {option.serial_id}
@@ -291,11 +345,12 @@ const Ventas = React.forwardRef((props, ref) => {
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
                     <div id="cart" className={style.cart}>
-                    {cart.products?.map((prod, index) => (
-                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", flexDirection: "row" }}>
-                                <div>{prod.product_name}</div>
+                    {cart.products.map((prod, index) => (                        
+                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
+                                <div style={{ gridColumn: "span 2" }}>{prod.product_name}</div>
+                                <div>{prod.serial_id}</div>
                                 <div>{prod.color?.toUpperCase()}</div>
-                                <div>{prod.battery_percent}</div>
+                                <div>{prod.battery_percent}%</div>
                                 <div style={{marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>${prod.sell_price}
                                 <Button 
                                     variant="outlined" 
@@ -324,10 +379,11 @@ const Ventas = React.forwardRef((props, ref) => {
                     </div>
                     <div id="cart" className={style.cart}>
                     {cart.swap_products.length > 0 ? cart.swap_products?.map((prod, index) => (
-                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", flexDirection: "row" }}>
-                                <div> {prod.product_name} </div>
+                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
+                                <div style={{ gridColumn: "span 2" }}> {prod.product_name} </div>
+                                <div>{prod.serial_id}</div>
                                 <div>{prod.color?.toUpperCase()}</div>
-                                <div></div>
+                                <div>{prod.battery_percent}%</div>
                                 <div style={{marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>-${prod.buy_price}
                                 <Button 
                                     variant="outlined" 
@@ -357,10 +413,38 @@ const Ventas = React.forwardRef((props, ref) => {
                     <h1 className={style.responsiveText}>${totalBuyPrice}</h1>
                 </div>
                 <Button 
-                        variant="outlined" 
-                        size="small"
-                        target="_blank"
-                        style={buttonStyle}>Finalizar Venta</Button>
+                    variant="outlined" 
+                    size="small"
+                    target="_blank"
+                    onClick={()=>handleOpenConfirm()}
+                    style={buttonStyle}>Finalizar Venta
+                </Button>
+
+                <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openConfirm}
+                    onClose={()=>handleCloseConfirm()}
+                    className={style.confirmationModal}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
+                            <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
+                            {cart.products.length > 0 ? (cart.products.map((product, index) => (
+                            <div key={index} style={{marginTop: "5px"}}>
+                                <p className={style.letras}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
+                            </div>)
+                            )) : (<p></p>)}
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={buttonStyle}
+                                onClick={()=> {submitHandler();handleCloseConfirm()}}>Confirmar
+                            </Button>
+                        </div>
+                </Dialog>
             </div>
         </div>
     )
