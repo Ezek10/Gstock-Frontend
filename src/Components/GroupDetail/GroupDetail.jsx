@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Divider } from "@mui/material";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { putProductStock } from "../../Redux/actions";
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
 
-    const aux = []
+    const [ stockDetail , setStockDetail ] = useState({
+        id: product.id,
+        list_price: product.list_price,
+    })
     const stock = product.stocks;
+    const aux = []
+
+    if (product.list_price===null) {
+        product.list_price = 0
+    }
+
+
+    const stockDetailHandler = (event) => {
+        const property = event.target.name
+        const value = event.target.value
+        setStockDetail({ ...stockDetail, [property]: value})
+        console.log(stockDetail);
+        
+    }
+
+    const submitHandler = async () => {
+        console.log(stockDetail);
+        putProductStock(stockDetail)
+        
+    }
+
+    console.log(product);
+    
+
 
     return (
         <div className={style.containerGroupDetail}>
@@ -57,12 +85,12 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                    <p className={style.letras}>Proveedor/es</p>
+                    <p key={product.id} className={style.letras}>Proveedor/es</p>
                     {stock.map((prov, provIndex) => {
                         if (!aux.includes(prov.supplier.name)) {
                             aux.push(prov.supplier.name)
                             return(
-                            <p style={{fontSize: "15px", fontFamily: "Calibri", fontWeight: "bold", margin: "0px 0px 0px 10px", color: prov.supplier.color}}>{prov.supplier.name}</p>)
+                            <p key={product.id} style={{fontSize: "15px", fontFamily: "Calibri", fontWeight: "bold", margin: "0px 0px 0px 10px", color: prov.supplier.color}}>{prov.supplier.name}</p>)
                         }
                     })}
                 </div>
@@ -71,7 +99,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh", margin: "5px 0px 5px 0px"  }}>
                     <p className={style.letras}>Precio Unitario</p>
-                    <input type="text" style={{ height: "15px" }} placeholder={`$${product.list_price}`}/>
+                    <input type="text" style={{ height: "15px" }} placeholder={`$${product.list_price}`} name="list_price" value={stockDetail.list_price} onChange={stockDetailHandler}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -115,7 +143,8 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                     variant="outlined" 
                     size="small"
                     target="_blank"
-                    style={buttonStyle}>Guardar cambios
+                    style={buttonStyle}
+                    onClick={() => submitHandler()}>Guardar cambios
                 </Button>
 
 

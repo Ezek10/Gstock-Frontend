@@ -160,7 +160,7 @@ const Ventas = React.forwardRef((props, ref) => {
             
             setSellProduct(prevSellProduct => {
                 const updateCart = [...prevSellProduct.swap_products, ...newExchangeProducts];
-                return {...prevSellProduct, swap_products: updateCart};
+                return {...prevSellProduct, swap_products: updateCart, has_swap: true};
             });
 
             setCart(prevCart => {
