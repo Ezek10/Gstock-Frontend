@@ -29,7 +29,7 @@ const TablaStock = () => {
         dispatch(getProductsStocks())
     }, [dispatch])
     
-    const stocks = useSelector((state) => state.products) || [];    
+    const stocks = useSelector((state) => state.products) || [];
 
     return(
         <div style={{ margin: "1.5%" }}>
@@ -46,8 +46,8 @@ const TablaStock = () => {
                     {stocks.map((prod) => (
                         <TableRow key={prod.id}>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "55%", fontWeight: "bold", paddingLeft: "40px", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold" }}>{prod.stocks.length}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "end", width: "25%", paddingRight: "40px", fontWeight: "bold" }}>${prod.list_price}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red" }}>{prod.stocks.length}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "end", width: "25%", paddingRight: "40px", fontWeight: "bold" }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
                         </TableRow>
                     ))}
                     

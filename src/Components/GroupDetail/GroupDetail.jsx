@@ -1,41 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Divider } from "@mui/material";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { putProductStock } from "../../Redux/actions";
+import { putProductDetail, putProductStock } from "../../Redux/actions";
+import { useDispatch } from "react-redux";
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
+
+    const dispatch = useDispatch()
 
     const [ stockDetail , setStockDetail ] = useState({
         id: product.id,
         list_price: product.list_price,
     })
     const stock = product.stocks;
+    const [ productDetail, setProductDetail ] = useState(product.stocks)
     const aux = []
-
-    if (product.list_price===null) {
-        product.list_price = 0
-    }
-
-
+    
+    useEffect(()=> {
+    }, [productDetail])
+    
     const stockDetailHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setStockDetail({ ...stockDetail, [property]: value})
-        console.log(stockDetail);
-        
+        setStockDetail({ ...stockDetail, [property]: value})        
+    }
+
+
+    const productDetailHandler = (event, i) => {
+        const property = event.target.name
+        const value = event.target.value
+        setProductDetail(prevProductDetail => 
+            prevProductDetail.map((item, index) =>
+                index === i
+                    ? { ...item, [property]: value }  // Actualiza el objeto en el índice 'i'
+                    : item  // Deja los demás objetos sin cambios
+            )
+        );
     }
 
     const submitHandler = async () => {
-        console.log(stockDetail);
-        putProductStock(stockDetail)
-        
+        dispatch(putProductStock(stockDetail))
     }
 
-    console.log(product);
+    const submitProductHandler = async () => {
+        productDetail.forEach(element => {
+            dispatch(putProductDetail(element))
+        });
+    }
     
-
-
     return (
         <div className={style.containerGroupDetail}>
             <Button 
@@ -99,7 +112,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh", margin: "5px 0px 5px 0px"  }}>
                     <p className={style.letras}>Precio Unitario</p>
-                    <input type="text" style={{ height: "15px" }} placeholder={`$${product.list_price}`} name="list_price" value={stockDetail.list_price} onChange={stockDetailHandler}/>
+                    <input type="text" style={{ height: "15px" }} placeholder={`$${stockDetail.list_price}`} name="list_price" value={product.list_price || "0" } onChange={stockDetailHandler}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -124,10 +137,10 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                             <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
                             <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
                             <p style={{ marginTop: "10px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}></p>
-                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.color}/>
-                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.serial_id}/>
-                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.battery_percent}/>
-                            <input type="text" style={{ height: "15px", width: "70px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.state}/>
+                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px", width: "50px" }} placeholder={prod.color} name="color" value={productDetail[prodIndex]?.color || "" } onChange={e => productDetailHandler(e, prodIndex)}/>
+                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.serial_id} name="serial_id" value={productDetail[prodIndex]?.serial_id || "" } onChange={e => productDetailHandler(e, prodIndex)}/>
+                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.battery_percent} name="battery_percent" value={productDetail[prodIndex]?.battery_percent || "" } onChange={e => productDetailHandler(e, prodIndex)}/>
+                            <input type="text" style={{ height: "15px", width: "70px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)}/>
                             <Button 
                                 variant="outlined" 
                                 size="small"
@@ -144,7 +157,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, product }, ref) => {
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={() => submitHandler()}>Guardar cambios
+                    onClick={() => {submitHandler(), submitProductHandler()}}>Guardar cambios
                 </Button>
 
 
