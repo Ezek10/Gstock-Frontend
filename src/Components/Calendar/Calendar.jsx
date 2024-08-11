@@ -66,7 +66,6 @@ const Calendar = ( { onDateChange } ) => {
                                             position: "fixed",
                                             left: "-70px",
                                             border: "2px solid black",
-                                            fontFamily: "Calibri"
                                         },
                                         '.rdrDay_selected': {
                                             backgroundColor: '#007bff',
