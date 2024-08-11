@@ -75,12 +75,12 @@ const Exchange = React.forwardRef((props, ref) => {
                         backgroundColor: "rgb(80, 80, 80)"}
                 }}>X
             </Button>
-            <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", marginBottom: "10px" }}>Agregar canje</h2>
+            <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar canje</h2>
             <p className={style.letras}>Proveedor Canje</p>
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-            <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", marginBottom: "10px" }}>Agregar un producto</h2>
+            <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar un producto</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
                 <p className={style.letras}>Producto</p>
@@ -104,10 +104,10 @@ const Exchange = React.forwardRef((props, ref) => {
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
             <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px", width: "90%" }}>
-                <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px", width: "60px"}}>Color</p>
-                <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
-                <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
-                <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
+                <p style={{ marginTop: "5px", marginBottom: "3px", width: "60px"}}>Color</p>
+                <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
+                <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
+                <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
                 <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" 
                      value={newProdExchange.color} onChange={changeHandler} name="color"/>
                 <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""
@@ -194,15 +194,13 @@ const buttonStyle = {
     borderColor: "transparent",
     borderRadius: "20px",
     height: "2.5em",
-    width:"120px",
+    width:"fit-content",
     paddingX: "4px",
     marginTop: "10px",
     marginBottom: "10px",
     marginRight: "20px",
     textTransform: 'none',
     color: "white",
-    fontWeight: "bold",
-    fontSize: "10px",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",

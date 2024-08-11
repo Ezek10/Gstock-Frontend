@@ -54,7 +54,7 @@ const Tabs = () => {
                             </Button>
                         </div>
                     </div> }
-                {activetab===1 && <h1 style={{fontFamily: "Calibri", fontSize: "24px"}}>En desarrollo...</h1> }
+                {activetab===1 && <h1 style={{ fontSize: "24px"}}>En desarrollo...</h1> }
             </div>
         </div>
     )

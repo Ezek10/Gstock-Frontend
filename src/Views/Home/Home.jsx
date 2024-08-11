@@ -35,7 +35,6 @@ const Home = () => {
                             textTransform: 'none',
                             color: "black",
                             marginX: "2rem",
-                            fontWeight: "bold",
                             '&:hover':{
                                 color: "#000",
                                 borderColor: "transparent",
@@ -98,7 +97,6 @@ const butonStyle = {
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "50px",
-    fontSize: "15px",
     minWidth: "45px",
     height: "2em",
     width:"35%",
@@ -108,7 +106,6 @@ const butonStyle = {
     textTransform: 'none',
     color: "white",
     boxSizing: "border-box",
-    fontFamily: "Calibri",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",

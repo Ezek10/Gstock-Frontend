@@ -235,7 +235,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 }}>X
             </Button>
 
-            <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", marginBottom: "10px" }}>Agregar una venta</h2>
+            <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar una venta</h2>
 
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -295,7 +295,7 @@ const Ventas = React.forwardRef((props, ref) => {
                         ))}
                     </select>
                     <p className={style.letras}>Color </p>
-                    <p style={{fontSize: "15px", fontWeight: "bold", alignItems: "center", fontFamily: "Calibri", paddingLeft: "15px"}}>{nameProd ? product.color?.toUpperCase() : ""}</p>
+                    <p style={{ alignItems: "center", paddingLeft: "15px"}}>{nameProd ? product.color?.toUpperCase() : ""}</p>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -464,15 +464,13 @@ const buttonStyle = {
     borderColor: "transparent",
     borderRadius: "20px",
     height: "2.5em",
-    width:"120px",
+    width:"fit-content",
     paddingX: "4px",
     marginTop: "10px",
     marginBottom: "10px",
     marginRight: "20px",
     textTransform: 'none',
     color: "white",
-    fontWeight: "bold",
-    fontSize: "10px",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",

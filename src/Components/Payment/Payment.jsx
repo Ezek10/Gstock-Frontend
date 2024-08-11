@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { Select, MenuItem, FormControl, } from "@mui/material";
 import style from "./Payment.module.css"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
 const Payment = ( { payment } ) => {
@@ -10,49 +10,24 @@ const Payment = ( { payment } ) => {
     const handlePagoChange = (event) => {
         const value = event.target.value
         setOption(value)
+        payment(value)
+        console.log(option);
+        
     }
 
     return (
 
-        <div style={{display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
-            <p className={style.letras}>Pago</p>
-            <FormControl variant="standard" 
-                sx={{ 
-                    m: 0, 
-                    width: "25px" }}>
-                <Select 
-                    labelId="dropdown-label"
-                    id="dropdown"
-                    value={option}
-                    onChange={handlePagoChange}
-                    renderValue={()=> null}
-                    sx={{
-                        '& .MuiSelect-select': {
-                            paddingRight: '0px', // Cambia el valor de padding-right aquí
-                            minWidth: '16px', // Cambia el valor de min-width aquí
-                            borderBottom: "0px",
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'transparent', // Remover el borde del outline
-                            },
-                            '&:focus': {
-                                backgroundColor: 'transparent', // Puedes agregar otros estilos aquí si es necesario
-                            },
-                        },
-                    }}>
-                    <MenuItem value={"CASH"} className={style.letras}>Efectivo</MenuItem>
-                    <MenuItem value={"TRANSFER"} className={style.letras}>Tranferencia</MenuItem>
-                    <MenuItem value={"DEBIT"} className={style.letras}>Débito</MenuItem>
-                    <MenuItem value={"CREDIT"} className={style.letras}>Crédito</MenuItem>
-                    <MenuItem value={"CRYPTO"} className={style.letras}>Cripto</MenuItem>
-                    
-                </Select>
-            </FormControl>
-            <p style={{ display: "flex", alignSelf: "center", marginLeft: "1rem", fontFamily: 'Calibri', fontWeight: "bold" }}>
-                {option === 'CASH' ? "Efectivo" : 
-                option === 'TRANSFER' ? "Transferencia" : 
-                option === 'DEBIT' ? "Débito" :
-                option === 'CREDIT' ? "Crédito" : "Cripto"}
-                </p>
+        <div className={style.selector}>
+            <p className={style.letras}>Pago<ArrowDropDownIcon style={{fontSize: 18}}/></p>
+            
+            <select name="contact_via" onChange={handlePagoChange} value={option}>
+                <option value="CASH">Efectivo</option>
+                <option value="TRANSFER">Transferencia</option>
+                <option value="DEBIT">Débito</option>
+                <option value="CREDIT">Crédito</option>
+                <option value="CRYPTO">Cripto</option>
+            </select>
+            
         </div>
     )   
 }

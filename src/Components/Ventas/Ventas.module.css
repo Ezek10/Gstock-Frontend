@@ -38,9 +38,6 @@
 }
 
 .letras {
-    font-size: 12px;
-    font-family: 'Calibri';
-    font-weight: bold;
     margin: 0px;
     display: flex;
     align-items: center;
@@ -75,9 +72,6 @@
     align-content: center;
     height: 15px;
     margin: 12px 10px 12px 0px;
-    font-family: "Calibri";
-    font-weight: bold;
-    font-size: 15px;
 }
  
  .selector select {
@@ -86,10 +80,8 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     border: none;
-    font-size: 14px;
     padding-left: 20px;
     outline: none;
-    font-weight: bold;
  }
 
  .selector select::-ms-expand {
@@ -105,7 +97,6 @@
  
 .responsiveText {
     font-size: 16px; /* Tamaño de letra por defecto */
-    font-family: 'Calibri';
     margin: 0px;
     color: rgb(149, 148, 148);
     padding: 0%;
@@ -129,9 +120,7 @@
   }
 
   .cart {
-    font-size: 12px;
-    font-family: 'Calibri';
-    font-weight: bold;
+    font-size: 14px;
     margin: 0px;
     max-height: 50%;
     height: 50%;
@@ -174,8 +163,6 @@
 
 .confirmationModal{
     position: absolute;
-    font-family: "Calibri";
-    font-weight: bold;
     font-size: 20px;
     padding: "10px";
 

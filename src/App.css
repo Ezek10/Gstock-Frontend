@@ -1,3 +1,8 @@
 .rdrDayHovered {
     background: transparent
 }
+
+body {
+    font-family: 'Mukta', sans-serif;
+    font-size: 15px;
+}
