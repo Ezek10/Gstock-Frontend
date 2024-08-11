@@ -7,6 +7,7 @@ import GroupDetail from "../GroupDetail/GroupDetail";
 import { getProductsStocks } from "../../Redux/actions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import warning from "../../assets/warning.png"
 
 const TablaStock = () => {
 
@@ -41,12 +42,34 @@ const TablaStock = () => {
     
     const stocks = useSelector((state) => state.products) || [];
 
+    const hasEmptyValue = (obj) => {       
+        if (obj === null || typeof obj !== 'object') return true;
+        if (Array.isArray(obj)) {
+            obj.map(item => hasEmptyValue(item));            
+        }
+        for (const key in obj) {
+            console.log(key);
+            
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                // console.log(value);
+                
+                if (typeof value === 'object' && !Array.isArray(value)) {
+                    if (hasEmptyValue(value)) return true;
+                    } else if (value === "" || value === null || (Array.isArray(value) && value.length === 0)) {
+                        return true;
+                    } else {hasEmptyValue(value)}
+                }} 
+        return false;
+    };
+
     return(
-        <div style={{ margin: "1.5%", overflowY: "auto" }}>
+        <div style={{ margin: "1.5%", overflowY: "auto", width: "100%" }}>
             <CustomTableContainer component={Paper}>
                 <Table>
                     <TableHead>
                     <TableRow>
+                            <HeaderTableCell></HeaderTableCell>
                             <HeaderTableCell>Producto</HeaderTableCell>
                             <HeaderTableCell>Cantidad</HeaderTableCell>
                             <HeaderTableCell>Precio</HeaderTableCell>
@@ -55,7 +78,8 @@ const TablaStock = () => {
                     <TableBody>
                     {stocks.map((prod) => (
                         <TableRow sx={{'&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "55%", fontWeight: "bold", paddingLeft: "40px", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"}  }}>{prod.stocks.length}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
                         </TableRow>
