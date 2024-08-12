@@ -7,6 +7,7 @@ import GroupDetail from "../GroupDetail/GroupDetail";
 import { getProductsStocks } from "../../Redux/actions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import warning from "../../assets/warning.png"
 
 const TablaStock = () => {
 
@@ -25,18 +26,50 @@ const TablaStock = () => {
         setOpenDetail(false)
     };
 
+    const updateProduct = (product) => {
+        const updatedProducts = [...stocks]
+        const productIndex = updatedProducts.findIndex(prod => prod.id === product.id);
+        updatedProducts[productIndex] = product;
+        dispatch(temp => temp({
+            type: "GET_PRODUCTS_STOCKS",
+            payload: updatedProducts,
+        }))
+    }
+
     useEffect(() => {
         dispatch(getProductsStocks())
     }, [dispatch])
     
-    const stocks = useSelector((state) => state.products) || [];    
+    const stocks = useSelector((state) => state.products) || [];
+
+    const hasEmptyValue = (obj) => {       
+        if (obj === null || typeof obj !== 'object') return true;
+        if (Array.isArray(obj)) {
+            obj.map(item => hasEmptyValue(item));            
+        }
+        for (const key in obj) {
+            console.log(key);
+            
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                // console.log(value);
+                
+                if (typeof value === 'object' && !Array.isArray(value)) {
+                    if (hasEmptyValue(value)) return true;
+                    } else if (value === "" || value === null || (Array.isArray(value) && value.length === 0)) {
+                        return true;
+                    } else {hasEmptyValue(value)}
+                }} 
+        return false;
+    };
 
     return(
-        <div style={{ margin: "1.5%" }}>
+        <div style={{ margin: "1.5%", overflowY: "auto", width: "100%" }}>
             <CustomTableContainer component={Paper}>
                 <Table>
                     <TableHead>
                     <TableRow>
+                            <HeaderTableCell></HeaderTableCell>
                             <HeaderTableCell>Producto</HeaderTableCell>
                             <HeaderTableCell>Cantidad</HeaderTableCell>
                             <HeaderTableCell>Precio</HeaderTableCell>
@@ -44,10 +77,11 @@ const TablaStock = () => {
                     </TableHead>
                     <TableBody>
                     {stocks.map((prod) => (
-                        <TableRow key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "55%", fontWeight: "bold", paddingLeft: "40px", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold" }}>{prod.stocks.length}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "end", width: "25%", paddingRight: "40px", fontWeight: "bold" }}>${prod.list_price}</CustomTableCell>
+                        <TableRow sx={{'&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"}  }}>{prod.stocks.length}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
                         </TableRow>
                     ))}
                     
@@ -63,7 +97,7 @@ const TablaStock = () => {
                     closeAfterTransition>
                     <Fade in={openDetail}>
                         <div ref={modalRef}>
-                            {selectedProduct && <GroupDetail handleCloseDetail={handleCloseDetail} product={selectedProduct} />}
+                            {selectedProduct && <GroupDetail handleCloseDetail={handleCloseDetail} products={selectedProduct} setProducts={setSelectedProduct} updateProductList={updateProduct}/>}
                         </div>
                     </Fade>
                 </Modal>
@@ -85,8 +119,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "transparent",
     borderBottomColor: "transparent",
     padding: "15px",
-    fontSize: "18px",
-    fontWeight: "bold"
+    fontSize: "20px",
   }));
 
   const CustomTableContainer = styled(TableContainer)(({ theme }) => ({

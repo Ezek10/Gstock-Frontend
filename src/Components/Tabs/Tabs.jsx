@@ -43,7 +43,7 @@ const Tabs = () => {
                                 borderRadius: "5px" }}>
                             <p className={style.letras}>Seleccione un producto de la tabla para acceder a los datos del grupo.</p>
                         </div>
-                        <div>
+                        <div style={{display: "flex"}}>
                             <TablaStock/>
                             <Button 
                                 variant="outlined" 
@@ -54,16 +54,14 @@ const Tabs = () => {
                             </Button>
                         </div>
                     </div> }
-                {activetab===1 && <h1 style={{fontFamily: "Calibri", fontSize: "24px"}}>En desarrollo...</h1> }
+                {activetab===1 && <h1 style={{ fontSize: "24px"}}>En desarrollo...</h1> }
             </div>
         </div>
     )
 }
 
 const botonCopiar = {
-    position: "absolute",
-    top: "7.8%",
-    right: "-1%",
+    // position: "absolute",
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "5px",
@@ -71,7 +69,7 @@ const botonCopiar = {
     height: "2.3em",
     width: "2.3em",
     minWidth: "0px",
-    marginLeft: "10px",
+    marginTop: "1.5%",
     boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.4)",
     '&:hover':{
         color: "#fff",

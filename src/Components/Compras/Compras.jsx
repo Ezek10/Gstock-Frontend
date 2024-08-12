@@ -39,7 +39,6 @@ const Compras = React.forwardRef((props, ref) => {
         products: [],
     })
 
-
     const [ errors, setErrors ] = useState({
         quantity: "",
         buy_price: "",
@@ -83,12 +82,11 @@ const Compras = React.forwardRef((props, ref) => {
             }
             setNewProduct(updatedNewProduct);            
         }
-        console.log(index);
+
         if (index>=0) {
             const updateNewProd = cart.products
-            updateNewProd[index] = {...updateNewProd[index], [property]: value} 
+            updateNewProd[index] = {...updateNewProd[index], [property]: value } 
             setCart({...cart, products: updateNewProd})
-            console.log(cart, "prueba de index");
         }
     }   
 
@@ -99,6 +97,8 @@ const Compras = React.forwardRef((props, ref) => {
         if (updatedCart.products[0] && updatedCart.products[0].product_name===""){
             updatedCart.products.shift();
         }
+        console.log(updatedCart);
+        
         setCart(updatedCart)
     }
 
@@ -124,6 +124,7 @@ const Compras = React.forwardRef((props, ref) => {
     }
 
     const handlePaymentChange = (selection) => {
+        console.log(selection);
         setNewProduct({...newProduct, payment_method: selection});
         setCart({...cart, payment_method: selection});
     }
@@ -194,7 +195,7 @@ const Compras = React.forwardRef((props, ref) => {
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"}
                 }}><CloseIcon/></Button>
-            <h2 style={{ fontFamily: 'Calibri', fontSize: "20px", margin: "" }}>Agregar una compra</h2>
+            <h2 style={{ fontSize: "20px", margin: "" }}>Agregar una compra</h2>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Proveedor</p>
@@ -211,7 +212,7 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <h2 style={{ fontFamily: 'Calibri', fontSize: "20px" }}>Agregar un producto</h2>
+                <h2 style={{ fontSize: "20px" }}>Agregar un producto</h2>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Producto</p>
                     <input type="text" style={{ height: "15px" }} value={newProduct.products.product_name} onChange={changeHandler} name="product_name"/>
@@ -277,7 +278,7 @@ const Compras = React.forwardRef((props, ref) => {
                             )) : (<p></p>
                         )}
                     </div>
-                    <h1 style={{ margin: "0px", fontFamily: 'Calibri', color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
+                    <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
                 </div>
 
                 <Button 
@@ -318,12 +319,12 @@ const Compras = React.forwardRef((props, ref) => {
 
                 {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
                     <div key={product.product_name+"-"+index}>
-                        <p style={{ fontFamily: 'Calibri', fontSize: "15px", margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
+                        <p style={{ margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
                     <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Color</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>IMEI</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Batería</p>
-                        <p style={{ marginTop: "5px", marginBottom: "3px", fontFamily: 'Calibri', fontSize: "12px" }}>Estado</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
@@ -333,6 +334,7 @@ const Compras = React.forwardRef((props, ref) => {
                             <option value="DEFECTIVE">Defectuoso</option>
                             <option value="BROKEN">Fallado</option>
                         </select>
+                        {/* <button name="state" onClick={ e => changeState()}>{product.state}</button> */}
                     </div>
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
                     {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
@@ -354,7 +356,6 @@ const buttonStyle = {
     textTransform: 'none',
     color: "white",
     fontWeight: "bold",
-    fontSize: "10px",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",
