@@ -334,7 +334,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     <div id="cart" className={style.cart}>
                     {cart.products.map((prod, index) => (                        
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
-                                <div style={{ gridColumn: "span 2", fontSize: "10px" }}>{prod.product_name}</div>
+                                <div style={{ gridColumn: "span 2" }}>{prod.product_name}</div>
                                 <div>{prod.serial_id}</div>
                                 <div>{prod.color?.toUpperCase()} </div>
                                 <div> {prod.battery_percent}%</div>
