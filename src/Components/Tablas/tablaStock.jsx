@@ -8,6 +8,7 @@ import { getProductsStocks } from "../../Redux/actions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import warning from "../../assets/warning.png"
+import style from "./tablaStock.module.css"
 
 const TablaStock = () => {
 
@@ -42,38 +43,17 @@ const TablaStock = () => {
     
     const stocks = useSelector((state) => state.products) || [];
 
-    const hasEmptyValue = (obj) => {       
-        let aux = false
-        if (obj === null || typeof obj !== 'object') return true;
-        if (Array.isArray(obj)) {       
-
-            aux = obj.some(item => hasEmptyValue(item))
-            console.log(aux, "auxiliar");
-            if (aux) {
-                return true
-            } 
-            
-        } else {
-
-            for (const key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    const value = obj[key];
-                    if (typeof value === 'object' && !Array.isArray(value)) {
-                        if (hasEmptyValue(value)) return true;
-                    } else if (value === "" || value === null || (Array.isArray(value) && value.length === 0)) {
-                        return true;
-                    } else {
-                        // console.log(value);
-                        
-                        hasEmptyValue(value);
-                    }
-                }} 
-            }
-        return false
+    const hasEmptyValue = (product) => {
+        if (!product.stocks || !product.list_price) return true;
+        let isNotFull = true;
+        product.stocks.forEach(item => {
+            isNotFull &= !!item.color && !!item.battery_percent && !!item.serial_id
+        });
+        return isNotFull;
     };
 
     return(
-        <div style={{ margin: "1.5%", overflowY: "auto", width: "100%" }}>
+        <div className={style.tabla}>
             <CustomTableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -84,10 +64,10 @@ const TablaStock = () => {
                             <HeaderTableCell>Precio</HeaderTableCell>
                     </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody sx={{overflow: "scroll"}}>
                     {stocks.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{!hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"}  }}>{prod.stocks.length}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
@@ -135,7 +115,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
     boxShadow: "0px 0px 0px 0px transparent",
     width: "100%",
-    height: "80%",
+    height: "100%",
     position: "relative",
     overflow: "hidden"
   }));

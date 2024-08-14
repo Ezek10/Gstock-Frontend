@@ -11,28 +11,9 @@ import Exchange from "../Exchange/Exchange";
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import { useDispatch, useSelector } from "react-redux";
+import check from "../../assets/check.png" 
 
 const Ventas = React.forwardRef((props, ref) => {
-    
-    // const [ sellProduct, setSellProduct ] = useState({
-    //     client: {
-    //         name: "",
-    //         tel: "",
-    //         email: ""
-    //     },
-    //     contact_via: "INSTAGRAM",
-    //     payment_method: "CASH",
-    //     date: Date.now(),
-    //     seller: {
-    //         name: ""
-    //     },
-    //     products: [],
-    //     has_swap: false,
-    //     swap_products: [{
-    //         product_name: "",
-    //         buy_price: ""
-    //     }]
-    // })
 
     const [ errors, setErrors ] = useState({        
     })
@@ -143,6 +124,14 @@ const Ventas = React.forwardRef((props, ref) => {
     const handleOpenConfirm = () => setOpenConfirm(true);
     const handleCloseConfirm = () => setOpenConfirm(false);
 
+    const [openCheck, setOpenCheck] = useState(false);
+    const handleOpenCheck = () => {
+        setOpenCheck(true)};
+        setTimeout(() => {
+            setOpenCheck(false)
+        }, 3000)
+    const handleCloseCheck = () => setOpenCheck(false);
+
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
     const handleCloseExchange = () => setOpenExchange(false);
@@ -150,12 +139,6 @@ const Ventas = React.forwardRef((props, ref) => {
     const handleAddExchange = (exchangeCart) => {
         setExchangeProducts(prevExchangeProducts => {
             const newExchangeProducts = [...prevExchangeProducts, ...exchangeCart];
-            
-            // setSellProduct(prevSellProduct => {
-            //     const updateCart = [...prevSellProduct.swap_products, ...newExchangeProducts];
-            //     return {...prevSellProduct, swap_products: updateCart, has_swap: true};
-            // });
-
             setCart(prevCart => {
                 const updateCart = [...prevCart.swap_products, ...newExchangeProducts];
                 return {...prevCart, swap_products: updateCart, has_swap: true};
@@ -192,7 +175,6 @@ const Ventas = React.forwardRef((props, ref) => {
                 await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/sell", cart, {
                     headers: {
                         "Authorization": "admin",}} )
-                alert("Venta cargada exitosamente")
                 setCart({
                     supplier: {},
                     payment_method: "CASH",
@@ -241,16 +223,16 @@ const Ventas = React.forwardRef((props, ref) => {
 
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <p className={style.letras}>Cliente</p>
+                    <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name || ""} onChange={changeHandler} name="client"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <p className={style.letras}>Tel</p>
+                    <p className={style.letras}>Tel <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.tel || ""} onChange={changeHandler} name="tel"/>
-                    <p className={style.letras}>Email</p>
+                    <p className={style.letras}>Email <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.email || ""} onChange={changeHandler} name="email"/>
                 </div>
 
@@ -270,14 +252,14 @@ const Ventas = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
-                    <p className={style.letras}>Vendedor</p>
-                    <input type="text" value={cart.seller.name} onChange={changeHandler} name="seller"/>
+                    <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" value={cart.seller.name || ""} onChange={changeHandler} name="seller"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <p className={style.letras}>Producto</p>
+                    <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ height: "20px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={product.product_name} value="">Elija un modelo</option>
                         {stocks.map((prod) => (
@@ -289,7 +271,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px"}}>
-                    <p className={style.letras}>IMEI</p>
+                    <p className={style.letras}>IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
@@ -299,7 +281,7 @@ const Ventas = React.forwardRef((props, ref) => {
                              ))
                             }
                     </select>
-                    <p className={style.letras}>Color </p>
+                    <p className={style.letras}>Color <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <p style={{ alignItems: "center", paddingLeft: "15px"}}>{product.color?.toUpperCase()}</p>
                 </div>
 
@@ -446,8 +428,24 @@ const Ventas = React.forwardRef((props, ref) => {
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {submitHandler();handleCloseConfirm()}}>Confirmar
+                                onClick={()=> {submitHandler();handleOpenCheck()}}>Confirmar
                             </Button>
+                        </div>
+                </Dialog>
+
+                <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openCheck}
+                    onClose={()=>handleCloseCheck()}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", display: "flex" }}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
+                            <p style={{margin: "0px", textAlign: "center"}}>Los cambios se guardaron correctamente</p>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
+                            </div>
                         </div>
                 </Dialog>
             </div>

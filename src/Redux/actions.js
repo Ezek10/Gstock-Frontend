@@ -10,6 +10,10 @@ export const PUT_PRODUCT_DETAIL_SUCCES = "PUT_PRODUCT_DETAIL_SUCCES"
 export const PUT_PRODUCT_DETAIL_REQUEST = "PUT_PRODUCT_DETAIL_REQUEST"
 export const PUT_PRODUCT_DETAIL_FAILURE = "PUT_PRODUCT_DETAIL_FAILURE"
 
+export const DELETE_PRODUCTS_SUCCESS = "DELETE_PRODUCTS_SUCCESS"
+export const DELETE_PRODUCTS_REQUEST = "DELETE_PRODUCTS_REQUEST"
+export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
+
 export const getProductsStocks = () => {
     return async function (dispatch) {
         try {
@@ -60,6 +64,27 @@ export const putProductDetail = (productDetail) => {
         } catch(error) {
             dispatch({ type: PUT_PRODUCT_DETAIL_FAILURE, payload: error.message });
             console.error("Error al cambiar los datos del producto", error)
+        }
+    }
+}
+
+export const deleteProducts = (productId) => {
+    return async function (dispatch) {
+        try {
+            dispatch({type: DELETE_PRODUCTS_REQUEST})
+            await axios.delete(`https://api.gstock.francelsoft.com/gstock/${productId}`)
+            console.log("funca");
+            
+            dispatch({
+                type: DELETE_PRODUCTS_SUCCESS,
+                payload: productId
+            })
+        } catch (error) {
+            console.log("no funca");
+            dispatch({
+                type: DELETE_PRODUCTS_FAILURE,
+                payload: error.message
+            })
         }
     }
 }

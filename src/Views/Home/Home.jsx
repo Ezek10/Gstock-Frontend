@@ -95,7 +95,7 @@ const Home = () => {
 
                 </div>
                 <div style={{height: "80%", display: "flex", justifyContent: "center"}}>
-                    <div style={{fontSize: "20px", display: "flex", width: "90%"}}>
+                    <div style={{fontSize: "20px", display: "flex", width: "90%", alignItems: "center"}}>
                     Seleccione un producto de la tabla para acceder a los datos del grupo.
                     </div>
                 </div>
