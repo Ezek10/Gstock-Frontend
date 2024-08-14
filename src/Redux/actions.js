@@ -17,7 +17,6 @@ export const getProductsStocks = () => {
                 headers: {
                     "Authorization": "admin",}})
             const products = response.data.result.content
-                    console.log(products);
             dispatch({
                 type: GET_PRODUCTS_STOCKS,
                 payload: products

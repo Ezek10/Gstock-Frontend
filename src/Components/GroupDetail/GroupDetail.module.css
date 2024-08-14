@@ -17,9 +17,23 @@
     overflow: auto;
 }
 
+.containerGroupDetail::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 100%;
+    position: absolute;
+}
 
+.containerGroupDetail::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+
+.containerGroupDetail::-webkit-scrollbar-thumb {
+    background-color: rgb(141, 141, 141);
+    border-radius: 5px;
+    
+}
 
 .letras {
-    font-weight: bold;
     margin: 0px;
 }
+

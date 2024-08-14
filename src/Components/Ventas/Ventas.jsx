@@ -3,10 +3,9 @@ import style from "./Ventas.module.css"
 import { Divider, Button, Dialog } from "@mui/material";
 import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { getProductsStocks } from "../../Redux/actions";
 import axios from "axios";
-import stock from "../../assets/stock";
 import CloseIcon from '@mui/icons-material/Close';
 import Exchange from "../Exchange/Exchange";
 import { Modal } from '@mui/base/Modal';
@@ -15,39 +14,41 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Ventas = React.forwardRef((props, ref) => {
     
-    const [ sellProduct, setSellProduct ] = useState({
-        client: {
-            name: "",
-            tel: "",
-            email: ""
-        },
-        contact_via: "INSTAGRAM",
-        payment_method: "CASH",
-        date: Date.now(),
-        seller: {
-            name: ""
-        },
-        products: [],
-        has_swap: false,
-        swap_products: [{
-            product_name: "",
-            buy_price: ""
-        }]
+    // const [ sellProduct, setSellProduct ] = useState({
+    //     client: {
+    //         name: "",
+    //         tel: "",
+    //         email: ""
+    //     },
+    //     contact_via: "INSTAGRAM",
+    //     payment_method: "CASH",
+    //     date: Date.now(),
+    //     seller: {
+    //         name: ""
+    //     },
+    //     products: [],
+    //     has_swap: false,
+    //     swap_products: [{
+    //         product_name: "",
+    //         buy_price: ""
+    //     }]
+    // })
+
+    const [ errors, setErrors ] = useState({        
     })
 
     const [ inStock, setInStock ] = useState([])
     const [ product, setProduct ] = useState({})
     const dispatch = useDispatch()
-    const [ nameProd, setNameProd ] = useState("")
     const [ sellPrice, setSellPrice ] = useState(0)
     const [exchangeProducts, setExchangeProducts] = useState([]);
-    const [ imei, setImei ] = useState()
     const [ cart, setCart ] = useState({
         client: {
             name: "",
             tel: "",
             email: ""
         },
+        type: "SELL",
         contact_via: "INSTAGRAM",
         payment_method: "CASH",
         date: Date.now(),
@@ -62,46 +63,52 @@ const Ventas = React.forwardRef((props, ref) => {
     const changeHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
-
+        let aux = []
         if (["client","seller", "tel", "email"].includes(property)) {
+            
             if (["client","seller"].includes(property)){
-                setSellProduct({...sellProduct, [property]:{name: value}})
+                // setSellProduct({...sellProduct, [property]:{name: value}})
+                setCart({...cart, [property]:{name: value}})
             } else {
-                console.log(sellProduct);
-                setSellProduct({...sellProduct, client:{...sellProduct.client, [property]: value}})
+                // setSellProduct({...sellProduct, client:{...sellProduct.client, [property]: value}})
+                setCart({...cart, client:{...cart.client, [property]: value}})
             }
         } else if (property==="contact_via") {
-            setSellProduct({...sellProduct, [property]:value})
+            // setSellProduct({...sellProduct, [property]:value})
+            setCart({...cart, [property]:value})
         } else if (property==="serial_id"){
             const uniqueItem = inStock.filter(item => item.serial_id.includes(value))
-            setProduct(uniqueItem[0])
-            setImei(value)
-            console.log(product);
+            setProduct({ ...product, ...uniqueItem[0] })
         } else if (property==="sell_price"){
             setSellPrice(value)
+        } else if (property==="product_name") {
+            aux = stocks.filter(item => item.name === value)
+            
+            setInStock(aux[0].stocks)
+            setProduct({...product, product_name: value})
+            
         } else {
             const newCart = [{
-                product_name: nameProd,
+                product_name: product.product_name,
                 id: product.id,
                 sell_price: sellPrice,
                 color: product.color,
                 serial_id: product.serial_id,
                 battery_percent: product.battery_percent
             }]
-            if (sellProduct!=="") {
-                const updateCart = sellProduct.products.concat(newCart)
-                setSellProduct({...sellProduct, products: updateCart})
+            
+            if (cart!=="") {
+                const updateCart = cart.products.concat(newCart)
+                // setSellProduct({...sellProduct, products: updateCart})
                 setCart({...cart, products: updateCart})
             } else {
-                setSellProduct({...sellProduct, products: newCart})
+                // setSellProduct({...sellProduct, products: newCart})
                 setCart({...cart, products: newCart})
             }
         }
+
         return;
     }
-
-    useEffect(() => {
-    }, [sellProduct])
 
     useEffect(() => {
         dispatch(getProductsStocks())
@@ -109,28 +116,14 @@ const Ventas = React.forwardRef((props, ref) => {
 
     const stocks = useSelector((state) => state.products) || [];
 
-    const productList = (event) => {
-        const prod = stocks
-        const value = event.target.value
-        setNameProd(value)
-        let aux = []
-        if (value!=="") {
-            const filteredItems = prod.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
-            if (filteredItems.length>0) {
-                filteredItems.forEach(prod => {aux = aux.concat(prod.stocks)})
-                setInStock(aux)
-            } 
-        } else {
-            setInStock(aux)
-        }
-    }
-
     const handleDateChange = (selection) => {
-        setSellProduct({ ...sellProduct, date: selection.startDate.getTime()});
+        // setSellProduct({ ...sellProduct, date: selection.startDate.getTime()});
+        setCart({ ...cart, date: selection.startDate.getTime()});
     }
 
     const handlePaymentChange = (selection) => {
-        setSellProduct({...sellProduct, payment_method: selection});
+        // setSellProduct({...sellProduct, payment_method: selection});
+        setCart({...cart, payment_method: selection});
     }
 
     const deleteFromCart = (index) => {
@@ -158,27 +151,39 @@ const Ventas = React.forwardRef((props, ref) => {
         setExchangeProducts(prevExchangeProducts => {
             const newExchangeProducts = [...prevExchangeProducts, ...exchangeCart];
             
-            setSellProduct(prevSellProduct => {
-                const updateCart = [...prevSellProduct.swap_products, ...newExchangeProducts];
-                return {...prevSellProduct, swap_products: updateCart, has_swap: true};
-            });
+            // setSellProduct(prevSellProduct => {
+            //     const updateCart = [...prevSellProduct.swap_products, ...newExchangeProducts];
+            //     return {...prevSellProduct, swap_products: updateCart, has_swap: true};
+            // });
 
             setCart(prevCart => {
                 const updateCart = [...prevCart.swap_products, ...newExchangeProducts];
-                return {...prevCart, swap_products: updateCart};
+                return {...prevCart, swap_products: updateCart, has_swap: true};
             });
         return newExchangeProducts;
         });
+    } 
+
+    console.log(cart);
+    
+    const totalBuyPrice = () => {
+        let swap = 0
+        
+        if (cart.swap_products) {
+            swap = 0
+        } else {
+            swap = cart.swap_products.reduce((total, product) => {
+                return total + (parseFloat(product.buy_price || 0));
+            }, 0);
+        }
+        
+        return cart.products.reduce((total, product) => {
+            return total + (parseFloat(product.sell_price || 0));
+        }, 0) - swap
+        
     }
-
-    const totalBuyPrice = cart.products.reduce((total, product) => {
-        return total + (parseFloat(product.sell_price || 0)) ;
-    }, 0) - cart.swap_products.reduce((total, product) => {
-        return total + (parseFloat(product.buy_price || 0)) ;
-    }, 0);
-
+    
     const submitHandler = async (event) => {
-        console.log(errors);
         
         if (Object.values(errors).every((error) => error === "")) {
             try {
@@ -187,15 +192,13 @@ const Ventas = React.forwardRef((props, ref) => {
                 await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/sell", cart, {
                     headers: {
                         "Authorization": "admin",}} )
-                alert("Compra cargada exitosamente")
+                alert("Venta cargada exitosamente")
                 setCart({
-                    quantity: 1,
-                    supplier: {
-                        name: "",
-                    },
+                    supplier: {},
                     payment_method: "CASH",
                     date: Date.now(),
                     products: [],
+                    swap_products: []
                 })
                 setErrors({
                     quantity: "",
@@ -204,11 +207,10 @@ const Ventas = React.forwardRef((props, ref) => {
             } catch(error){
                 console.log("error");
                 
-                window.alert("Error al cargar la compra", error)
+                window.alert("Error al cargar la venta", error)
             }
         }
     }
-    
     
     return(
         <div ref={ref} className={style.containerVentas} tabIndex={-1}>
@@ -240,23 +242,23 @@ const Ventas = React.forwardRef((props, ref) => {
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <p className={style.letras}>Cliente</p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={sellProduct.client.name} onChange={changeHandler} name="client"/>
+                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name || ""} onChange={changeHandler} name="client"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p className={style.letras}>Tel</p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={sellProduct.client.tel} onChange={changeHandler} name="tel"/>
+                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.tel || ""} onChange={changeHandler} name="tel"/>
                     <p className={style.letras}>Email</p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={sellProduct.client.email} onChange={changeHandler} name="email"/>
+                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.email || ""} onChange={changeHandler} name="email"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div className={style.selector}>
-                    <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                    <select name="contact_via" onChange={changeHandler} value={sellProduct.contact_via}>
+                    <p className={style.letras}>Canal de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <select name="contact_via" onChange={changeHandler} value={cart.contact_via}>
                         <option value="INSTAGRAM">Instagram</option>
                         <option value="FACEBOOK">Facebook</option>
                         <option value="TIKTOK">Tiktok</option>
@@ -267,16 +269,17 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Vendedor</p>
-                    <input type="text" value={sellProduct.seller.name} onChange={changeHandler} name="seller"/>
+                    <input type="text" value={cart.seller.name} onChange={changeHandler} name="seller"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "15px", margin: "12px 10px 12px 0px" }}>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <p className={style.letras}>Producto</p>
-                    <select name="product" value={product.product_name} onChange={productList} style={{ height: "19px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
+                    <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ height: "20px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
+                        <option key={product.product_name} value="">Elija un modelo</option>
                         {stocks.map((prod) => (
                             <option key={prod.name} value={prod.name}>{prod.name}</option>
                         ))}
@@ -285,17 +288,19 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px"}}>
                     <p className={style.letras}>IMEI</p>
-                    <select type="text" value={product.serial_id} onChange={changeHandler} name="serial_id" style={{ height: "19px", margin: "12px 10px 12px 10px", width: "60px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
+                    <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
+                        <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
-                            <option key={option.serial_id} value={option.serial_id}>
-                                {option.serial_id}
-                            </option>
-                        ))}
+                             option.serial_id==="" ? null : <option key={option.serial_id} value={option.serial_id}>
+                                 {option.serial_id}
+                                </option> 
+                             ))
+                            }
                     </select>
                     <p className={style.letras}>Color </p>
-                    <p style={{ alignItems: "center", paddingLeft: "15px"}}>{nameProd ? product.color?.toUpperCase() : ""}</p>
+                    <p style={{ alignItems: "center", paddingLeft: "15px"}}>{product.color?.toUpperCase()}</p>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -304,12 +309,12 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
-                    <div style={{ display: "flex", flexDirection: "row", paddingRight: "10%"}}>
-                    <p className={style.letras}>Precio Unitario</p>
-                    <input type="text" style={{ width: "90px", margin: "12px 10px 12px 10px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price"/>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
+                    <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ width: "4vw", margin: "0px 10px 0px 0px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
                     </div>
-                    <Payment className={style.payment} payment={handlePaymentChange}/>
+                    <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -347,10 +352,10 @@ const Ventas = React.forwardRef((props, ref) => {
                     <div id="cart" className={style.cart}>
                     {cart.products.map((prod, index) => (                        
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
-                                <div style={{ gridColumn: "span 2" }}>{prod.product_name}</div>
+                                <div style={{ gridColumn: "span 2", fontSize: "10px" }}>{prod.product_name}</div>
                                 <div>{prod.serial_id}</div>
-                                <div>{prod.color?.toUpperCase()}</div>
-                                <div>{prod.battery_percent}%</div>
+                                <div>{prod.color?.toUpperCase()} </div>
+                                <div> {prod.battery_percent}%</div>
                                 <div style={{marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>${prod.sell_price}
                                 <Button 
                                     variant="outlined" 
@@ -377,8 +382,8 @@ const Ventas = React.forwardRef((props, ref) => {
                             </div>
                         ))}
                     </div>
-                    <div id="cart" className={style.cart}>
-                    {cart.swap_products.length > 0 ? cart.swap_products?.map((prod, index) => (
+                    {cart.swap_products?.length > 0 ? <div id="cart" className={style.cart}>
+                        {cart.swap_products?.map((prod, index) => (
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
                                 <div style={{ gridColumn: "span 2" }}> {prod.product_name} </div>
                                 <div>{prod.serial_id}</div>
@@ -408,9 +413,9 @@ const Ventas = React.forwardRef((props, ref) => {
                                 </Button>
                                 </div>
                             </div>
-                        )) : <div></div>}
-                    </div>
-                    <h1 className={style.responsiveText}>${totalBuyPrice}</h1>
+                        ))}
+                    </div> : <div></div>}
+                    <h1 className={style.responsiveText}>${totalBuyPrice()}</h1>
                 </div>
                 <Button 
                     variant="outlined" 
@@ -433,7 +438,7 @@ const Ventas = React.forwardRef((props, ref) => {
                             <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
                             {cart.products.length > 0 ? (cart.products.map((product, index) => (
                             <div key={index} style={{marginTop: "5px"}}>
-                                <p className={style.letras}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
+                                <p className={style.letras}>{product.product_name} (${product.sell_price}, {product.color?.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
                             </div>)
                             )) : (<p></p>)}
                             <Button 
@@ -456,12 +461,16 @@ const dividerStyle = {
     margin: '1px', 
     padding:"0px", 
     height: "1px", 
-    width:"90%"
+    width:"90%",
+    '&:hover': {
+        cursor: "none"
+    }
 }
 
 const buttonStyle = {
     backgroundColor: "black",
     borderColor: "transparent",
+    fontSize: "15px",
     borderRadius: "20px",
     height: "2.5em",
     width:"fit-content",
@@ -470,6 +479,7 @@ const buttonStyle = {
     marginBottom: "10px",
     marginRight: "20px",
     textTransform: 'none',
+    alignItems: "center",
     color: "white",
     '&:hover':{
         color: "#fff",

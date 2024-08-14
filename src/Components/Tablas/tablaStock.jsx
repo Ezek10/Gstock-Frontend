@@ -43,24 +43,33 @@ const TablaStock = () => {
     const stocks = useSelector((state) => state.products) || [];
 
     const hasEmptyValue = (obj) => {       
+        let aux = false
         if (obj === null || typeof obj !== 'object') return true;
-        if (Array.isArray(obj)) {
-            obj.map(item => hasEmptyValue(item));            
-        }
-        for (const key in obj) {
-            console.log(key);
+        if (Array.isArray(obj)) {       
+
+            aux = obj.some(item => hasEmptyValue(item))
+            console.log(aux, "auxiliar");
+            if (aux) {
+                return true
+            } 
             
-            if (obj.hasOwnProperty(key)) {
-                const value = obj[key];
-                // console.log(value);
-                
-                if (typeof value === 'object' && !Array.isArray(value)) {
-                    if (hasEmptyValue(value)) return true;
+        } else {
+
+            for (const key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    const value = obj[key];
+                    if (typeof value === 'object' && !Array.isArray(value)) {
+                        if (hasEmptyValue(value)) return true;
                     } else if (value === "" || value === null || (Array.isArray(value) && value.length === 0)) {
                         return true;
-                    } else {hasEmptyValue(value)}
+                    } else {
+                        // console.log(value);
+                        
+                        hasEmptyValue(value);
+                    }
                 }} 
-        return false;
+            }
+        return false
     };
 
     return(
@@ -77,7 +86,7 @@ const TablaStock = () => {
                     </TableHead>
                     <TableBody>
                     {stocks.map((prod) => (
-                        <TableRow sx={{'&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
+                        <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"}  }}>{prod.stocks.length}</CustomTableCell>
@@ -126,7 +135,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
     boxShadow: "0px 0px 0px 0px transparent",
     width: "100%",
-    height: "50vh",
+    height: "80%",
     position: "relative",
     overflow: "hidden"
   }));

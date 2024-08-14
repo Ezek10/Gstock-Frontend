@@ -6,7 +6,8 @@ import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
-
+import logo from "../../assets/logo.png"
+ 
 const Home = () => {
 
     const [openCompras, setOpenCompras] = useState(false);
@@ -45,6 +46,11 @@ const Home = () => {
                 </div>
                 <Tabs/>
                 <div className={style.footer}>
+                    <img src={logo} alt="logo" style={{ height: "5vh", marginLeft: "5%" }}/>
+                    <div style={{ color: "white", marginLeft: "0.5%", display: "flex", flexDirection: "column" }}>
+                        <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}>Gestión</div>
+                        <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}> de Stock</div>
+                    </div>
                 </div>
             </div>
             <div className={style.container2}>
@@ -88,6 +94,11 @@ const Home = () => {
                     </Modal>
 
                 </div>
+                <div style={{height: "80%", display: "flex", justifyContent: "center"}}>
+                    <div style={{fontSize: "20px", display: "flex", width: "90%"}}>
+                    Seleccione un producto de la tabla para acceder a los datos del grupo.
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -99,10 +110,10 @@ const butonStyle = {
     borderRadius: "50px",
     minWidth: "45px",
     height: "2em",
-    width:"35%",
-    marginLeft: "2%",
-    padding: "0px",
-    marginRight: "2%",
+    width:"90px",
+    marginLeft: "3%",
+    padding: "5px",
+    marginRight: "3%",
     textTransform: 'none',
     color: "white",
     boxSizing: "border-box",
