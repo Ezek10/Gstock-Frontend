@@ -22,7 +22,7 @@
 }
 
 .cuadroTotal {
-    min-height: 130px;
+    min-height: 180px;
     height: 20vh;
     width: 95%;
     background-color: white;
@@ -41,6 +41,7 @@
     margin: 0px;
     display: flex;
     align-items: center;
+    width: fit-content;
 }
 
 .containerVentas::-webkit-scrollbar {
@@ -70,8 +71,8 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     align-content: center;
-    height: 15px;
-    margin: 12px 10px 12px 0px;
+    height: 25px;
+    margin: 12px 0px 12px 0px;
 }
  
  .selector select {
@@ -82,6 +83,7 @@
     border: none;
     padding-left: 20px;
     outline: none;
+    cursor: pointer;
  }
 
  .selector select::-ms-expand {
@@ -96,7 +98,7 @@
 }
  
 .responsiveText {
-    font-size: 16px; /* Tamaño de letra por defecto */
+    font-size: 15px; /* Tamaño de letra por defecto */
     margin: 0px;
     color: rgb(149, 148, 148);
     padding: 0%;

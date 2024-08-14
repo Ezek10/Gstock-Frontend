@@ -7,6 +7,7 @@ import { DateRange } from 'react-date-range';
 import style from "./Calendar.module.css"
 import { format } from 'date-fns';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const Calendar = ( { onDateChange } ) => {
 
@@ -32,8 +33,8 @@ const Calendar = ( { onDateChange } ) => {
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Fecha</p>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
+                    <p className={style.letras}>Fecha <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <Button 
                         ref={anchorRef}
                         variant="outlined" 

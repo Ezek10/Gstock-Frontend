@@ -16,10 +16,10 @@ const Tabs = () => {
     return(
         <div activetab={`${activetab}00%`} className={style.container}>
             <ul className={style.tabs}>
-                <li className={activetab==0?"active":""} onClick={()=>seleccionar(0)}> 
+                <li className={ activetab==0 ? style.active : "" } onClick={()=>seleccionar(0)}> 
                     Stock
                 </li>
-                <li className={activetab==1?"active":""} onClick={()=>seleccionar(1)}> 
+                <li className={ activetab==1 ? style.active : "" } onClick={()=>seleccionar(1)}> 
                     Transacciones
                 </li>
                 <span 
@@ -29,21 +29,8 @@ const Tabs = () => {
             </ul>
             <div style={{ display: "flex", position: "relative",flexDirection: "column", justifyContent: "flex-start", height: "100%", width: "80%", padding: "1%"}}>
                 {activetab===0 && 
-                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
-                        <div style={{ 
-                                display: "flex", 
-                                height: "20px",
-                                width: "fit-content", 
-                                marginLeft: "1.3%",
-                                boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)", 
-                                paddingLeft: "5px", 
-                                paddingRight: "5px", 
-                                boxSizing: "border-box", 
-                                alignItems: "center",
-                                borderRadius: "5px" }}>
-                            <p className={style.letras}>Seleccione un producto de la tabla para acceder a los datos del grupo.</p>
-                        </div>
-                        <div style={{display: "flex"}}>
+                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px", height: "100%" }}>
+                        <div style={{ display: "flex", height: "100%" }}>
                             <TablaStock/>
                             <Button 
                                 variant="outlined" 

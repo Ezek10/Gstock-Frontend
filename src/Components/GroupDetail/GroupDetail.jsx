@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from "react";
 import style from "./GroupDetail.module.css"
-import { Button, Divider } from "@mui/material";
+import { Button, Dialog, Divider } from "@mui/material";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { putProductDetail, putProductStock } from "../../Redux/actions";
+import { deleteProducts, putProductDetail, putProductStock } from "../../Redux/actions";
 import { useDispatch } from "react-redux";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import check from "../../assets/check.png" 
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts, updateProductList }, ref) => {
+    
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleCloseConfirm = () => setOpenConfirm(false);
 
     const dispatch = useDispatch()
     const aux = []
-    // const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
+    const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
     const stockDetailHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
         setProducts({ ...products, [property]: value })
     }
+
+    const [openCheck, setOpenCheck] = useState(false);
+    const handleOpenCheck = () => {
+        setOpenCheck(true)};
+        setTimeout(() => {
+            setOpenCheck(false)
+        }, 5000)
+    const handleCloseCheck = () => setOpenCheck(false);
 
     const productDetailHandler = (event, i) => {
         const property = event.target.name
@@ -23,7 +37,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         updatedProducts.stocks[i] = { ...products.stocks[i], [property]: value };
         setProducts(updatedProducts);
     }
-
+    
     const submitHandler = async () => {
         dispatch(putProductStock({
             id:products.id,
@@ -38,6 +52,13 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         });
     }
 
+    const updateproductState = (product, itemIndex) => {
+        const newState = (states.indexOf(product.state) + 1) % states.length;
+        const updatedProducts = { ...products };
+        updatedProducts.stocks[itemIndex].state = states[newState]; 
+        setProducts(updatedProducts);
+    }
+    
     return (
         <div className={style.containerGroupDetail}>
             <Button
@@ -71,27 +92,48 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         variant="outlined"
                         size="small"
                         target="_blank"
+                        onClick={()=>handleOpenConfirm()}
                         style={buttonStyle}>Eliminar grupo
                     </Button>
+
+                    <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openConfirm}
+                    onClose={()=>handleCloseConfirm()}
+                    className={style.confirmationModal}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
+                            <p style={{margin: "0px"}}>¿Quieres eliminar este grupo?</p>
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={buttonStyle}
+                                onClick={()=> {handleCloseConfirm(),handleCloseDetail, deleteProducts(products.id)}}>Confirmar
+                            </Button>
+                        </div>
+                </Dialog>
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                    <p className={style.letras}>Producto</p>
+                    <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={`${products.name}`} name="name" value={products.name} onChange={stockDetailHandler} />
-                    {/* <p style={{ fontWeight: "bold", margin: "0px 0px 0px 10%" }}> {products.name}</p> */}
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                    <p className={style.letras}>Cantidad</p>
+                    <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <p style={{ fontWeight: "bold", margin: "0px 0px 0px 10%" }}> {products.stocks.length}</p>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                    <p key={products.id} className={style.letras}>Proveedor/es</p>
+                    <p key={products.id} className={style.letras}>Proveedor/es <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     {products.stocks.map(prov => {
                         if (!aux.includes(prov.supplier.name)) {
                             aux.push(prov.supplier.name)
@@ -103,9 +145,9 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh", margin: "5px 0px 5px 0px" }}>
-                    <p className={style.letras}>Precio Unitario</p>
-                    <input type="text" style={{ height: "15px" }} placeholder={`$${products.list_price}`} name="list_price" value={products.list_price || "0"} onChange={stockDetailHandler} />
+                <div style={{ display: "flex", flexDirection: "row", height: "22px", alignItems: "center", margin: "12px 0px 12px 0px" }}>
+                    <p className={style.letras}>Precio de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ height: "15px", width: "20%" }} placeholder={`$${products.list_price}`} name="list_price" value={products.list_price || "0"} onChange={stockDetailHandler} />
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -124,17 +166,17 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                 {products.stocks.map((prod, prodIndex) => (
                     <div key={prodIndex}>
                         <h2 style={{ fontSize: "18px", margin: "10px 0px 0px 0px", color: prod.supplier.color }}>{products.name}</h2>
-                        <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(5, 1fr)", gap: "0px", alignItems: "center" }}>
-                            <p style={{ marginTop: "10px", marginBottom: "0px" }}>Color</p>
-                            <p style={{ marginTop: "10px", marginBottom: "0px" }}>IMEI</p>
-                            <p style={{ marginTop: "10px", marginBottom: "0px" }}>Baterí­a</p>
-                            <p style={{ marginTop: "10px", marginBottom: "0px" }}>Estado</p>
-                            <p style={{ marginTop: "10px", marginBottom: "0px" }}></p>
-                            <input type="text" style={{ height: "15px", margin: "0px 5px 0px 0px", paddingLeft: "5px", width: "70px" }} placeholder={prod.color} name="color" value={products.stocks[prodIndex]?.color || ""} onChange={e => productDetailHandler(e, prodIndex)} />
-                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.serial_id} name="serial_id" value={products.stocks[prodIndex]?.serial_id || ""} onChange={e => productDetailHandler(e, prodIndex)} />
-                            <input type="text" style={{ height: "15px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
-                            <input type="text" style={{ height: "15px", width: "75px", margin: "0px", paddingLeft: "5px" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} />
-                            {/* <button onClick={e => changeState()}>{product.state}</button> */}
+                        <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "22.5% 22.5% 22.5% 22.5% 10%", gap: "0px", alignItems: "center" }}>
+                            <p style={{ margin: "10px 0px 0px 0px" }}>Color</p>
+                            <p style={{ margin: "10px 0px 0px 0px" }}>IMEI</p>
+                            <p style={{ margin: "10px 0px 0px 0px" }}>Baterí­a</p>
+                            <p style={{ margin: "10px 0px 0px 0px" }}>Estado</p>
+                            <p style={{ margin: "10px 0px 0px 0px", width: "10px" }}></p>
+                            <input type="text" style={{ height: "15px", margin: "0px 5px 0px 0px", width: "70%" }} placeholder={prod.color} name="color" value={products.stocks[prodIndex]?.color || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.serial_id} name="serial_id" value={products.stocks[prodIndex]?.serial_id || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            {/* <input type="text" style={{ height: "15px", margin: "0px", width: "70%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", fontSize: "1.55vh" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} /> */}
+                            <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(prod, prodIndex)}>{prod.state}</button>
                             <Button
                                 variant="outlined"
                                 size="small"
@@ -143,7 +185,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                                 <ContentCopyIcon />
                             </Button>
                         </div>
-                        <input type="text" style={{ height: "15px", width: "80%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
+                        <input type="text" style={{ height: "15px", width: "85%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
                     </div>
                 ))}
                 <Button
@@ -151,8 +193,24 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={() => { submitHandler(); submitProductHandler(); updateProductList(products) }}>Guardar cambios
+                    onClick={() => { submitHandler(); submitProductHandler(); updateProductList(products); handleOpenCheck() }}>Guardar cambios
                 </Button>
+
+                <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openCheck}
+                    onClose={()=>handleCloseCheck()}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", display: "flex" }}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
+                            <p style={{margin: "0px", textAlign: "center"}}>Los cambios se guardaron correctamente</p>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
+                            </div>
+                        </div>
+                </Dialog>
             </div>
         </div>
     )
@@ -180,11 +238,10 @@ const buttonStyle = {
 const botonCopiar = {
     backgroundColor: "black",
     borderColor: "transparent",
-    borderRadius: "20px",
+    borderRadius: "6px",
     height: "30px",
     width: "30px",
     minWidth: "0px",
-    marginLeft: "10px",
     fontSize: "12px",
     color: "white",
     '&:hover': {
@@ -200,7 +257,7 @@ const dividerStyle = {
     margin: '1px',
     padding: "0px",
     height: "1px",
-    width: "90%"
+    width: "90%",
 }
 
 export default GroupDetail;

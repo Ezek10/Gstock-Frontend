@@ -7,6 +7,8 @@ import Calendar from "../Calendar/Calendar";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import check from "../../assets/check.png" 
 
 
 const Compras = React.forwardRef((props, ref) => {
@@ -47,6 +49,16 @@ const Compras = React.forwardRef((props, ref) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const handleOpenConfirm = () => setOpenConfirm(true);
     const handleCloseConfirm = () => setOpenConfirm(false);
+
+    const [openCheck, setOpenCheck] = useState(false);
+    const handleOpenCheck = () => {
+        setOpenCheck(true)};
+        setTimeout(() => {
+            setOpenCheck(false)
+        }, 3000)
+    const handleCloseCheck = () => setOpenCheck(false);
+
+    const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
 
     useEffect(() => {
     }, [newProduct])
@@ -140,6 +152,14 @@ const Compras = React.forwardRef((props, ref) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
 
+    const updateproductState = (product, itemIndex) => {
+        const newState = (states.indexOf(product.state) + 1) % states.length;
+        const updatedProducts = { ...cart };
+        updatedProducts.products[itemIndex].state = states[newState]; 
+        setCart(updatedProducts);
+    }
+
+
     const submitHandler = async (event) => {
         console.log(errors);
         
@@ -150,7 +170,6 @@ const Compras = React.forwardRef((props, ref) => {
                 await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/buy", cart, {
                     headers: {
                         "Authorization": "admin",}} )
-                alert("Compra cargada exitosamente")
                 setCart({
                     quantity: 1,
                     supplier: {
@@ -198,7 +217,7 @@ const Compras = React.forwardRef((props, ref) => {
             <h2 style={{ fontSize: "20px", margin: "" }}>Agregar una compra</h2>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Proveedor</p>
+                    <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px" }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
                 </div>
 
@@ -310,8 +329,24 @@ const Compras = React.forwardRef((props, ref) => {
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {submitHandler();handleCloseConfirm()}}>Confirmar
+                                onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm()}}>Confirmar
                             </Button>
+                        </div>
+                </Dialog>
+
+                <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openCheck}
+                    onClose={()=>handleCloseCheck()}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", display: "flex" }}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
+                            <p style={{margin: "0px", textAlign: "center"}}>Los cambios se guardaron correctamente</p>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
+                            </div>
                         </div>
                 </Dialog>
 
@@ -319,8 +354,8 @@ const Compras = React.forwardRef((props, ref) => {
 
                 {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
                     <div key={product.product_name+"-"+index}>
-                        <p style={{ margin: "10px 0px 0px 0px", fontWeight: "bold" }}>{product.product_name}</p>
-                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px" }}>
+                        <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>
+                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "25% 25% 25% 25%", gap: "0px" }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
@@ -328,13 +363,7 @@ const Compras = React.forwardRef((props, ref) => {
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
                         <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
-                        <select name="state" onChange={e => changeHandler(e, index)}>
-                            <option value="AVAILABLE">Disponible</option>
-                            <option value="RESERVED">Reservado</option>
-                            <option value="DEFECTIVE">Defectuoso</option>
-                            <option value="BROKEN">Fallado</option>
-                        </select>
-                        {/* <button name="state" onClick={ e => changeState()}>{product.state}</button> */}
+                        <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state}</button>
                     </div>
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
                     {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
