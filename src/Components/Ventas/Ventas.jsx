@@ -176,10 +176,20 @@ const Ventas = React.forwardRef((props, ref) => {
                     headers: {
                         "Authorization": "admin",}} )
                 setCart({
-                    supplier: {},
+                    client: {
+                        name: "",
+                        tel: "",
+                        email: ""
+                    },
+                    type: "SELL",
+                    contact_via: "INSTAGRAM",
                     payment_method: "CASH",
                     date: Date.now(),
+                    seller: {
+                        name: ""
+                    },
                     products: [],
+                    has_swap: false,
                     swap_products: []
                 })
                 setErrors({
@@ -224,7 +234,7 @@ const Ventas = React.forwardRef((props, ref) => {
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name || ""} onChange={changeHandler} name="client"/>
+                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -428,7 +438,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {submitHandler();handleOpenCheck()}}>Confirmar
+                                onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm()}}>Confirmar
                             </Button>
                         </div>
                 </Dialog>

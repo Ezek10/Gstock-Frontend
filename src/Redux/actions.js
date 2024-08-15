@@ -2,6 +2,8 @@ import axios from "axios"
 
 export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
+export const GET_TRANSACTIONS = "GET_TRANSACTIONS"
+
 export const PUT_PRODUCT_STOCKS_SUCCES = "PUT_PRODUCT_STOCKS_SUCCES"
 export const PUT_PRODUCT_STOCKS_REQUEST = "PUT_PRODUCT_STOCKS_REQUEST"
 export const PUT_PRODUCT_STOCKS_FAILURE = "PUT_PRODUCT_STOCKS_FAILURE"
@@ -30,6 +32,25 @@ export const getProductsStocks = () => {
         }
     }
 }
+
+export const getTransactions = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get("https://api.gstock.francelsoft.com/gstock/transaction?page=1", {
+                headers: {
+                    "Authorization": "admin",}})
+            const products = response.data.result.content
+            dispatch({
+                type: GET_TRANSACTIONS,
+                payload: products
+            })
+        } catch (error) {
+            console.error("Error al obtener las transacciones", error)
+        }
+    }
+}
+
+// page, filterByBuyType, filterBySellType, filterByProduct, filterBySpecificDate, filterByStartDate, filterByEndDate, filterBySupplier, filterByClient, filterBySeller
 
 export const putProductStock = (stockDetail) => {
     return async function (dispatch) {

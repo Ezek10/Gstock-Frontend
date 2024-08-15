@@ -7,7 +7,8 @@ import { GET_PRODUCTS_STOCKS,
         PUT_PRODUCT_DETAIL_SUCCES, 
         DELETE_PRODUCTS_SUCCESS,
         DELETE_PRODUCTS_REQUEST,
-        DELETE_PRODUCTS_FAILURE} from "./actions"
+        DELETE_PRODUCTS_FAILURE,
+        GET_TRANSACTIONS} from "./actions"
 
 const initialState = {
     products: [],
@@ -20,6 +21,9 @@ const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_PRODUCTS_STOCKS:
             return { ...state, products: [...action.payload]}
+
+        case GET_TRANSACTIONS:
+            return {...state, products: [...action.payload]}
 
         case PUT_PRODUCT_STOCKS_SUCCES:
             return { ...state, loading: false, resource: action.payload }
