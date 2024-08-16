@@ -3,6 +3,7 @@ import style from "./Tabs.module.css"
 import TablaStock from "../Tablas/tablaStock";
 import { Button } from "@mui/material";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import TablaTransactions from "../Tablas/tablaTransactions"
 
 const Tabs = () => {
 
@@ -29,7 +30,7 @@ const Tabs = () => {
             </ul>
             <div style={{ display: "flex", position: "relative",flexDirection: "column", justifyContent: "flex-start", height: "100%", width: "80%", padding: "1%"}}>
                 {activetab===0 && 
-                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px", height: "100%" }}>
+                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
                         <div style={{ display: "flex", height: "100%" }}>
                             <TablaStock/>
                             <Button 
@@ -41,7 +42,19 @@ const Tabs = () => {
                             </Button>
                         </div>
                     </div> }
-                {activetab===1 && <h1 style={{ fontSize: "24px"}}>En desarrollo...</h1> }
+                {activetab===1 && 
+                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
+                        <div style={{ display: "flex", height: "100%" }}>
+                            <TablaTransactions/>
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={botonCopiar}>
+                                <ContentCopyIcon/>
+                            </Button>
+                        </div>
+                    </div> }
             </div>
         </div>
     )

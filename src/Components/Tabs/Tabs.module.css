@@ -39,6 +39,7 @@
 .tabs li.active {
     text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Sombreado en la pestaña activa */
     color: black;
+    height: auto;
 }
 
 .tabs li:hover {
