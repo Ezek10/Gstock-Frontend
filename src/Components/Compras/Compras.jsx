@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import check from "../../assets/check.png" 
+import closeConfirm from "../../assets/closeConfirm.png"
 
 
 const Compras = React.forwardRef((props, ref) => {
@@ -318,19 +319,28 @@ const Compras = React.forwardRef((props, ref) => {
                     disablePortal
                     style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
                         <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
-                            <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
+                            <div style={{display: "flex", justifyContent: "space-evenly", height: "20px"}}> 
+                                <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
+                                <button style={{ marginTop: "-5px",height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
+                                            cursor: "pointer",
+                                        }}} onClick={()=>handleCloseConfirm()}>
+                                    <img src={closeConfirm} alt="closeConfirm" style={{width: "25px"}}/>
+                                </button>
+                            </div>
                             {cart.products.length > 0 ? (cart.products.map((product, index) => (
                             <div key={index} style={{marginTop: "5px"}}>
-                                <p className={style.letras}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
+                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.state}{product.observations ? `, ${product.observations}` : ""})</p>
                             </div>)
                             )) : (<p></p>)}
-                            <Button 
-                                variant="outlined" 
-                                size="small"
-                                target="_blank"
-                                style={buttonStyle}
-                                onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm()}}>Confirmar
-                            </Button>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <Button 
+                                    variant="outlined" 
+                                    size="small"
+                                    target="_blank"
+                                    style={buttonStyle}
+                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm()}}>Confirmar
+                                </Button>
+                            </div>
                         </div>
                 </Dialog>
 

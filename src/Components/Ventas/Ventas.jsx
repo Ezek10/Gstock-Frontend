@@ -12,6 +12,7 @@ import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import { useDispatch, useSelector } from "react-redux";
 import check from "../../assets/check.png" 
+import closeConfirm from "../../assets/closeConfirm.png"
 
 const Ventas = React.forwardRef((props, ref) => {
 
@@ -152,7 +153,7 @@ const Ventas = React.forwardRef((props, ref) => {
     const totalBuyPrice = () => {
         let swap = 0
         
-        if (cart.swap_products) {
+        if (!cart.swap_products) {
             swap = 0
         } else {
             swap = cart.swap_products.reduce((total, product) => {
@@ -285,7 +286,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
-                             option.serial_id==="" || cart.products.serial_id===option.serial_id ? null : <option key={option.serial_id} value={option.serial_id}>
+                             option.serial_id==="" || cart.products.some(prod => prod.serial_id.includes(option.serial_id)) ? null : <option key={option.serial_id} value={option.serial_id}>
                                  {option.serial_id}
                                 </option> 
                              ))
@@ -425,21 +426,30 @@ const Ventas = React.forwardRef((props, ref) => {
                     className={style.confirmationModal}
                     closeAfterTransition
                     disablePortal
-                    style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
-                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
-                            <p style={{margin: "0px"}}>¿Quieres agregar esta compra?</p>
+                    style={{ position: "absolute", justifyContent: "center", alignItems: "center" }}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "11px 15px 11px 15px"}}>
+                            <div style={{display: "flex", justifyContent: "space-evenly", height: "20px"}}>
+                                <p style={{marginTop: "-5px", fontWeight: "500", fontSize: "20px"}}>¿Quieres agregar esta venta?</p>
+                                <button style={{ marginTop: "-5px",height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
+                                            cursor: "pointer",
+                                        }}} onClick={()=>handleCloseConfirm()}>
+                                    <img src={closeConfirm} alt="closeConfirm" style={{width: "25px"}}/>
+                                </button>
+                            </div>
                             {cart.products.length > 0 ? (cart.products.map((product, index) => (
                             <div key={index} style={{marginTop: "5px"}}>
-                                <p className={style.letras}>{product.product_name} (${product.sell_price}, {product.color?.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.observations})</p>
+                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} (${product.sell_price}, {product.color?.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.state}{product.observations ? `, ${product.observations}` : ""})</p>
                             </div>)
                             )) : (<p></p>)}
-                            <Button 
-                                variant="outlined" 
-                                size="small"
-                                target="_blank"
-                                style={buttonStyle}
-                                onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm(), props.handleCloseVentas}}>Confirmar
-                            </Button>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <Button 
+                                    variant="outlined" 
+                                    size="small"
+                                    target="_blank"
+                                    style={buttonStyle}
+                                    onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm(), props.handleCloseVentas()}}>Confirmar
+                                </Button>
+                            </div>
                         </div>
                 </Dialog>
 
@@ -452,7 +462,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     disablePortal
                     style={{ position: "absolute", display: "flex" }}>
                         <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
-                            <p style={{margin: "0px", textAlign: "center"}}>Los cambios se guardaron correctamente</p>
+                            <p style={{margin: "0px", textAlign: "center"}}>La venta fue agregada</p>
                             <div style={{display: "flex", justifyContent: "center"}}>
                                 <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
                             </div>
@@ -480,7 +490,7 @@ const buttonStyle = {
     borderColor: "transparent",
     fontSize: "15px",
     borderRadius: "20px",
-    height: "2.5em",
+    height: "2.2em",
     width:"fit-content",
     paddingX: "4px",
     marginTop: "10px",
