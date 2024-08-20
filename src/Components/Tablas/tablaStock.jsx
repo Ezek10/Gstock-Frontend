@@ -54,7 +54,22 @@ const TablaStock = () => {
 
     return(
         <div className={style.tabla}>
-            <CustomTableContainer component={Paper} sx={{overflowY: "scroll"}}>
+            <CustomTableContainer component={Paper} 
+                sx={{
+                    overflowY: "scroll",   
+                    "&::-webkit-scrollbar": {
+                        width: "7px",
+                        borderRadius: "100%",
+                        position: "absolute",
+                    }, 
+                    "&::-webkit-scrollbar-track": {
+                        backgroundColor: "rgb(255, 255, 255)"
+                    }, 
+                    "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "rgb(141, 141, 141)",
+                        borderRadius: "5px",
+                    }
+                }} >
                 <Table >
                     <TableHead>
                     <TableRow>
@@ -76,7 +91,7 @@ const TablaStock = () => {
                     
                     </TableBody>
                 </Table>
-                
+
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -100,6 +115,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     paddingTop: "5px",
     paddingBottom: "5px",
     height: "10px",
+ 
   }));
 
   const HeaderTableCell = styled(TableCell)(({ theme }) => ({
@@ -116,7 +132,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
     boxShadow: "0px 0px 0px 0px transparent",
     width: "100%",
-    height: "100%",
+    height: "65vh",
     position: "relative",
     overflow: "hidden"
   }));

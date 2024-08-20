@@ -26,7 +26,20 @@ const TablaTransactions = () => {
     
     return(
         <div className={style.tabla}>
-            <CustomTableContainer component={Paper} sx={{overflowY:"scroll"}}>
+            <CustomTableContainer component={Paper} 
+                sx={{overflowY:"scroll", 
+                    "&::-webkit-scrollbar": {
+                            width: "7px",
+                            borderRadius: "100%",
+                            position: "absolute",
+                        }, 
+                    "&::-webkit-scrollbar-track": {
+                            backgroundColor: "rgb(255, 255, 255)"
+                        }, 
+                    "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "rgb(141, 141, 141)",
+                            borderRadius: "5px",
+                        }}}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                     <TableRow>
@@ -66,7 +79,7 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     height: "10px",
     border: "4px solid white",
     borderTopWidth:"0px",
-    borderBottomWidth: "0px"
+    borderBottomWidth: "0px",
   }));
 
   const HeaderTableCell = styled(TableCell)(({ theme }) => ({
@@ -89,7 +102,8 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     boxShadow: "0px 0px 0px 0px transparent",
     position: "relative",
     width: "100%",
-    height: "60vh",
+    height: "65vh",
+    overflow: "hidden"
   }));
 
 export default TablaTransactions;
