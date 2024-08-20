@@ -285,7 +285,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
-                             option.serial_id==="" ? null : <option key={option.serial_id} value={option.serial_id}>
+                             option.serial_id==="" || cart.products.serial_id===option.serial_id ? null : <option key={option.serial_id} value={option.serial_id}>
                                  {option.serial_id}
                                 </option> 
                              ))
@@ -304,7 +304,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ width: "4vw", margin: "0px 10px 0px 0px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
+                    <input type="text" style={{ width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
                     </div>
                     <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>
@@ -438,7 +438,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm()}}>Confirmar
+                                onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm(), props.handleCloseVentas}}>Confirmar
                             </Button>
                         </div>
                 </Dialog>

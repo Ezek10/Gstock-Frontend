@@ -35,7 +35,7 @@ const Exchange = React.forwardRef((props, ref) => {
         newUpdatedCart.splice(index, 1)
         setExchangeCart(newUpdatedCart)
         
-        console.log(newUpdatedCart);
+        console.log(exchangeCart);
     }
 
     useEffect(() => {
@@ -170,7 +170,7 @@ const Exchange = React.forwardRef((props, ref) => {
             </div>
 
             <Button 
-                onClick={handleAddExchange}
+                onClick={() =>{handleAddExchange(), props.handleCloseExchange}}
                 variant="outlined"
                 target="_blank"
                 style={buttonStyle}> Agregar canje
