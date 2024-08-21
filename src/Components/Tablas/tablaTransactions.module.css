@@ -1,7 +1,6 @@
 .tabla {
     margin: 1.5%;
     width: 100%;
-    overflow-y: scroll;
 }
 
 .tabla::-webkit-scrollbar {

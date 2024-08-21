@@ -14,7 +14,8 @@ const initialState = {
     products: [],
     resource: null,
     loading: false,
-    error: null
+    error: null,
+    transactions: [] 
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -23,7 +24,7 @@ const rootReducer = (state = initialState, action) => {
             return { ...state, products: [...action.payload]}
 
         case GET_TRANSACTIONS:
-            return {...state, products: [...action.payload]}
+            return {...state, transactions: [...action.payload]}
 
         case PUT_PRODUCT_STOCKS_SUCCES:
             return { ...state, loading: false, resource: action.payload }

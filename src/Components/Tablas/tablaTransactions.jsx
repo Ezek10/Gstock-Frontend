@@ -19,18 +19,31 @@ const TablaTransactions = () => {
         dispatch(getTransactions())
     }, [dispatch])
     
-    const transactions = useSelector((state) => state.products) || [];
+    const transactions = useSelector((state) => state.transactions) || [];
 
     console.log(transactions);
     
     
     return(
         <div className={style.tabla}>
-            <CustomTableContainer component={Paper}>
-                <Table>
+            <CustomTableContainer component={Paper} 
+                sx={{overflowY:"scroll", 
+                    "&::-webkit-scrollbar": {
+                            width: "7px",
+                            borderRadius: "100%",
+                            position: "absolute",
+                        }, 
+                    "&::-webkit-scrollbar-track": {
+                            backgroundColor: "rgb(255, 255, 255)"
+                        }, 
+                    "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "rgb(141, 141, 141)",
+                            borderRadius: "5px",
+                        }}}>
+                <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                     <TableRow>
-                            <HeaderTableCell>Nombre</HeaderTableCell>
+                            <HeaderTableCell sx={{borderLeftWidth: "0px" }}>Nombre</HeaderTableCell>
                             <HeaderTableCell>Tipo</HeaderTableCell>
                             <HeaderTableCell>Cantidad</HeaderTableCell>
                             <HeaderTableCell>Fecha</HeaderTableCell>
@@ -38,38 +51,21 @@ const TablaTransactions = () => {
                             <HeaderTableCell>Pago</HeaderTableCell>
                     </TableRow>
                     </TableHead>
-                    <TableBody sx={{overflow: "auto"}}>
+                    <TableBody >
                     {transactions.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
                             {/* <CustomTableCell sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{!hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell> */}
-                            <CustomTableCell sx={{ width: "35%", padding: "0px 0px 0px 10px", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.name}</CustomTableCell>
+                            <CustomTableCell sx={{ width: "35%", fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
                             <CustomTableCell sx={{ textAlign: 'center', width: "10%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "10%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.date}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.total}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.total}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "10%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
                         </TableRow>
                     ))}
                     
                     </TableBody>
                 </Table>
-                <VerticalLine style={{ left: "30%" }} />
-                <VerticalLine style={{ left: "40%" }} />
-                <VerticalLine style={{ left: "57%" }} />
-                <VerticalLine style={{ left: "71%" }} />
-                <VerticalLine style={{ left: "86%" }} />
-                {/* <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openDetail}
-                    onClose={handleCloseDetail}
-                    closeAfterTransition>
-                    <Fade in={openDetail}>
-                        <div ref={modalRef}>
-                            {selectedProduct && <GroupDetail handleCloseDetail={handleCloseDetail} products={selectedProduct} setProducts={setSelectedProduct} updateProductList={updateProduct}/>}
-                        </div>
-                    </Fade>
-                </Modal> */}
             </CustomTableContainer>
         </div>
     )
@@ -81,32 +77,33 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     paddingTop: "5px",
     paddingBottom: "5px",
     height: "10px",
+    border: "4px solid white",
+    borderTopWidth:"0px",
+    borderBottomWidth: "0px",
   }));
 
   const HeaderTableCell = styled(TableCell)(({ theme }) => ({
     textAlign: 'center',
     backgroundColor: "transparent",
     borderBottomColor: "transparent",
+    borderTopColor: "transparent",
     padding: "15px",
     fontSize: "20px",
-    fontWeight: "600"
+    fontWeight: "600",
+    overflow: "hidden",
+    border: "4px solid white",
+    borderTopWidth:"0px",
+    borderBottomWidth: "0px",
+    background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(224, 224, 224))",
   }));
 
   const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
     boxShadow: "0px 0px 0px 0px transparent",
-    width: "100%",
-    height: "100%",
     position: "relative",
-    overflow: "scroll"
+    width: "100%",
+    height: "65vh",
+    overflow: "hidden"
   }));
-
-  const VerticalLine = styled('div')({
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: '5px',
-    backgroundColor: 'white',
-  });
 
 export default TablaTransactions;

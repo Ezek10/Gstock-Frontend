@@ -31,16 +31,10 @@ const Exchange = React.forwardRef((props, ref) => {
     }
 
     const deleteFromCart = (index) => {
-        const newUpdatedCart = exchangeCart
+        const newUpdatedCart = [...exchangeCart]
         newUpdatedCart.splice(index, 1)
         setExchangeCart(newUpdatedCart)
-        
-        console.log(newUpdatedCart);
     }
-
-    useEffect(() => {
-        console.log(exchangeCart);
-    }, [exchangeCart])
 
     const totalBuyPrice = exchangeCart.reduce((total, item) => {
         return total + (parseFloat(item.buy_price || 0));
@@ -170,7 +164,7 @@ const Exchange = React.forwardRef((props, ref) => {
             </div>
 
             <Button 
-                onClick={handleAddExchange}
+                onClick={() =>{handleAddExchange(), props.handleCloseExchange()}}
                 variant="outlined"
                 target="_blank"
                 style={buttonStyle}> Agregar canje
