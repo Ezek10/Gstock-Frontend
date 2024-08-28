@@ -10,11 +10,11 @@ const DataTransactions = () => {
 
     const dispatch = useDispatch()
 
-    const cards = useSelector((state) => state.cards) || []; 
-
+    
     useEffect(() => {
         dispatch(getTransactionCards())
     }, [dispatch])
+    const cards = useSelector((state) => state.cards) || []; 
     
     console.log(cards);
     
@@ -30,9 +30,9 @@ const DataTransactions = () => {
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select name="" id="">
-                    {Object.entries(cards.sellers).map(([key, value])=> (
+                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
                             <option key={key} style={{margin: "0px"}}>{key}</option>
-                        ))} 
+                        )): ""} 
                 </select>
                 <Calendar/>
             </div>
@@ -42,15 +42,15 @@ const DataTransactions = () => {
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select name="" id="">
-                    {Object.entries(cards.sellers).map(([key, value])=> (
+                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
                             <option key={key} style={{margin: "0px"}}>{key}</option>
-                        ))} 
+                        )) : ""} 
                 </select>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select name="" id="">
-                    {Object.entries(cards.sellers).map(([key, value])=> (
+                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
                             <option key={key} style={{margin: "0px"}}>{key}</option>
-                        ))} 
+                        )) : ""} 
                 </select>
             </div>
 
@@ -59,9 +59,9 @@ const DataTransactions = () => {
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select name="" id="">
-                    {Object.entries(cards.sellers).map(([key, value])=> (
+                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
                             <option key={key} style={{margin: "0px"}}>{key}</option>
-                        ))} 
+                        )) : ""} 
                 </select>
                 <button>Eliminar filtros</button>
             </div>
@@ -86,18 +86,18 @@ const DataTransactions = () => {
             <div className={style.cards}>
                 <p style={{margin: "0px", marginLeft: "10px", fontWeight: "500"}}>VENDEDORES</p>   
                 <div style={{display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px"}}>
-                    {Object.entries(cards.sellers).map(([key, value])=> (
+                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
                         <p key={key} style={{margin: "0px"}}>{key} ({value})</p>
-                    ))}          
+                    )) : ""}          
                 </div>   
             </div>
 
             <div className={style.cards}>
                 <p style={{margin: "0px", marginLeft: "10px", fontWeight: "500"}}>CANAL DE VENTA</p>
                 <div style={{display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px"}}>
-                    {Object.entries(cards.channels).map(([key, value])=> (
+                    {cards.channels ? Object.entries(cards.channels).map(([key, value])=> (
                         <p key={key} style={{margin: "0px"}}>{key} ({value})</p>
-                    ))}          
+                    )) : ""}          
                 </div>  
             </div>
 
