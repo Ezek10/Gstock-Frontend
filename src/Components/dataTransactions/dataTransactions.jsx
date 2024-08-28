@@ -5,6 +5,7 @@ import { getTransactionCards } from "../../Redux/actions";
 import { Divider } from "@mui/material";
 import Calendar from "../Calendar/Calendar";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import filtroIcon from "../../assets/filtro.png"
 
 const DataTransactions = () => {
 
@@ -20,6 +21,7 @@ const DataTransactions = () => {
     
     return (
         <div className={style.containerTransactions}>
+            <img src={filtroIcon} alt="Filtro" style={{display: "flex", alignSelf: "flex-end",height: "37px"}}/>
             <div>
                 <button>Compras</button>
                 <button>Ventas</button>
