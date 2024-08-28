@@ -16,6 +16,8 @@ const Exchange = React.forwardRef((props, ref) => {
             observations: "",
     })
 
+    const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
+
     const changeHandler = (event) => {
 
         if (event) {
@@ -42,8 +44,14 @@ const Exchange = React.forwardRef((props, ref) => {
 
     const handleAddExchange = () => {
         props.exchangeCart(exchangeCart);
-        // setExchangeCart([])
     };
+
+    const updateproductState = () => {
+        const newState = (states.indexOf(newProdExchange.state) + 1) % states.length;
+        const updatedProducts = { ...newProdExchange };
+        updatedProducts.state = states[newState]; 
+        setNewProdExchange(updatedProducts);
+    }
 
     return (
         <div ref={ref} className={style.containerExchange} tabIndex={-1}>
@@ -102,18 +110,14 @@ const Exchange = React.forwardRef((props, ref) => {
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" 
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder="" 
                      value={newProdExchange.color} onChange={changeHandler} name="color"/>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder=""
                     value={newProdExchange.serial_id} onChange={changeHandler} name="serial_id"/>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder=""
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder=""
                     value={newProdExchange.battery_percent} onChange={changeHandler} name="battery_percent"/>
-                <select name="state" onChange={changeHandler}>
-                    <option value="AVAILABLE">Disponible</option>
-                    <option value="RESERVED">Reservado</option>
-                    <option value="DEFECTIVE">Defectuoso</option>
-                    <option value="BROKEN">Fallado</option>
-                </select>
+                <button style={{ height: "18px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", "&:hover": { cursor: "pointer"} }} onClick={() => updateproductState()}>
+                    {newProdExchange.state==="AVAILABLE" ? "Disponible" :  newProdExchange.state==="RESERVED" ? "Reservado" : newProdExchange.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
             </div>
             <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20px"}}
                 value={newProdExchange.observations} onChange={changeHandler} name="observations"/>
