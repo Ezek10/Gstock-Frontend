@@ -81,11 +81,10 @@ const Ventas = React.forwardRef((props, ref) => {
             
             if (cart!=="") {
                 const updateCart = cart.products.concat(newCart)
-                // setSellProduct({...sellProduct, products: updateCart})
                 setCart({...cart, products: updateCart})
             } else {
-                // setSellProduct({...sellProduct, products: newCart})
                 setCart({...cart, products: newCart})
+                setInStock({})
             }
         }
 
@@ -99,12 +98,10 @@ const Ventas = React.forwardRef((props, ref) => {
     const stocks = useSelector((state) => state.products) || [];
 
     const handleDateChange = (selection) => {
-        // setSellProduct({ ...sellProduct, date: selection.startDate.getTime()});
         setCart({ ...cart, date: selection.startDate.getTime()});
     }
 
     const handlePaymentChange = (selection) => {
-        // setSellProduct({...sellProduct, payment_method: selection});
         setCart({...cart, payment_method: selection});
     }
 

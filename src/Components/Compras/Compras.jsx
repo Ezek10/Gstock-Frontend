@@ -28,7 +28,7 @@ const Compras = React.forwardRef((props, ref) => {
             serial_id: "",
             battery_percent: 0,
             state: "AVAILABLE",
-            observations: "Sin observaciones",
+            observations: "",
         }],
     })
 
@@ -370,12 +370,12 @@ const Compras = React.forwardRef((props, ref) => {
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
-                        <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
+                        <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
+                        <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
+                        <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
                         <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state}</button>
                     </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20spx"}}/>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "92%", borderRadius: "20spx"}}/>
                     {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
                 </div>))) : (<div></div>) }
         </div>

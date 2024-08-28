@@ -58,6 +58,9 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         updatedProducts.stocks[itemIndex].state = states[newState]; 
         setProducts(updatedProducts);
     }
+
+    console.log(products);
+    
     
     return (
         <div className={style.containerGroupDetail}>
@@ -105,15 +108,17 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                     closeAfterTransition
                     disablePortal
                     style={{ position: "absolute", justifyContent: "center", alignItems: "center"}}>
-                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
+                        <div style={{ display: "flex", flexDirection: "column", minWidth: "100px", minHeight: "50px", padding: "20px"}}>
                             <p style={{margin: "0px"}}>¿Quieres eliminar este grupo?</p>
-                            <Button 
-                                variant="outlined" 
-                                size="small"
-                                target="_blank"
-                                style={buttonStyle}
-                                onClick={()=> {handleCloseConfirm(),handleCloseDetail, deleteProducts(products.id)}}>Confirmar
-                            </Button>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <Button 
+                                    variant="outlined" 
+                                    size="small"
+                                    target="_blank"
+                                    style={buttonStyle}
+                                    onClick={()=> { deleteProducts(products.id); handleCloseConfirm(); handleCloseDetail()}}>Confirmar
+                                </Button>
+                            </div>
                         </div>
                 </Dialog>
                 </div>
@@ -172,7 +177,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                             <p style={{ margin: "10px 0px 0px 0px" }}>Baterí­a</p>
                             <p style={{ margin: "10px 0px 0px 0px" }}>Estado</p>
                             <p style={{ margin: "10px 0px 0px 0px", width: "10px" }}></p>
-                            <input type="text" style={{ height: "15px", margin: "0px 5px 0px 0px", width: "70%" }} placeholder={prod.color} name="color" value={products.stocks[prodIndex]?.color || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            <input type="text" style={{ height: "15px", margin: "0px 5px 0px 0px", width: "70%", fontSize: "1.7vh" }} placeholder={prod.color} name="color" value={products.stocks[prodIndex]?.color || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.serial_id} name="serial_id" value={products.stocks[prodIndex]?.serial_id || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             {/* <input type="text" style={{ height: "15px", margin: "0px", width: "70%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", fontSize: "1.55vh" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} /> */}
@@ -185,7 +190,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                                 <ContentCopyIcon />
                             </Button>
                         </div>
-                        <input type="text" style={{ height: "15px", width: "85%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
+                        <input type="text" style={{ height: "15px", width: "85%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations || "Obsevaciones"} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
                     </div>
                 ))}
                 <Button

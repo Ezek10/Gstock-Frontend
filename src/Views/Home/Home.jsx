@@ -10,13 +10,13 @@ import logo from "../../assets/logo.png"
  
 const Home = () => {
 
-    const [openCompras, setOpenCompras] = useState(false);
-    const handleOpenCompras = () => setOpenCompras(true);
-    const handleCloseCompras = () => setOpenCompras(false);
+    // const [openCompras, setOpenCompras] = useState(false);
+    // const handleOpenCompras = () => setOpenCompras(true);
+    // const handleCloseCompras = () => setOpenCompras(false);
 
-    const [openVentas, setOpenVentas] = useState(false);
-    const handleOpenVentas = () => setOpenVentas(true);
-    const handleCloseVentas = () => setOpenVentas(false);
+    // const [openVentas, setOpenVentas] = useState(false);
+    // const handleOpenVentas = () => setOpenVentas(true);
+    // const handleCloseVentas = () => setOpenVentas(false);
 
 
     return(
@@ -53,7 +53,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className={style.container2}>
+            {/* <div className={style.container2}>
                 <input type="text" placeholder="Busca un producto" style={{ width: "60%", height: "25px", borderRadius: "50px" }}/>
                 <div style={{ display:"flex", justifyContent: "space-between", width: "100%", padding: "0px 17% 0px 17%", boxSizing: "border-box" }}>
                     <Button 
@@ -99,7 +99,7 @@ const Home = () => {
                     Seleccione un producto de la tabla para acceder a los datos del grupo.
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
