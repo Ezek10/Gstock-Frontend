@@ -8,6 +8,24 @@
     box-sizing: border-box;
 }
 
+.container2 {
+    background-color: rgb(201, 201, 201);
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 100vh;
+    margin: 0px;
+    z-index: 2;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    padding-top: 2%;
+    box-sizing: border-box;
+}
+
 .tabs {
     list-style: none;
     display: flex;

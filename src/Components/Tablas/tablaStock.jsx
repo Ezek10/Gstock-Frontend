@@ -49,6 +49,7 @@ const TablaStock = () => {
         product.stocks.forEach(item => {
             isNotFull &= !!item.color && !!item.battery_percent && !!item.serial_id
         });
+        
         return isNotFull;
     };
 

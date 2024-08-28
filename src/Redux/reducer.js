@@ -8,14 +8,16 @@ import { GET_PRODUCTS_STOCKS,
         DELETE_PRODUCTS_SUCCESS,
         DELETE_PRODUCTS_REQUEST,
         DELETE_PRODUCTS_FAILURE,
-        GET_TRANSACTIONS} from "./actions"
+        GET_TRANSACTIONS,
+        GET_TRANSACTION_CARDS} from "./actions"
 
 const initialState = {
     products: [],
     resource: null,
     loading: false,
     error: null,
-    transactions: [] 
+    transactions: [], 
+    cards: {}
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -25,6 +27,9 @@ const rootReducer = (state = initialState, action) => {
 
         case GET_TRANSACTIONS:
             return {...state, transactions: [...action.payload]}
+
+        case GET_TRANSACTION_CARDS:
+            return {...state, cards: {...action.payload}}
 
         case PUT_PRODUCT_STOCKS_SUCCES:
             return { ...state, loading: false, resource: action.payload }
@@ -41,7 +46,7 @@ const rootReducer = (state = initialState, action) => {
             return { ...state, loading: true, error: null }
 
         case DELETE_PRODUCTS_SUCCESS:
-            return { ...state, loading: false, produts: state.products.filter(product => product.id !== action.payload)}
+            return { ...state, loading: false, products: state.products.filter(product => product.id !== action.payload)}
         case DELETE_PRODUCTS_FAILURE:
             return { ...state, loading: false, error: action.payload}
         case DELETE_PRODUCTS_REQUEST:

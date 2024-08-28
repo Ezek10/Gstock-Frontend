@@ -1,5 +1,7 @@
 import axios from "axios"
 
+export const GET_TRANSACTION_CARDS = "GET_TRANSACTION_CARDS"
+
 export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS"
@@ -91,10 +93,10 @@ export const putProductDetail = (productDetail) => {
 
 export const deleteProducts = (productId) => {
     return async function (dispatch) {
+        console.log("funca");
         try {
             dispatch({type: DELETE_PRODUCTS_REQUEST})
             await axios.delete(`https://api.gstock.francelsoft.com/gstock/${productId}`)
-            console.log("funca");
             
             dispatch({
                 type: DELETE_PRODUCTS_SUCCESS,
@@ -106,6 +108,23 @@ export const deleteProducts = (productId) => {
                 type: DELETE_PRODUCTS_FAILURE,
                 payload: error.message
             })
+        }
+    }
+}
+
+export const getTransactionCards = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/transaction/cards`, {
+                headers: {
+                    "Authorization": "admin",}})
+            const cards = response.data.result
+            dispatch({
+                type: GET_TRANSACTION_CARDS,
+                payload: cards
+            })
+        } catch (error) {
+            console.error("Error al obtener las tarjetas", error)
         }
     }
 }
