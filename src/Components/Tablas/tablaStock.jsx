@@ -44,7 +44,9 @@ const TablaStock = () => {
     
 
     const hasEmptyValue = (product) => {
-        if (!product.stocks || !product.list_price) return true;
+
+        if (!product.stocks) return true;
+        if (!product.list_price || product.list_price===0) return true;
         let isNotFull = true;
         product.stocks.forEach(item => {
             isNotFull &= !!item.color && !!item.battery_percent && !!item.serial_id
