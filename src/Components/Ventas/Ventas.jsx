@@ -49,14 +49,11 @@ const Ventas = React.forwardRef((props, ref) => {
         if (["client","seller", "tel", "email"].includes(property)) {
             
             if (["client","seller"].includes(property)){
-                // setSellProduct({...sellProduct, [property]:{name: value}})
                 setCart({...cart, [property]:{name: value}})
             } else {
-                // setSellProduct({...sellProduct, client:{...sellProduct.client, [property]: value}})
                 setCart({...cart, client:{...cart.client, [property]: value}})
             }
         } else if (property==="contact_via") {
-            // setSellProduct({...sellProduct, [property]:value})
             setCart({...cart, [property]:value})
         } else if (property==="serial_id"){
             const uniqueItem = inStock.filter(item => item.serial_id.includes(value))
@@ -70,7 +67,7 @@ const Ventas = React.forwardRef((props, ref) => {
             setProduct({...product, product_name: value})
             
         } else {
-            const newCart = [{
+            let newCart = [{
                 product_name: product.product_name,
                 id: product.id,
                 sell_price: sellPrice,
@@ -82,9 +79,11 @@ const Ventas = React.forwardRef((props, ref) => {
             if (cart!=="") {
                 const updateCart = cart.products.concat(newCart)
                 setCart({...cart, products: updateCart})
+                newCart = []
             } else {
                 setCart({...cart, products: newCart})
                 setInStock({})
+                newCart = []
             }
         }
 
@@ -115,7 +114,6 @@ const Ventas = React.forwardRef((props, ref) => {
         const newUpdatedCart = {...cart}
         newUpdatedCart.swap_products.splice(index, 1)
         setCart(newUpdatedCart)
-        console.log(newUpdatedCart);
     }
     
     const [openConfirm, setOpenConfirm] = useState(false);
@@ -128,7 +126,12 @@ const Ventas = React.forwardRef((props, ref) => {
         setTimeout(() => {
             setOpenCheck(false)
         }, 3000)
-    const handleCloseCheck = () => setOpenCheck(false);
+    const handleCloseCheck = () => {
+        setOpenCheck(false);
+        setTimeout(() => {
+            props.handleCloseVentas(); // Cierra Ventas después de que el Dialog se haya cerrado
+        }, 500); // Puedes ajustar este tiempo si es necesario
+    };;
 
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
@@ -144,8 +147,6 @@ const Ventas = React.forwardRef((props, ref) => {
         return newExchangeProducts;
         });
     } 
-
-    console.log(cart);
     
     const totalBuyPrice = () => {
         let swap = 0
@@ -271,7 +272,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ height: "20px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={product.product_name} value="">Elija un modelo</option>
                         {stocks.map((prod) => (
-                            <option key={prod.name} value={prod.name}>{prod.name}</option>
+                            prod.stocks.length===0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
                         ))}
                     </select>
                 </div>
@@ -444,7 +445,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm(), props.handleCloseVentas()}}>Confirmar
+                                    onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm()}}>Confirmar
                                 </Button>
                             </div>
                         </div>

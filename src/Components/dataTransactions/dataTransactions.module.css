@@ -15,6 +15,32 @@
     z-index: 10;
     box-sizing: border-box;
     overflow-y: auto;
+    overflow-x: auto;
+}
+
+.containerTransactions select {
+    appearance: none;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    cursor: pointer;
+    width: 6vw;
+    font-size: 0.8vw;
+ }
+
+ .containerTransactions select::-ms-expand {
+    display: none;
+}
+
+.containerTransactions option {
+    appearance: none;
+    border-radius: 20px;
+    border: none;
+    box-shadow: none;
 }
 
 .cards {
@@ -23,5 +49,29 @@
     width: 100%;
     height: 20vh;
     margin: 5px 0px 5px 0px;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    font-weight: 400;
+
+}
+
+.containerTransactions::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    border-radius: 100%;
+    position: absolute;
+}
+
+.containerTransactions::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+
+.containerTransactions::-webkit-scrollbar-thumb {
+    background-color: rgb(141, 141, 141);
+    border-radius: 5px;
+    
+}
+
+.containerTransactions button{
+    cursor: pointer	;
 }

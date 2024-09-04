@@ -6,6 +6,10 @@ export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS"
 
+export const GET_SUPPLIERS = "GET_SUPPLIERS"
+
+export const GET_CLIENTS = "GET_CLIENTS"
+
 export const PUT_PRODUCT_STOCKS_SUCCES = "PUT_PRODUCT_STOCKS_SUCCES"
 export const PUT_PRODUCT_STOCKS_REQUEST = "PUT_PRODUCT_STOCKS_REQUEST"
 export const PUT_PRODUCT_STOCKS_FAILURE = "PUT_PRODUCT_STOCKS_FAILURE"
@@ -52,7 +56,6 @@ export const getTransactions = () => {
     }
 }
 
-// page, filterByBuyType, filterBySellType, filterByProduct, filterBySpecificDate, filterByStartDate, filterByEndDate, filterBySupplier, filterByClient, filterBySeller
 
 export const putProductStock = (stockDetail) => {
     return async function (dispatch) {
@@ -61,16 +64,16 @@ export const putProductStock = (stockDetail) => {
             const response = await axios.put(`https://api.gstock.francelsoft.com/gstock/product`, stockDetail, {
                 headers: {
                     "Authorization": "admin",}})
-            dispatch({
-                type: PUT_PRODUCT_STOCKS_SUCCES,
-                payload: response.data
-            }) 
-            
-        } catch(error) {
-            dispatch({ type: PUT_PRODUCT_STOCKS_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos del producto", error)
-        }
-    }
+                    dispatch({
+                        type: PUT_PRODUCT_STOCKS_SUCCES,
+                        payload: response.data
+                    }) 
+                    
+                } catch(error) {
+                    dispatch({ type: PUT_PRODUCT_STOCKS_FAILURE, payload: error.message });
+                    console.error("Error al cambiar los datos del producto", error)
+                }
+            }
 }
 
 export const putProductDetail = (productDetail) => {
@@ -80,30 +83,34 @@ export const putProductDetail = (productDetail) => {
             const response = await axios.put(`https://api.gstock.francelsoft.com/gstock/stock`, productDetail, {
                 headers: {
                     "Authorization": "admin",}})
-            dispatch({
-                type: PUT_PRODUCT_DETAIL_SUCCES,
-                payload: response.data
-            }) 
-        } catch(error) {
-            dispatch({ type: PUT_PRODUCT_DETAIL_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos del producto", error)
+                    dispatch({
+                        type: PUT_PRODUCT_DETAIL_SUCCES,
+                        payload: response.data
+                    }) 
+                } catch(error) {
+                    dispatch({ type: PUT_PRODUCT_DETAIL_FAILURE, payload: error.message });
+                    console.error("Error al cambiar los datos del producto", error)
+                }
+            }
         }
-    }
-}
-
+        
 export const deleteProducts = (productId) => {
     return async function (dispatch) {
-        console.log("funca");
         try {
             dispatch({type: DELETE_PRODUCTS_REQUEST})
-            await axios.delete(`https://api.gstock.francelsoft.com/gstock/${productId}`)
-            
+            await axios.delete(
+                'https://api.gstock.francelsoft.com/gstock/product',
+                {
+                    params: {"product_id": productId},
+                    headers: {"Authorization": "admin"}
+                }
+            );
+
             dispatch({
                 type: DELETE_PRODUCTS_SUCCESS,
                 payload: productId
             })
         } catch (error) {
-            console.log("no funca");
             dispatch({
                 type: DELETE_PRODUCTS_FAILURE,
                 payload: error.message
@@ -112,13 +119,18 @@ export const deleteProducts = (productId) => {
     }
 }
 
-export const getTransactionCards = () => {
+export const getTransactionCards = (filters) => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/transaction/cards`, {
-                headers: {
-                    "Authorization": "admin",}})
-            const cards = response.data.result
+            const response = await axios.get(
+                'https://api.gstock.francelsoft.com/gstock/transaction/cards', 
+                {
+                    params: filters, 
+                    headers: {"Authorization": "admin"}
+                }
+            );
+            const cards = response.data.result;
+
             dispatch({
                 type: GET_TRANSACTION_CARDS,
                 payload: cards
@@ -128,3 +140,40 @@ export const getTransactionCards = () => {
         }
     }
 }
+
+
+export const getSuppliers = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/supplier?page=1`, {
+                headers: {
+                    "Authorization": "admin",}})
+                    const suppliers = response.data.result.content
+                    dispatch({
+                        type: GET_SUPPLIERS,
+                        payload: suppliers
+                    })
+            } catch (error){
+                console.error("Error al obtener los proveedores", error)
+            }
+
+        }
+    }
+
+export const getClients = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/client?page=1`, {
+                headers: {
+                    "Authorization": "admin",}})
+                    const clients = response.data.result.content
+                    dispatch({
+                        type: GET_CLIENTS,
+                        payload: clients
+                    })
+            } catch (error){
+                console.error("Error al obtener los proveedores", error)
+            }
+
+        }
+    }

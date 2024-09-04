@@ -58,9 +58,6 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         updatedProducts.stocks[itemIndex].state = states[newState]; 
         setProducts(updatedProducts);
     }
-
-    console.log(products);
-    
     
     return (
         <div className={style.containerGroupDetail}>
@@ -116,7 +113,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> { deleteProducts(products.id); handleCloseConfirm(); handleCloseDetail()}}>Confirmar
+                                    onClick={()=> { dispatch(deleteProducts(products.id)); handleCloseConfirm(); handleCloseDetail()}}>Confirmar
                                 </Button>
                             </div>
                         </div>
@@ -181,7 +178,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.serial_id} name="serial_id" value={products.stocks[prodIndex]?.serial_id || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             {/* <input type="text" style={{ height: "15px", margin: "0px", width: "70%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", fontSize: "1.55vh" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} /> */}
-                            <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(prod, prodIndex)}>{prod.state}</button>
+                            <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(prod, prodIndex)}>{prod.state==="AVAILABLE" ? "Disponible" :  prod.state==="RESERVED" ? "Reservado" : prod.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                             <Button
                                 variant="outlined"
                                 size="small"
