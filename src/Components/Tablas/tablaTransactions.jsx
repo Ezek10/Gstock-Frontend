@@ -61,12 +61,12 @@ const TablaTransactions = () => {
                     <TableBody >
                     {transactions.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell sx={{ width: "35%", fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: 'center', width: "18%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
+                            <CustomTableCell sx={{ fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: 'center', width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
                             <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "25%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
                             <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.total}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "8%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
                         </TableRow>
                     ))}
                     

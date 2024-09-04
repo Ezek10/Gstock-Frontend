@@ -6,6 +6,10 @@ export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS"
 
+export const GET_SUPPLIERS = "GET_SUPPLIERS"
+
+export const GET_CLIENTS = "GET_CLIENTS"
+
 export const PUT_PRODUCT_STOCKS_SUCCES = "PUT_PRODUCT_STOCKS_SUCCES"
 export const PUT_PRODUCT_STOCKS_REQUEST = "PUT_PRODUCT_STOCKS_REQUEST"
 export const PUT_PRODUCT_STOCKS_FAILURE = "PUT_PRODUCT_STOCKS_FAILURE"
@@ -90,53 +94,86 @@ export const putProductDetail = (productDetail) => {
             }
         }
         
-        export const deleteProducts = (productId) => {
-            return async function (dispatch) {
-                console.log("funca");
-                try {
-                    dispatch({type: DELETE_PRODUCTS_REQUEST})
-                    await axios.delete(`https://api.gstock.francelsoft.com/gstock/${productId}`)
-                    
-                    dispatch({
-                        type: DELETE_PRODUCTS_SUCCESS,
-                        payload: productId
-                    })
-                } catch (error) {
-                    console.log("no funca");
-                    dispatch({
-                        type: DELETE_PRODUCTS_FAILURE,
-                        payload: error.message
-                    })
+export const deleteProducts = (productId) => {
+    return async function (dispatch) {
+        try {
+            dispatch({type: DELETE_PRODUCTS_REQUEST})
+            await axios.delete(
+                'https://api.gstock.francelsoft.com/gstock/product',
+                {
+                    params: {"product_id": productId},
+                    headers: {"Authorization": "admin"}
                 }
-            }
+            );
+
+            dispatch({
+                type: DELETE_PRODUCTS_SUCCESS,
+                payload: productId
+            })
+        } catch (error) {
+            dispatch({
+                type: DELETE_PRODUCTS_FAILURE,
+                payload: error.message
+            })
         }
-        
-        export const getTransactionCards = (page, filter_by_buy_type, filter_by_sell_type, filter_by_product, filter_by_specific_date, filter_by_start_date, filter_by_end_date, filter_by_supplier, filter_by_client, filter_by_seller) => {
-            return async function (dispatch) {
-                try {
-                    const params = {};
-                    if (page) params.page = page;
-                    if (filter_by_buy_type) params.filter_by_buy_type = filter_by_buy_type;
-                    if (filter_by_sell_type) params.filter_by_sell_type = filter_by_sell_type;
-                    if (filter_by_product) params.filter_by_product = filter_by_product;
-                    if (filter_by_specific_date) params.filter_by_specific_date = filter_by_specific_date;
-                    if (filter_by_start_date) params.filter_by_start_date = filter_by_start_date;
-                    if (filter_by_end_date) params.filter_by_end_date = filter_by_end_date;
-                    if (filter_by_supplier) params.filter_by_supplier = filter_by_supplier;
-                    if (filter_by_client) params.filter_by_client = filter_by_client;
-                    if (filter_by_seller) params.filter_by_seller = filter_by_seller;
-                    const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/transaction/cards`, {
-                        params,
-                        headers: {
-                            "Authorization": "admin",}})
-                            const cards = response.data.result
-                            dispatch({
-                                type: GET_TRANSACTION_CARDS,
-                                payload: cards
-                            })
-                        } catch (error) {
-                            console.error("Error al obtener las tarjetas", error)
-                        }
-                    }
+    }
+}
+
+export const getTransactionCards = (filters) => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(
+                'https://api.gstock.francelsoft.com/gstock/transaction/cards', 
+                {
+                    params: filters, 
+                    headers: {"Authorization": "admin"}
                 }
-                // page, filterByBuyType, filterBySellType, filterByProduct, filterBySpecificDate, filterByStartDate, filterByEndDate, filterBySupplier, filterByClient, filterBySeller
+            );
+            const cards = response.data.result;
+
+            dispatch({
+                type: GET_TRANSACTION_CARDS,
+                payload: cards
+            })
+        } catch (error) {
+            console.error("Error al obtener las tarjetas", error)
+        }
+    }
+}
+
+
+export const getSuppliers = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/supplier?page=1`, {
+                headers: {
+                    "Authorization": "admin",}})
+                    const suppliers = response.data.result.content
+                    dispatch({
+                        type: GET_SUPPLIERS,
+                        payload: suppliers
+                    })
+            } catch (error){
+                console.error("Error al obtener los proveedores", error)
+            }
+
+        }
+    }
+
+export const getClients = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/client?page=1`, {
+                headers: {
+                    "Authorization": "admin",}})
+                    const clients = response.data.result.content
+                    dispatch({
+                        type: GET_CLIENTS,
+                        payload: clients
+                    })
+            } catch (error){
+                console.error("Error al obtener los proveedores", error)
+            }
+
+        }
+    }

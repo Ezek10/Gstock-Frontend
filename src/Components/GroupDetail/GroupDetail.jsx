@@ -113,7 +113,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> { deleteProducts(products.id); handleCloseConfirm(); handleCloseDetail()}}>Confirmar
+                                    onClick={()=> { dispatch(deleteProducts(products.id)); handleCloseConfirm(); handleCloseDetail()}}>Confirmar
                                 </Button>
                             </div>
                         </div>
