@@ -16,6 +16,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
     const dispatch = useDispatch()
     const aux = []
     const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
+    
     const stockDetailHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
