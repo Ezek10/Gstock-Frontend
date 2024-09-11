@@ -1,23 +1,42 @@
 import React, { useRef, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { styled } from '@mui/system';
+import { useEffect } from "react";
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTransactions } from "../../Redux/actions";
 import style from "./tablaTransactions.module.css"
+import BuyTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
+import SellTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
 
-const TablaTransactions = () => {
+const TablaTransactions = ({filters}) => {
 
-    const [openDetail, setOpenDetail] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState([]);
+    const [openDetailBuyTransaction, setOpenDetailBuyTransaction] = useState(false);
+    const [openDetailSellTransaction, setOpenDetailSellTransaction] = useState(false);
+    const [selectedTransaction, setSelectedTransaction] = useState([]);
     const modalRef = useRef(null);
     const dispatch = useDispatch()
 
+    const handleOpenDetail = (prod) => {
+        setSelectedTransaction(prod);
+        if (prod.type==="BUY") {
+            console.log(prod);
+            setOpenDetailBuyTransaction(true);
+        } else {
+            setOpenDetailSellTransaction(true)
+        }
+    };
+
+    const handleCloseDetail = () => {
+        setSelectedTransaction(null)
+        setOpenDetailBuyTransaction(false)
+        setOpenDetailSellTransaction(false)
+    };
+
     useEffect(() => {
-        dispatch(getTransactions())
-    }, [dispatch])
+        dispatch(getTransactions(filters))
+    }, [filters])
     
     const transactions = useSelector((state) => state.transactions) || [];   
     
@@ -29,6 +48,16 @@ const TablaTransactions = () => {
             year: '2-digit'
         });
         return formattedDate
+    }
+
+    const updateTransaction = (transaction) => {
+        const updatedTransactions = [...transactions]
+        const transactionIndex = updatedTransactions.findIndex(prod => prod.id === product.id);
+        updatedTransactions[transactionIndex] = transaction;
+        dispatch(temp => temp({
+            type: "GET_TRANSACTIONS",
+            payload: updatedTransactions,
+        }))
     }
     
     return(
@@ -61,17 +90,43 @@ const TablaTransactions = () => {
                     <TableBody >
                     {transactions.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell sx={{ fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: 'center', width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.total}</CustomTableCell>
-                            <CustomTableCell sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.total}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
                         </TableRow>
                     ))}
                     
                     </TableBody>
                 </Table>
+
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openDetailBuyTransaction}
+                    onClose={handleCloseDetail}
+                    closeAfterTransition>
+                    <Fade in={openDetailBuyTransaction}>
+                        <div ref={modalRef}>
+                            {selectedTransaction && <BuyTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
+                        </div>
+                    </Fade>
+                </Modal>
+
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openDetailSellTransaction}
+                    onClose={handleCloseDetail}
+                    closeAfterTransition>
+                    <Fade in={openDetailSellTransaction}>
+                        <div ref={modalRef}>
+                            {selectedTransaction && <SellTransactionDetail handleCloseDetail={handleCloseDetail}/>}
+                        </div>
+                    </Fade>
+                </Modal>
             </CustomTableContainer>
         </div>
     )

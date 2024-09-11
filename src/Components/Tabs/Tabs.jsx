@@ -12,6 +12,19 @@ import DataTransactions from "../dataTransactions/dataTransactions";
 
 const Tabs = () => {
 
+    const [ filters, setFilters ] = useState({
+        page: 1,
+        filter_by_buy_type: false, 
+        filter_by_sell_type: false, 
+        filter_by_product: null, 
+        filter_by_specific_date: null, 
+        filter_by_start_date: null, 
+        filter_by_end_date: null, 
+        filter_by_supplier: null, 
+        filter_by_client: null, 
+        filter_by_seller: null
+    })
+
     const [activetab, setActiveTab] = useState(0);
     const seleccionar = (index) => {
         setActiveTab(index);
@@ -103,7 +116,7 @@ const Tabs = () => {
                 {activetab===1 && 
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
                         <div style={{ display: "flex", height: "100%" }}>
-                            <TablaTransactions/>
+                            <TablaTransactions filters={filters}/>
                             <Button 
                                 variant="outlined" 
                                 size="small"
@@ -113,7 +126,7 @@ const Tabs = () => {
                             </Button>
 
                             <div className={style.container2}>
-                                <DataTransactions/>
+                                <DataTransactions filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>
                     </div> }

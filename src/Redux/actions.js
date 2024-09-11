@@ -1,4 +1,5 @@
 import axios from "axios"
+const URL = import.meta.env.VITE_URL_DEV
 
 export const GET_TRANSACTION_CARDS = "GET_TRANSACTION_CARDS"
 
@@ -25,7 +26,7 @@ export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
 export const getProductsStocks = () => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/product/stock`, {
+            const response = await axios.get(`${URL}/product/stock`, {
                 headers: {
                     "Authorization": "admin",}})
             const products = response.data.result.content
@@ -39,12 +40,13 @@ export const getProductsStocks = () => {
     }
 }
 
-export const getTransactions = () => {
+export const getTransactions = (filters) => {
     return async function (dispatch) {
         try {
-            const response = await axios.get("https://api.gstock.francelsoft.com/gstock/transaction?page=1", {
-                headers: {
-                    "Authorization": "admin",}})
+            const response = await axios.get(`${URL}/transaction?page=1`, {
+                params: filters,
+                headers: {"Authorization": "admin",}
+            })
             const products = response.data.result.content
             dispatch({
                 type: GET_TRANSACTIONS,
@@ -61,7 +63,7 @@ export const putProductStock = (stockDetail) => {
     return async function (dispatch) {
         dispatch({type: PUT_PRODUCT_STOCKS_REQUEST})
         try {
-            const response = await axios.put(`https://api.gstock.francelsoft.com/gstock/product`, stockDetail, {
+            const response = await axios.put(`${URL}/product`, stockDetail, {
                 headers: {
                     "Authorization": "admin",}})
                     dispatch({
@@ -80,7 +82,7 @@ export const putProductDetail = (productDetail) => {
     return async function (dispatch) {
         dispatch({type: PUT_PRODUCT_DETAIL_REQUEST})
         try {
-            const response = await axios.put(`https://api.gstock.francelsoft.com/gstock/stock`, productDetail, {
+            const response = await axios.put(`${URL}/stock`, productDetail, {
                 headers: {
                     "Authorization": "admin",}})
                     dispatch({
@@ -99,7 +101,7 @@ export const deleteProducts = (productId) => {
         try {
             dispatch({type: DELETE_PRODUCTS_REQUEST})
             await axios.delete(
-                'https://api.gstock.francelsoft.com/gstock/product',
+                `${URL}/product`,
                 {
                     params: {"product_id": productId},
                     headers: {"Authorization": "admin"}
@@ -123,7 +125,7 @@ export const getTransactionCards = (filters) => {
     return async function (dispatch) {
         try {
             const response = await axios.get(
-                'https://api.gstock.francelsoft.com/gstock/transaction/cards', 
+                `${URL}/transaction/cards`,
                 {
                     params: filters, 
                     headers: {"Authorization": "admin"}
@@ -145,7 +147,7 @@ export const getTransactionCards = (filters) => {
 export const getSuppliers = () => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/supplier?page=1`, {
+            const response = await axios.get(`${URL}/supplier?page=1`, {
                 headers: {
                     "Authorization": "admin",}})
                     const suppliers = response.data.result.content
@@ -163,7 +165,7 @@ export const getSuppliers = () => {
 export const getClients = () => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`https://api.gstock.francelsoft.com/gstock/client?page=1`, {
+            const response = await axios.get(`${URL}/client?page=1`, {
                 headers: {
                     "Authorization": "admin",}})
                     const clients = response.data.result.content

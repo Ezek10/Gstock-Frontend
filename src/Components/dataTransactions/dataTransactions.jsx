@@ -7,7 +7,7 @@ import Calendar from "../Calendar/Calendar";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import filtroIcon from "../../assets/filtro.png"
 
-const DataTransactions = () => {
+const DataTransactions = ({filters, setFilters}) => {
 
     const cards = useSelector((state) => state.cards) || []; 
     const products = useSelector((state) => state.products) || [];
@@ -15,18 +15,7 @@ const DataTransactions = () => {
     const clients = useSelector((state) => state.clients) || [];
 
     const dispatch = useDispatch()
-    const [ filters, setFilters ] = useState({
-        page: 1,
-        filter_by_buy_type: false, 
-        filter_by_sell_type: false, 
-        filter_by_product: null, 
-        filter_by_specific_date: null, 
-        filter_by_start_date: null, 
-        filter_by_end_date: null, 
-        filter_by_supplier: null, 
-        filter_by_client: null, 
-        filter_by_seller: null
-    })
+    
 
     useEffect(() => {
         dispatch(getTransactionCards(filters))
