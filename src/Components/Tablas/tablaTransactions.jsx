@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTransactions } from "../../Redux/actions";
 import style from "./tablaTransactions.module.css"
 import BuyTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
-import SellTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
+import SellTransactionDetail from "../TransactionDetail/SellTransactionDetail";
 
 const TablaTransactions = ({filters}) => {
 
