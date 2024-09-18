@@ -4,6 +4,12 @@
     align-items: center;
 }
 
+.letrasWithMargin {
+    margin: 7px;
+    display: flex;
+    align-items: center;
+}
+
 .date {
     margin-left: 10px;
 }

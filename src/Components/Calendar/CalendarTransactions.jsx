@@ -6,10 +6,9 @@ import Fade from '@mui/material/Fade';
 import { DateRange } from 'react-date-range';
 import style from "./Calendar.module.css"
 import { format } from 'date-fns';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const Calendar = ( { onDateChange } ) => {
+const CalendarTransactions = ( { onDateChange } ) => {
 
     const anchorRef = useRef(null);
     const [openCalendar, setCalendar] = useState(false);
@@ -30,26 +29,44 @@ const Calendar = ( { onDateChange } ) => {
         if (onDateChange) {
             onDateChange(item.selection);
         }
+        setCalendar(false)
     }
 
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
-                    <p className={style.letras}>Fecha <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>Fecha <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                     <Button 
                         ref={anchorRef}
                         variant="outlined" 
                         size="small"
                         target="_blank"
                         style={botonCopiar}
-                        onClick={handleCalendar}>
-                        <CalendarMonthIcon/>
+                        onClick={handleCalendar}
+                    >
+                        {format(date[0].startDate, "dd/MM/yy")}
                     </Button>
-                    <p className={style.date}>{format(date[0].startDate, 'dd/MM/yyyy')}</p>
                     <Popper
                         open={openCalendar}
                         anchorEl={anchorRef.current}
                         placement="bottom-end"
                         style={{ zIndex: "10", borderRadius: "5px"}}
+                modifiers={[
+                    {
+                        name: 'preventOverflow',
+                        options: {
+                        boundary: 'window', // Limita el Popper dentro de la ventana del navegador
+                        altBoundary: true,
+                        tether: false,
+                        padding: { left: 325, right: 325 }, // Asegura espacio a los lados de la pantalla
+                        },
+                    },
+                    {
+                        name: 'flip',
+                        options: {
+                        fallbackPlacements: ['bottom-start', 'bottom'],
+                        },
+                    },
+                    ]}
                         transition>
                             {({ TransitionProps }) => (
                             <Fade { ...TransitionProps } timeout={350}>
@@ -102,7 +119,9 @@ const Calendar = ( { onDateChange } ) => {
                                         editableDateInputs={true}
                                         onChange={handleDateChange}
                                         moveRangeOnFirstSelection={false}
-                                        ranges={date}/>
+                                        ranges={date}
+                                        showMonthArrow={false}
+                                    />
                                 </Box>
                             </Fade>
                             )}
@@ -121,11 +140,11 @@ const botonCopiar = {
     height: "2.1em",
     width: "2.1em",
     minWidth: "0px",
-    marginLeft: "10px",
+    marginLeft: "30px",
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",
         backgroundColor: "rgb(80, 80, 80)"}
 }
 
-export default Calendar;
+export default CalendarTransactions;

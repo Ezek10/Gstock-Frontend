@@ -13,8 +13,8 @@
     height: 15px;
     margin: 12px 10px 12px 0px;
 }
- 
- .selector select {
+
+.selector select {
     appearance: none;
     background: rgb(201, 201, 201);
     -webkit-appearance: none;
@@ -25,9 +25,9 @@
     width: 70px;
     border-radius: 5px;
     cursor: pointer;
- }
+}
 
- .selector select::-ms-expand {
+.selector select::-ms-expand {
     display: none;
 }
 

@@ -12,6 +12,7 @@ import style from "./tablaStock.module.css"
 
 const TablaStock = () => {
 
+    const [emptyRowCount, setEmptyRowCount] = useState(0);
     const [openDetail, setOpenDetail] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState([]);
     const modalRef = useRef(null);
@@ -41,18 +42,27 @@ const TablaStock = () => {
     useEffect(() => {
         dispatch(getProductsStocks())
     }, [dispatch])
-    
+
+    useEffect(() => {
+        const calculateEmptyRows = () => {
+            const tableHeight = window.innerHeight * 0.65;
+            const rowHeight = 34;
+            const displayedRows = stocks.length;
+            const rowsThatFit = Math.floor(tableHeight / rowHeight);
+            const emptyRows = Math.max(0, rowsThatFit - displayedRows);
+            setEmptyRowCount(emptyRows);
+        };
+
+        calculateEmptyRows(); // Inicialmente calcula filas vacías
+
+        window.addEventListener('resize', calculateEmptyRows);
+        return () => window.removeEventListener('resize', calculateEmptyRows);
+    }, [stocks]);
 
     const hasEmptyValue = (product) => {
 
-        if (!product.stocks) return true;
-        if (!product.list_price || product.list_price===0) return true;
-        let isNotFull = true;
-        product.stocks.forEach(item => {
-            isNotFull &= !!item.color && !!item.battery_percent && !!item.serial_id
-        });
-        
-        return isNotFull;
+        if (!product.stocks) return false;
+        return product.stocks.some(item => item.missing_data === true);
     };
 
     return(
@@ -85,13 +95,20 @@ const TablaStock = () => {
                     <TableBody >
                     {stocks.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"},  }}>{!hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px",fontWeight: "bold", '&:hover': {cursor: "pointer"},  }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", fontWeight: "bold", '&:hover': {cursor: "pointer"}, border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px", borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", fontWeight: "bold", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"},border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"  }}>{prod.stocks.length ? prod.stocks.length : 0}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", fontWeight: "bold", '&:hover': {cursor: "pointer"}, border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px" }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
                         </TableRow>
                     ))}
-                    
+                    {Array.from({ length: emptyRowCount }).map((_, index) => (
+                        <TableRow key={`empty-row-${index}`}>
+                            <CustomTableCell sx={{ width: "3%", padding: "0px 0px 0px 10px", borderBottom: "none" }}>&nbsp;</CustomTableCell>
+                            <CustomTableCell sx={{ width: "52%", padding: "0px", border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px", borderLeftWidth: "0px" }}>&nbsp;</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: 'center', width: "20%", border: "8px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>&nbsp;</CustomTableCell>
+                            <CustomTableCell sx={{ textAlign: "center", width: "25%", border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>&nbsp;</CustomTableCell>
+                        </TableRow>
+                    ))}
                     </TableBody>
                 </Table>
 

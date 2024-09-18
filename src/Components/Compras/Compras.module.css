@@ -68,6 +68,9 @@
     margin: 0px;
     display: flex;
     align-items: center;
+    overflow: clip;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .payment {

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import style from "./Payment.module.css"
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
 const Payment = ( { payment } ) => {
@@ -11,15 +11,11 @@ const Payment = ( { payment } ) => {
         const value = event.target.value
         setOption(value)
         payment(value)
-        console.log(option);
-        
     }
 
     return (
-
         <div className={style.selector}>
-            <p className={style.letras}>Pago<ArrowRightIcon sx={{fontSize: 18}}/></p>
-            
+            <p className={style.letras}>Pago<ArrowDropDownIcon sx={{fontSize: 18}}/></p>
             <select name="contact_via" onChange={handlePagoChange} value={option}>
                 <option value="CASH">Efectivo</option>
                 <option value="TRANSFER">Transferencia</option>
@@ -27,7 +23,6 @@ const Payment = ( { payment } ) => {
                 <option value="CREDIT">Crédito</option>
                 <option value="CRYPTO">Cripto</option>
             </select>
-            
         </div>
     )   
 }

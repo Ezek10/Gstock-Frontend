@@ -11,7 +11,8 @@ import { GET_PRODUCTS_STOCKS,
         GET_TRANSACTIONS,
         GET_TRANSACTION_CARDS,
         GET_SUPPLIERS,
-        GET_CLIENTS} from "./actions"
+        GET_CLIENTS,
+        GET_SELLERS} from "./actions"
 
 const initialState = {
     products: [],
@@ -21,7 +22,8 @@ const initialState = {
     transactions: [], 
     cards: {},
     suppliers: [],
-    clients: []
+    clients: [],
+    sellers: []
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -40,6 +42,9 @@ const rootReducer = (state = initialState, action) => {
 
         case GET_CLIENTS:
             return {...state, clients: [...action.payload]}
+
+        case GET_SELLERS:
+            return {...state, sellers: [...action.payload]}
 
         case PUT_PRODUCT_STOCKS_SUCCES:
             return { ...state, loading: false, resource: action.payload }

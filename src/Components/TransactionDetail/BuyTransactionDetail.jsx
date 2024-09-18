@@ -2,7 +2,7 @@ import React from "react";
 import style from "./BuyTransactionDetail.module.css"
 import { Button, Divider } from "@mui/material";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import Calendar from "../Calendar/Calendar";
+import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import { useDispatch } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
@@ -68,7 +68,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
-                <Calendar 
+                <CalendarTransactions 
                 // onDateChange={handleDateChange}
                 />
 

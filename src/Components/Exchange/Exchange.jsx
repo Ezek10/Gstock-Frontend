@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./Exchange.module.css"
 import { Divider, Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const Exchange = React.forwardRef((props, ref) => {
 
@@ -85,21 +86,21 @@ const Exchange = React.forwardRef((props, ref) => {
             <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar un producto</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
-                <p className={style.letras}>Producto</p>
+                <p className={style.letras}>Producto<ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" value={newProdExchange.product_name} onChange={changeHandler} name="product_name"/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
-                <p className={style.letras}>Cantidad</p>
+                <p className={style.letras}>Cantidad<ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" />
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
-                <p className={style.letras}>Precio unitario</p>
+                <p className={style.letras}>Precio unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" placeholder="$0000"  value={newProdExchange.buy_price} onChange={changeHandler} name="buy_price"/>
             </div>
 

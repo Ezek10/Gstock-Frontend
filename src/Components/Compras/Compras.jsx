@@ -3,10 +3,10 @@ import style from "./Compras.module.css"
 import { Divider, Button, Dialog } from "@mui/material";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import Calendar from "../Calendar/Calendar";
+import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
-import axios from "axios";
+import { postBuyTransaction } from "../../Redux/actions";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import check from "../../assets/check.png" 
 import closeConfirm from "../../assets/closeConfirm.png"
@@ -132,8 +132,8 @@ const Compras = React.forwardRef((props, ref) => {
     }
 
     const handleDateChange = (selection) => {
-        setNewProduct({ ...newProduct, date: selection.startDate.getTime()});
-        setCart({ ...cart, date: selection.startDate.getTime()});
+        setNewProduct({ ...newProduct, date: selection.startDate.getTime()/1000});
+        setCart({ ...cart, date: selection.startDate.getTime()/1000});
     }
 
     const handlePaymentChange = (selection) => {
@@ -168,9 +168,7 @@ const Compras = React.forwardRef((props, ref) => {
             try {
                 console.log(cart);
                 
-                await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/buy", cart, {
-                    headers: {
-                        "Authorization": "admin",}} )
+                await postBuyTransaction(cart) 
                 setCart({
                     quantity: 1,
                     supplier: {
@@ -219,12 +217,12 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px" }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
+                    <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <Calendar onDateChange={handleDateChange}/>
+                <CalendarTransactions onDateChange={handleDateChange}/>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
@@ -234,22 +232,22 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <h2 style={{ fontSize: "20px" }}>Agregar un producto</h2>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Producto</p>
-                    <input type="text" style={{ height: "15px" }} value={newProduct.products.product_name} onChange={changeHandler} name="product_name"/>
+                    <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.products.product_name} onChange={changeHandler} name="product_name"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
                 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Cantidad</p>
-                    <input type="text" style={{ height: "15px" }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
+                    <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ height: "15px", fontSize: 12 }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Precio Unitario</p>
-                    <input type="text" style={{ height: "15px" }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price"/>
+                    <p className={style.letras}>Precio Unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ height: "15px", fontSize: 12 }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import style from "./Ventas.module.css"
 import { Divider, Button, Dialog } from "@mui/material";
-import Calendar from "../Calendar/Calendar";
+import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { getProductsStocks } from "../../Redux/actions";
-import axios from "axios";
+import { getProductsStocks, postSellTransaction } from "../../Redux/actions";
 import CloseIcon from '@mui/icons-material/Close';
 import Exchange from "../Exchange/Exchange";
 import { Modal } from '@mui/base/Modal';
@@ -97,7 +96,7 @@ const Ventas = React.forwardRef((props, ref) => {
     const stocks = useSelector((state) => state.products) || [];
 
     const handleDateChange = (selection) => {
-        setCart({ ...cart, date: selection.startDate.getTime()});
+        setCart({ ...cart, date: selection.startDate.getTime()/1000});
     }
 
     const handlePaymentChange = (selection) => {
@@ -171,9 +170,7 @@ const Ventas = React.forwardRef((props, ref) => {
             try {
                 console.log(cart);
                 
-                await axios.post("https://api.gstock.francelsoft.com/gstock/transaction/sell", cart, {
-                    headers: {
-                        "Authorization": "admin",}} )
+                await postSellTransaction(cart)
                 setCart({
                     client: {
                         name: "",
@@ -233,16 +230,16 @@ const Ventas = React.forwardRef((props, ref) => {
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client"/>
+                    <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p className={style.letras}>Tel <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.tel || ""} onChange={changeHandler} name="tel"/>
+                    <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.tel || ""} onChange={changeHandler} name="tel"/>
                     <p className={style.letras}>Email <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.email || ""} onChange={changeHandler} name="email"/>
+                    <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} value={cart.client.email || ""} onChange={changeHandler} name="email"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -262,14 +259,14 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" value={cart.seller.name || ""} onChange={changeHandler} name="seller"/>
+                    <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} onChange={changeHandler} name="seller"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ height: "20px", margin: "12px 10px 12px 10px", width: "180px", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
+                    <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "40%", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={product.product_name} value="">Elija un modelo</option>
                         {stocks.map((prod) => (
                             prod.stocks.length===0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
@@ -281,7 +278,7 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px"}}>
                     <p className={style.letras}>IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
+                    <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
                              option.serial_id==="" || cart.products.some(prod => prod.serial_id.includes(option.serial_id)) ? null : <option key={option.serial_id} value={option.serial_id}>
@@ -296,14 +293,14 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-                <Calendar onDateChange={handleDateChange}/>
+                <CalendarTransactions onDateChange={handleDateChange}/>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
+                    <input type="text" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
                     </div>
                     <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>

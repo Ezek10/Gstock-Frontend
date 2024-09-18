@@ -12,6 +12,7 @@ import SellTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
 
 const TablaTransactions = ({filters}) => {
 
+    const [emptyRowCount, setEmptyRowCount] = useState(0);
     const [openDetailBuyTransaction, setOpenDetailBuyTransaction] = useState(false);
     const [openDetailSellTransaction, setOpenDetailSellTransaction] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState([]);
@@ -34,12 +35,28 @@ const TablaTransactions = ({filters}) => {
         setOpenDetailSellTransaction(false)
     };
 
+    const transactions = useSelector((state) => state.transactions) || [];   
+
     useEffect(() => {
         dispatch(getTransactions(filters))
-    }, [filters])
-    
-    const transactions = useSelector((state) => state.transactions) || [];   
-    
+    }, [filters, dispatch])
+
+    useEffect(() => {
+        const calculateEmptyRows = () => {
+            const tableHeight = window.innerHeight * 0.65;
+            const rowHeight = 34;
+            const displayedRows = transactions.length;
+            const rowsThatFit = Math.floor(tableHeight / rowHeight);
+            const emptyRows = Math.max(0, rowsThatFit - displayedRows);
+            setEmptyRowCount(emptyRows);
+        };
+
+        calculateEmptyRows(); // Inicialmente calcula filas vacías
+
+        window.addEventListener('resize', calculateEmptyRows);
+        return () => window.removeEventListener('resize', calculateEmptyRows);
+    }, [transactions]);
+
     const formatDate = (rawDate) => {
         const date = new Date(rawDate)
         const formattedDate = date.toLocaleDateString('es-ES', {
@@ -59,7 +76,7 @@ const TablaTransactions = ({filters}) => {
             payload: updatedTransactions,
         }))
     }
-    
+
     return(
         <div className={style.tabla}>
             <CustomTableContainer component={Paper} 
@@ -98,7 +115,16 @@ const TablaTransactions = ({filters}) => {
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
                         </TableRow>
                     ))}
-                    
+                    {Array.from({ length: emptyRowCount }).map((_, index) => (
+                        <TableRow key={`empty-row-${index}`}>
+                            <CustomTableCell sx={{borderLeftWidth: "0px" }}>&nbsp;</CustomTableCell>
+                            <CustomTableCell>&nbsp;</CustomTableCell>
+                            <CustomTableCell>&nbsp;</CustomTableCell>
+                            <CustomTableCell>&nbsp;</CustomTableCell>
+                            <CustomTableCell>&nbsp;</CustomTableCell>
+                            <CustomTableCell>&nbsp;</CustomTableCell>
+                        </TableRow>
+                    ))}
                     </TableBody>
                 </Table>
 
