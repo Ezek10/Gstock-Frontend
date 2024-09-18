@@ -6,5 +6,5 @@ help:
 
 docker-push:
 	git pull
-	docker build -t ezemarcel/gstock-front-app:1.0 .
-	docker push ezemarcel/gstock-front-app:1.0
+	docker build -t ezemarcel/gstock-front-app:1.1 .
+	docker push ezemarcel/gstock-front-app:1.1
