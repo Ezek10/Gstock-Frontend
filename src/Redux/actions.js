@@ -52,7 +52,7 @@ export const getProductsStocks = () => {
 export const getTransactions = (filters) => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`${URL}/transaction?page=1`, {params: filters, ...getHeaders()})
+            const response = await axios.get(`${URL}/transaction`, {params: filters, ...getHeaders()})
             const transactions = response.data.result.content
             dispatch({
                 type: GET_TRANSACTIONS,
