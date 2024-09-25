@@ -7,8 +7,11 @@ import Fade from '@mui/material/Fade';
 import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
 import logo from "../../assets/logo.png"
+import { useNavigate } from "react-router-dom";
  
 const Home = () => {
+
+    const navigate = useNavigate();
 
     // const [openCompras, setOpenCompras] = useState(false);
     // const handleOpenCompras = () => setOpenCompras(true);
@@ -27,6 +30,7 @@ const Home = () => {
                         variant="outlined" 
                         size="small"
                         target="_blank"
+                        onClick={() => navigate("/")}
                         sx={{
                             backgroundColor: "white",
                             borderColor: "transparent",

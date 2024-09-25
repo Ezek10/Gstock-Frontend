@@ -163,6 +163,15 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "92%", borderRadius: "20spx"}}/>
                     <Divider variant="middle" component="li" sx={dividerStyle} />
                 </div>))) : (<div></div>) }
+
+                <Button 
+                    variant="outlined" 
+                    size="small"
+                    target="_blank"
+                    style={buttonStyle}
+                    // onClick={addProdHandler}
+                    >Guardar cambios
+                </Button>
             </div>
         </div>
     )
@@ -171,7 +180,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 const dividerStyle = {
     borderColor: 'transparent',
     background: 'linear-gradient(to right, grey, rgb(201, 201, 201))',
-    margin: '1px',
+    margin: '5px',
     padding: "0px",
     height: "1px",
     width: "90%",
