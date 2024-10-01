@@ -26,6 +26,16 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         setTransaction(updatedProducts);
     }
 
+    const handleDateChange = (selection) => {
+        setNewProduct({ ...newProduct, date: selection.startDate.getTime()/1000});
+        setCart({ ...cart, date: selection.startDate.getTime()/1000});
+    }
+
+    const handlePaymentChange = (selection) => {
+        console.log(selection);
+        setNewProduct({...newProduct, payment_method: selection});
+        setCart({...cart, payment_method: selection});
+    }
 
     console.log(transaction);
     
@@ -68,13 +78,12 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
-                <CalendarTransactions 
-                // onDateChange={handleDateChange}
+                <CalendarTransactions onDateChange={handleDateChange}
                 />
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />   
 
-                <Payment/>
+                <Payment payment={handlePaymentChange}/>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />   
 

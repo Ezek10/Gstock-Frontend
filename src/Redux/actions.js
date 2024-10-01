@@ -13,6 +13,8 @@ export const GET_CLIENTS = "GET_CLIENTS"
 
 export const GET_SELLERS = "GET_SELLERS"
 
+export const GET_LOGIN_GOOGLE = "GET_LOGIN_GOOGLE"
+
 export const PUT_PRODUCT_STOCKS_SUCCES = "PUT_PRODUCT_STOCKS_SUCCES"
 export const PUT_PRODUCT_STOCKS_REQUEST = "PUT_PRODUCT_STOCKS_REQUEST"
 export const PUT_PRODUCT_STOCKS_FAILURE = "PUT_PRODUCT_STOCKS_FAILURE"
@@ -39,6 +41,7 @@ export const getProductsStocks = () => {
         try {
             const response = await axios.get(`${URL}/product/stock`, getHeaders());
             const products = response.data.result.content
+            console.log(response);
             dispatch({
                 type: GET_PRODUCTS_STOCKS,
                 payload: products
@@ -54,6 +57,7 @@ export const getTransactions = (filters) => {
         try {
             const response = await axios.get(`${URL}/transaction`, {params: filters, ...getHeaders()})
             const transactions = response.data.result.content
+            
             dispatch({
                 type: GET_TRANSACTIONS,
                 payload: transactions
@@ -193,3 +197,25 @@ export const postSellTransaction = async (cart) => {
         throw new Error(error.response?.data?.message || "Error al cargar la venta");
     }
 };
+
+export const putBuyTransaction = async (cart) => {
+    try {
+        const response = await axios.put(`${URL}/transaction/buy`, cart, getHeaders());
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al cargar la compra");
+    }
+};
+
+export const getLoginGoogle = async () => {
+    return async function () {
+
+        try {
+            const response = await axios.get("https://apidev.gstock.francelsoft.com/user/login/google")
+            return response.data; 
+            
+    } catch (error) {
+        
+    }
+}
+}
