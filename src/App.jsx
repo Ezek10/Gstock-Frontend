@@ -3,6 +3,7 @@ import Login from "./Views/Login/Login"
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import 'typeface-mukta';
+import Users from "./Views/Users/Users";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login/>}/>
             <Route path="/home" element={<Home/>}/>
+            <Route path="/users" element={<Users/>}/>
           </Routes>
       </div>
     </>
