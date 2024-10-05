@@ -1,26 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./Home.module.css";
 import Button from '@mui/material/Button';
 import Tabs from "../../Components/Tabs/Tabs"
-import { Modal } from '@mui/base/Modal';
-import Fade from '@mui/material/Fade';
-import Compras from "../../Components/Compras/Compras";
-import Ventas from "../../Components/Ventas/Ventas";
 import logo from "../../assets/logo.png"
-import { useNavigate } from "react-router-dom";
- 
+import { getLogout } from "../../Redux/actions";
+
 const Home = () => {
 
-    const navigate = useNavigate();
-
-    // const [openCompras, setOpenCompras] = useState(false);
-    // const handleOpenCompras = () => setOpenCompras(true);
-    // const handleCloseCompras = () => setOpenCompras(false);
-
-    // const [openVentas, setOpenVentas] = useState(false);
-    // const handleOpenVentas = () => setOpenVentas(true);
-    // const handleCloseVentas = () => setOpenVentas(false);
-
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        getLogout();
+    };
 
     return(
         <div className={style.container0}>
@@ -30,7 +20,7 @@ const Home = () => {
                         variant="outlined" 
                         size="small"
                         target="_blank"
-                        onClick={() => navigate("/")}
+                        onClick={handleLogout}
                         sx={{
                             backgroundColor: "white",
                             borderColor: "transparent",
@@ -57,74 +47,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className={style.container2}>
-                <input type="text" placeholder="Busca un producto" style={{ width: "60%", height: "25px", borderRadius: "50px" }}/>
-                <div style={{ display:"flex", justifyContent: "space-between", width: "100%", padding: "0px 17% 0px 17%", boxSizing: "border-box" }}>
-                    <Button 
-                        onClick={handleOpenCompras}
-                        variant="outlined"
-                        target="_blank"
-                        style={butonStyle}> + Compra
-                    </Button>
-                    <Button 
-                        onClick={handleOpenVentas}
-                        variant="outlined"
-                        target="_blank"
-                        style={butonStyle}> + Venta
-                    </Button>
-
-                    
-
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        open={openCompras}
-                        onClose={handleCloseCompras}
-                        closeAfterTransition>
-                        <Fade in={openCompras}>
-                            <Compras handleCloseCompras={handleCloseCompras}/>
-                        </Fade>
-                    </Modal>
-
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        open={openVentas}
-                        onClose={handleCloseVentas}
-                        closeAfterTransition>
-                        <Fade in={openVentas}>
-                            <Ventas handleCloseVentas={handleCloseVentas}/>
-                        </Fade>
-                    </Modal>
-
-                </div>
-                <div style={{height: "80%", display: "flex", justifyContent: "center"}}>
-                    <div style={{fontSize: "20px", display: "flex", width: "90%", alignItems: "center"}}>
-                    Seleccione un producto de la tabla para acceder a los datos del grupo.
-                    </div>
-                </div>
-            </div> */}
         </div>
     )
-}
-
-const butonStyle = {
-    backgroundColor: "black",
-    borderColor: "transparent",
-    borderRadius: "50px",
-    minWidth: "45px",
-    height: "2em",
-    width:"90px",
-    marginLeft: "3%",
-    padding: "5px",
-    marginRight: "3%",
-    textTransform: 'none',
-    color: "white",
-    boxSizing: "border-box",
-    '&:hover':{
-        color: "#fff",
-        borderColor: "transparent",
-        backgroundColor: "rgb(80, 80, 80)"}
 }
 
 export default Home;
