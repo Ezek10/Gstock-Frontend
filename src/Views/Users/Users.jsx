@@ -5,15 +5,16 @@ import logoReverse from "../../assets/logoReverse.png"
 import logo from "../../assets/logo.png"
 import deleteUser from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 
 const Users = () => {
 
     const [ selectedUser, setSelectedUser ] = useState(null)
 
-    const navigate = useNavigate
-
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        getLogout();
+    };
     const users = [
         {name: "User1",
         email: "user1@gmail.com",
@@ -69,7 +70,7 @@ const Users = () => {
                     variant="outlined" 
                     size="small"
                     target="_blank"
-                    onClick={() => navigate("/")}
+                    onClick={handleLogout}
                     sx={{
                         backgroundColor: "white",
                         borderColor: "transparent",
