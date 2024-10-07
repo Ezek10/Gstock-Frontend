@@ -31,13 +31,8 @@ export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
 
 const getHeaders = () => ({
     headers: {
-        //"Authorization": `Bearer ${localStorage.getItem('access_token')}`
-        //localhost para dev
-        //si estan en localhost comenten la linea de arriba y descomenten la de abajo
-        //y no sigan el flujo de autorizacion porque los va a llevar a dev
-        //vayan directamente a http://localhost/home
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlemVxdWllbG1hcmNlbDJAZ21haWwuY29tIiwiYXVkIjoicHVibGljIiwiaXNzIjoiZ3N0b2NrLmZyYW5jZWxzb2Z0LmNvbSIsImV4cCI6MTc1OTg0NDk1OH0.fM46jlTddXv862Q12jyYKip3OGxjpNDSXm6g4cc4mYk"
-    }}
+        "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+}}
 );
 
 const handleUnauthorizedError = (error) => {
