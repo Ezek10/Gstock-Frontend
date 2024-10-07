@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import style from "./dataTransactions.module.css"
 import { useDispatch, useSelector } from "react-redux";
 import { getTransactionCards, getSuppliers, getClients, getSellers } from "../../Redux/actions";
 import { Divider } from "@mui/material";
 import CalendarFilters from "../Calendar/CalendarFilters";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import filtroIcon from "../../assets/filtro.png"
 
 const DataTransactions = ({filters, setFilters}) => {
@@ -63,6 +64,27 @@ const DataTransactions = ({filters, setFilters}) => {
             .join(' '); // Une las palabras nuevamente
     };
 
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const toggleDropdown = () => setIsOpen(!isOpen);
+
+    const handleProductSelect = (productId) => {
+        setFilters({...filters, filter_by_product: productId});
+        setIsOpen(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <div className={style.containerTransactions}>
             <img src={filtroIcon} alt="Filtro" style={{display: "flex", alignSelf: "flex-end",height: "37px"}}/>
@@ -119,7 +141,62 @@ const DataTransactions = ({filters, setFilters}) => {
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
+{/*esto agrega la barra desplegable por debajo del filtro Producto, se deberia replicar en los otros filtros*/}
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                <div ref={dropdownRef} style={{ position: 'relative' }}>
+                    <div 
+                        onClick={toggleDropdown}
+                        style={{
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center",
+                            cursor: "pointer",
+                            marginRight: "5px"
+                        }}
+                    >
+                        <p style={{margin: "0px"}}>Producto</p>
+                        <ArrowDropDownIcon sx={{fontSize: 18}}/>
+                    </div>
+                    {isOpen && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: 0,
+                            zIndex: 1000,
+                            backgroundColor: 'white',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            maxHeight: '200px',
+                            overflowY: 'auto',
+                            width: '200px'
+                        }}>
+                            <div onClick={() => handleProductSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}}>
+                                Todos los productos
+                            </div>
+                            {products && products.map(prod => (
+                                <div 
+                                    key={prod.id} 
+                                    onClick={() => handleProductSelect(prod.id)}
+                                    style={{padding: '5px 10px', cursor: 'pointer'}}
+                                >
+                                    {capitalizeWords(prod.name)}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <div style={{marginLeft: '10px'}}>
+                    {filters.filter_by_product 
+                        ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
+                        : "Todos los productos"}
+                </div>
+                <CalendarFilters
+                    filters={filters}
+                    setFilters={setFilters}
+                />
+            </div>
+
+           {/*<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Producto <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                 <select name="filter_by_product" style={{fontSize: 10, textOverflow: "ellipsis"}} value={filters.filter_by_product || ""} onChange={changeHandler} >
                 <option value="null"></option>
@@ -131,7 +208,7 @@ const DataTransactions = ({filters, setFilters}) => {
                     filters={filters}
                     setFilters={setFilters}
                 />
-            </div>
+            </div>*/}
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
@@ -164,13 +241,27 @@ const DataTransactions = ({filters, setFilters}) => {
                 </select>
                 <button
                     style={{
-                        height: "29px",
-                        borderRadius: "50px",
-                        borderColor: "transparent",
-                        backgroundColor: "white"
+
+
+                       
+
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '8px 16px',
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '20px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                        transition: 'all 0.3s ease'
+
                     }}
                     onClick={resetFilters}
                 >
+                    <DeleteOutlineIcon style={{ marginRight: '8px', fontSize: '18px' }} />
                     Eliminar filtros
                 </button>
             </div>
@@ -211,6 +302,7 @@ const DataTransactions = ({filters, setFilters}) => {
             </div>
 
         </div>
+
     )
 }
 
