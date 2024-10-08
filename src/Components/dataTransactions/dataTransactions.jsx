@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTransactionCards, getSuppliers, getClients, getSellers } from "../../Redux/actions";
 import { Divider } from "@mui/material";
 import CalendarFilters from "../Calendar/CalendarFilters";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // flechita
+import DeleteOutlineIcon from '@mui/icons-material/Delete'; //Tacho de basura de eliminar filtros
 import filtroIcon from "../../assets/filtro.png"
 
 const DataTransactions = ({filters, setFilters}) => {
@@ -64,30 +64,76 @@ const DataTransactions = ({filters, setFilters}) => {
             .join(' '); // Une las palabras nuevamente
     };
 
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const [isOpenProduct, setIsOpenProduct] = useState(false);
+    const [isOpenSupplier, setIsOpenSupplier] = useState(false);
+    const [isOpenClient, setIsOpenClient] = useState(false);
+    const [isOpenSeller, setIsOpenSeller] = useState(false);
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
+
+    const dropdownRef = useRef(null);
+    const dropdownRefSupplier = useRef(null);
+    const dropdownRefClient = useRef(null);
+    const dropdownRefSeller = useRef(null);
+
+
+    const toggleDropdownProduct = () => setIsOpenProduct(!isOpenProduct);
+    const toggleDropdownSupplier = () => setIsOpenSupplier(!isOpenSupplier);
+    const toggleDropdownClient = () => setIsOpenClient(!isOpenClient);
+    const toggleDropdownSeller = () => setIsOpenSeller(!isOpenSeller);
+
 
     const handleProductSelect = (productId) => {
         setFilters({...filters, filter_by_product: productId});
-        setIsOpen(false);
+        setIsOpenProduct(false);
     };
+
+    const handleSupplierSelect = (supplierID) => {
+        setFilters({...filters, filter_by_supplier : supplierID});
+        setIsOpenSupplier(false);
+    };
+
+    const handleClientSelect = (clientID) => {
+        setFilters({...filters, filter_by_client: clientID});
+        setIsOpenClient(false);
+    };
+
+    const handleSellerSelect = (sellerID) => {
+        setFilters({...filters, filter_by_seller: sellerID});
+        setIsOpenSeller(false);
+    };
+
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsOpen(false);
+                setIsOpenProduct(false);// Aquí se cierra el dropdown de productos
+            }
+            if (dropdownRefSupplier.current && !dropdownRefSupplier.current.contains(event.target)) {
+                setIsOpenSupplier(false); // Aquí se cierra el dropdown de proveedores
+            }
+            if (dropdownRefClient.current && !dropdownRefClient.current.contains(event.target)) {
+                setIsOpenClient(false); // Aquí se cierra el dropdown de clientes
+            }
+            if (dropdownRefSeller.current && !dropdownRefSeller.current.contains(event.target)) {
+                setIsOpenSeller(false); // Aquí se cierra el dropdown de vendedores
             }
         };
-
+    
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+    
 
     return (
-        <div className={style.containerTransactions}>
-            <img src={filtroIcon} alt="Filtro" style={{display: "flex", alignSelf: "flex-end",height: "37px"}}/>
+        <div className={style.containerTransactions} 
+            style={{
+                maxWidth: "100%",
+                overflowX: "hidden"
+            }}
+        >
+            <img src={filtroIcon} alt="Filtro" style={{display: "flex", alignSelf: "flex-end",height: "30px"}}/>
+
+            {/*Filtro Compras*/}
             <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                 <button
                     name="filter_by_buy_type"
@@ -113,6 +159,7 @@ const DataTransactions = ({filters, setFilters}) => {
                     />
                     Compras
                 </button>
+                {/*Filtro Ventas*/}
                 <button
                     name="filter_by_sell_type"
                     onClick={toggleHandler}
@@ -141,11 +188,11 @@ const DataTransactions = ({filters, setFilters}) => {
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
-{/*esto agrega la barra desplegable por debajo del filtro Producto, se deberia replicar en los otros filtros*/}
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <div ref={dropdownRef} style={{ position: 'relative' }}>
+        {/*Filtro Producto*/}
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", minHeight: '46px' }}>
+                <div ref={dropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <div 
-                        onClick={toggleDropdown}
+                        onClick={toggleDropdownProduct}
                         style={{
                             display: "flex", 
                             flexDirection: "row", 
@@ -155,9 +202,9 @@ const DataTransactions = ({filters, setFilters}) => {
                         }}
                     >
                         <p style={{margin: "0px"}}>Producto</p>
-                        <ArrowDropDownIcon sx={{fontSize: 18}}/>
+                        <ArrowDropDownIcon sx={{fontSize: 18, marginLeft: '5px'}}/> {/* Espacio entre "Producto" y flecha */}
                     </div>
-                    {isOpen && (
+                    {isOpenProduct && (
                         <div style={{
                             position: 'absolute',
                             top: '100%',
@@ -168,16 +215,21 @@ const DataTransactions = ({filters, setFilters}) => {
                             borderRadius: '4px',
                             maxHeight: '200px',
                             overflowY: 'auto',
-                            width: '200px'
+                            width: '185px' // Ancho del dropdown
                         }}>
-                            <div onClick={() => handleProductSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}}>
+                            <div onClick={() => handleProductSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}} 
+                                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                                >
                                 Todos los productos
                             </div>
                             {products && products.map(prod => (
                                 <div 
                                     key={prod.id} 
                                     onClick={() => handleProductSelect(prod.id)}
-                                    style={{padding: '5px 10px', cursor: 'pointer'}}
+                                    style={{padding: '5px 10px', cursor: 'pointer',transition: 'background-color 0.2s ease', }} // transicion de fondo
+                                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
                                 >
                                     {capitalizeWords(prod.name)}
                                 </div>
@@ -185,10 +237,10 @@ const DataTransactions = ({filters, setFilters}) => {
                         </div>
                     )}
                 </div>
-                <div style={{marginLeft: '10px'}}>
+                <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                     {filters.filter_by_product 
                         ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
-                        : "Todos los productos"}
+                        : ""}
                 </div>
                 <CalendarFilters
                     filters={filters}
@@ -212,6 +264,121 @@ const DataTransactions = ({filters, setFilters}) => {
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
+       {/* Filtro Proveedor */}
+       <div style={{ display: "flex", flexDirection: "row", alignItems: "center",minHeight: '46px'}}>
+          <div ref={dropdownRefSupplier} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <div 
+            onClick={toggleDropdownSupplier}
+            style={{
+                display: "flex", 
+                flexDirection: "row", 
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+            }}
+        >
+            <p style={{margin: "0px"}}>Proveedor</p>
+            <ArrowDropDownIcon sx={{fontSize: 18, marginLeft: '5px'}}/>
+        </div>
+        {isOpenSupplier && (
+            <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                zIndex: 1000,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '185px'
+            }}>
+                <div onClick={() => handleSupplierSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                    >
+                    Todos los proveedores
+                </div>
+                {suppliers && suppliers.map(sup => (
+                    <div 
+                        key={sup.id} 
+                        onClick={() => handleSupplierSelect(sup.id)} 
+                        style={{padding: '5px 10px', cursor: 'pointer',transition: 'background-color 0.2s ease', }} // transicion de fondo
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                    >
+                        {capitalizeWords(sup.name)}
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
+    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+        {filters.filter_by_supplier 
+            ? capitalizeWords(suppliers.find(s => s.id === filters.filter_by_supplier)?.name || '')
+            : ""}
+
+     </div>
+    
+
+
+ {/* Filtro Clientes */}
+
+    <div ref={dropdownRefClient} style={{ position: 'relative' }}>
+        <div 
+            onClick={toggleDropdownClient}
+            style={{
+                display: "flex", 
+                flexDirection: "row", 
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+            }}
+        >
+            <p style={{margin: "0px"}}>Cliente</p>
+            <ArrowDropDownIcon sx={{fontSize: 18}}/>
+        </div>
+        {isOpenClient && (
+            <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                zIndex: 1000,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '170px'
+            }}>
+                <div onClick={() => handleClientSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                    >
+                    Todos los clientes
+                </div>
+                {clients && clients.map(client => (
+                    <div 
+                        key={client.id} 
+                        onClick={() => handleClientSelect(client.id)} 
+                        style={{padding: '5px 10px', cursor: 'pointer',transition: 'background-color 0.2s ease', }} // transicion de fondo
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                    >
+                        {capitalizeWords(client.name)}
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
+        <div style={{marginLeft: '10px'}}>
+           {filters.filter_by_client 
+            ? capitalizeWords(clients.find(c => c.id === filters.filter_by_client)?.name || '')
+            : ""}
+          </div>
+    </div>        
+
+{/*
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Proveedor <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                 <select name="filter_by_supplier" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_supplier || ""} onChange={changeHandler}>
@@ -219,91 +386,162 @@ const DataTransactions = ({filters, setFilters}) => {
                     {suppliers ? suppliers.map((suppliers) => (
                         <option key={capitalizeWords(suppliers.name)} value={suppliers.id} style={{margin: "0px"}}>{capitalizeWords(suppliers.name)}</option>
                     )) : null} 
-                </select>
-                <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Cliente <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <select name="filter_by_client" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_client || ""} onChange={changeHandler}>
+                    </select>
+                    <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Cliente <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
+                    <select name="filter_by_client" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_client || ""} onChange={changeHandler}>
                     <option value="null"></option>
                     {clients ? clients.map((client) => (
                         <option key={capitalizeWords(client.name)} value={client.id} style={{margin: "0px"}}>{capitalizeWords(client.name)}</option>
                     )) : null} 
                 </select>
-            </div>
+            </div>*/}
 
-            <Divider variant="middle" component="li" sx={dividerStyle}/>
+<Divider variant="middle" component="li" sx={dividerStyle}/>
 
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-                <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Vendedor <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <select name="filter_by_seller" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_seller || ""} onChange={changeHandler}>
-                    <option value="null"></option>
-                    {sellers ? sellers.map((seller) => (
-                        <option key={capitalizeWords(seller.name)} value={seller.id} style={{margin: "0px"}}>{capitalizeWords(seller.name)}</option>
-                    )) : null} 
-                </select>
-                <button
-                    style={{
-
-
-                       
-
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '8px 16px',
-                        backgroundColor: 'white',
-                        color: 'black',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '20px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                        transition: 'all 0.3s ease'
-
-                    }}
-                    onClick={resetFilters}
-                >
-                    <DeleteOutlineIcon style={{ marginRight: '8px', fontSize: '18px' }} />
-                    Eliminar filtros
-                </button>
-            </div>
-
-            <Divider variant="middle" component="li" sx={dividerStyle}/>
-
-            <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", fontWeight: "500"}}>GANANCIAS TOTALES</p>
-                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", fontSize: "64px", fontWeight: "800"}}>${cards.earns}</p>
-            </div>
-
-            <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "500"}}>PRODUCTOS VENDIDOS</p>
-                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", fontSize: "64px", fontWeight: "800"}}>{cards.product_sold}</p>
-            </div>
-
-            <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "500"}}>PRODUCTOS COMPRADOS</p>
-                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", fontSize: "64px", fontWeight: "800"}}>{cards.product_bought}</p>
-            </div>
-
-            <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "500"}}>VENDEDORES</p>   
-                <div style={{display: "grid", gridTemplateRows: "repeat(4, 1fr)", gridTemplateColumns: "repeat(2, 1fr)", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px"}}>
-                    {cards.sellers ? Object.entries(cards.sellers).map(([key, value])=> (
-                        <p key={key} style={{margin: "0px"}}>{key} ({value})</p>
-                    )) : ""}          
-                </div>   
-            </div>
-
-            <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "500"}}>CANAL DE VENTA</p>
-                <div style={{display: "grid", gridTemplateRows: "repeat(4, 1fr)", gridTemplateColumns: "repeat(2, 1fr)", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px"}}>
-                    {cards.channels ? Object.entries(cards.channels).map(([key, value])=> (
-                        <p key={key} style={{margin: "0px"}}>{key} ({value.toFixed(2)})</p>
-                    )) : ""}          
-                </div>  
-            </div>
-
+ {/* Filtro Vendedor */}
+<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+    <div ref={dropdownRefSeller} style={{ position: 'relative', display: 'flex', alignItems: 'center', minHeight: '46px'}}>
+        <div 
+            onClick={toggleDropdownSeller}
+            style={{
+                display: "flex", 
+                flexDirection: "row", 
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+            }}
+        >
+            <p style={{margin: "0px"}}>Vendedor</p>
+            <ArrowDropDownIcon sx={{fontSize: 18,  marginLeft: '5px'}}/>
         </div>
+        {isOpenSeller && (
+            <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                zIndex: 1000,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '185px'
+            }}>
+                <div onClick={() => handleSellerSelect(null)} style={{padding: '5px 10px', cursor: 'pointer'}}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                    >
+                    Todos los vendedores
+                </div>
+                {sellers && sellers.map(seller => (
+                    <div 
+                        key={seller.id} 
+                        onClick={() => handleSellerSelect(seller.id)} 
+                        style={{padding: '5px 10px', cursor: 'pointer',transition: 'background-color 0.2s ease', }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor= '#CECECE'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }}
+                    >
+                        {capitalizeWords(seller.name)}
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
+    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+        {filters.filter_by_seller 
+            ? capitalizeWords(sellers.find(s => s.id === filters.filter_by_seller)?.name || '')
+            : ""}
+    </div>
+    <button
+        style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '8px 16px',
+            backgroundColor: 'white',
+            color: 'black',
+            border: '1px solid #e0e0e0',
+            borderRadius: '20px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+            height: "27px",
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            transition: 'all 0.3s ease'
+        }}
+        onClick={resetFilters}
+    >
+        <DeleteOutlineIcon style={{ marginRight: '2px', fontSize: '18px' }} />
+        Eliminar filtros
+    </button>
+</div>
 
-    )
+{/* Contenedor para el Divider y la tarjeta de ganancias */}
+<div style={{ width: '100%' }}>
+    {/* Divider */}
+    <Divider variant="middle" component="li" sx={{
+        ...dividerStyle,
+        margin: '0',  // Elimina cualquier margen existente
+        width: '100%',  // Asegura que el divisor ocupe todo el ancho
+    }}/>
+
+    {/* Espaciador */}
+    <div style={{ height: '8px' }}></div>
+
+    {/* Tarjeta de ganancias */}
+    <div className={style.cards} style={{ width: '100%' }}>
+        <p style={{margin: "5px 0px 0px 20px", fontWeight: "400"}}>GANANCIAS TOTALES</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>${cards.earns}</p>
+    </div>
+</div>
+
+            {/* Tarjeta de productos vendidos */}
+             <div className={style.cards}>
+                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "400"}}>PRODUCTOS VENDIDOS</p>
+                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_sold}</p>
+             </div>
+
+            {/* Tarjeta de productos comprados */}
+             <div className={style.cards}>
+                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "400"}}>PRODUCTOS COMPRADOS</p>
+                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
+             </div>
+
+            {/* Tarjeta de TOP Vendedores */}
+<div className={style.cards} style={{ height: "105px" }}>
+    <p style={{ margin: "5px 0px 0px 20px", marginLeft: "10px", marginTop: "5px", fontWeight: "400" }}>VENDEDORES</p>
+    <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px", alignItems: "flex-end" }}>
+        {cards.sellers 
+            ? Object.entries(cards.sellers)
+                .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
+                .slice(0, 3) // Obtener solo los primeros 3
+                .map(([key, value]) => (
+                    <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value})</p>
+                ))
+            : ""
+        }
+    </div>
+</div>
+
+           {/* Tarjeta de Canal de Venta */}
+<div className={style.cards} style={{ height: "105px" }}>
+    <p style={{ margin: "5px 0px 0px 20px", marginLeft: "10px", marginTop: "5px", fontWeight: "400" }}>CANAL DE VENTA</p>
+    <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px" }}>
+        {cards.channels 
+            ? Object.entries(cards.channels)
+                .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
+                .slice(0, 3) // Obtener solo los primeros 3
+                .map(([key, value]) => (
+                    <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value.toFixed(2)})</p>
+                ))
+            : ""
+        }
+    </div>
+</div>
+
+      
+      
+</div>
+)
 }
 
 const dividerStyle = {
