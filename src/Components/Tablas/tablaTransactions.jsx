@@ -23,8 +23,10 @@ const TablaTransactions = ({filters}) => {
         setSelectedTransaction(prod);
         if (prod.type==="BUY") {
             console.log(prod);
+            setOpenDetailSellTransaction(false)
             setOpenDetailBuyTransaction(true);
         } else {
+            setOpenDetailBuyTransaction(false)
             setOpenDetailSellTransaction(true)
         }
     };
@@ -136,7 +138,7 @@ const TablaTransactions = ({filters}) => {
                     closeAfterTransition>
                     <Fade in={openDetailBuyTransaction}>
                         <div ref={modalRef}>
-                            {selectedTransaction && <BuyTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
+                            {selectedTransaction && openDetailBuyTransaction && <BuyTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
                         </div>
                     </Fade>
                 </Modal>
@@ -149,7 +151,7 @@ const TablaTransactions = ({filters}) => {
                     closeAfterTransition>
                     <Fade in={openDetailSellTransaction}>
                         <div ref={modalRef}>
-                            {selectedTransaction && <SellTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
+                            {selectedTransaction && openDetailSellTransaction &&<SellTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
                         </div>
                     </Fade>
                 </Modal>

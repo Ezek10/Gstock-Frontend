@@ -31,7 +31,17 @@ export const DELETE_PRODUCTS_SUCCESS = "DELETE_PRODUCTS_SUCCESS"
 export const DELETE_PRODUCTS_REQUEST = "DELETE_PRODUCTS_REQUEST"
 export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
 
+export const PUT_TRANSACTION_BUY_SUCCES = "PUT_TRANSACTION_BUY_SUCCES"
+export const PUT_TRANSACTION_BUY_REQUEST = "PUT_TRANSACTION_BUY_REQUEST"
+export const PUT_TRANSACTION_BUY_FAILURE = "PUT_TRANSACTION_BUY_FAILURE"
 
+export const PUT_TRANSACTION_SELL_SUCCES = "PUT_TRANSACTION_SELL_SUCCES"
+export const PUT_TRANSACTION_SELL_REQUEST = "PUT_TRANSACTION_SELL_REQUEST"
+export const PUT_TRANSACTION_SELL_FAILURE = "PUT_TRANSACTION_SELL_FAILURE"
+
+export const PUT_USER_SUCCES = "PUT_USER_SUCCES"
+export const PUT_USER_REQUEST = "PUT_USER_REQUEST"
+export const PUT_USER_FAILURE = "PUT_USER_FAILURE"
 
 
 const getHeaders = () => ({
@@ -243,6 +253,63 @@ export const getUsers = () => {
         } catch (error){
             console.error("Error al obtener los usuarios", error)
             handleUnauthorizedError(error)
+        }
+    }
+}
+
+export const postNewUser = async (user) => {
+    try {
+        const response = await axios.post(``, user, getHeaders());
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al cargar la compra");
+    }
+};
+
+export const putUser = (user) => {
+    return async function (dispatch) {
+        dispatch({type: PUT_USER_REQUEST})
+        try {
+            const response = await axios.put(`${GSTOCK_URL}/transaction/buy`, user, getHeaders())
+            dispatch({
+                type: PUT_USER_SUCCES,
+                payload: response.data
+            }) 
+        } catch(error) {
+            dispatch({ type: PUT_USER_FAILURE, payload: error.message });
+            console.error("Error al cambiar los datos de la transacción", error)
+        }
+    }
+}
+
+export const putTransactionBuy = (transactionDetail) => {
+    return async function (dispatch) {
+        dispatch({type: PUT_TRANSACTION_BUY_REQUEST})
+        try {
+            const response = await axios.put(`${GSTOCK_URL}/transaction/buy`, transactionDetail, getHeaders())
+            dispatch({
+                type: PUT_TRANSACTION_BUY_SUCCES,
+                payload: response.data
+            }) 
+        } catch(error) {
+            dispatch({ type: PUT_TRANSACTION_BUY_FAILURE, payload: error.message });
+            console.error("Error al cambiar los datos de la transacción", error)
+        }
+    }
+}
+
+export const putTransactionSell = (transactionDetail) => {
+    return async function (dispatch) {
+        dispatch({type: PUT_TRANSACTION_SELL_REQUEST})
+        try {
+            const response = await axios.put(`${GSTOCK_URL}/transaction/sell`, transactionDetail, getHeaders())
+            dispatch({
+                type: PUT_TRANSACTION_SELL_SUCCES,
+                payload: response.data
+            }) 
+        } catch(error) {
+            dispatch({ type: PUT_TRANSACTION_SELL_FAILURE, payload: error.message });
+            console.error("Error al cambiar los datos de la transacción", error)
         }
     }
 }

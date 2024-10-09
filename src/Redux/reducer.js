@@ -5,6 +5,15 @@ import { GET_PRODUCTS_STOCKS,
         PUT_PRODUCT_DETAIL_FAILURE,
         PUT_PRODUCT_DETAIL_REQUEST,
         PUT_PRODUCT_DETAIL_SUCCES, 
+        PUT_TRANSACTION_BUY_FAILURE,
+        PUT_TRANSACTION_BUY_REQUEST,
+        PUT_TRANSACTION_BUY_SUCCES, 
+        PUT_TRANSACTION_SELL_FAILURE,
+        PUT_TRANSACTION_SELL_REQUEST,
+        PUT_TRANSACTION_SELL_SUCCES, 
+        PUT_USER_FAILURE,
+        PUT_USER_REQUEST,
+        PUT_USER_SUCCES, 
         DELETE_PRODUCTS_SUCCESS,
         DELETE_PRODUCTS_REQUEST,
         DELETE_PRODUCTS_FAILURE,
@@ -65,12 +74,35 @@ const rootReducer = (state = initialState, action) => {
         case PUT_PRODUCT_DETAIL_REQUEST:
             return { ...state, loading: true, error: null }
 
+        case PUT_TRANSACTION_BUY_SUCCES:
+            return { ...state, loading: false, resource: action.payload }
+        case PUT_TRANSACTION_BUY_FAILURE:
+            return { ...state, loading: false, error: action.payload }
+        case PUT_TRANSACTION_BUY_REQUEST:
+            return { ...state, loading: true, error: null }
+
+        case PUT_TRANSACTION_SELL_SUCCES:
+            return { ...state, loading: false, resource: action.payload }
+        case PUT_TRANSACTION_SELL_FAILURE:
+            return { ...state, loading: false, error: action.payload }
+        case PUT_TRANSACTION_SELL_REQUEST:
+            return { ...state, loading: true, error: null }
+
+        case PUT_USER_SUCCES:
+            return { ...state, loading: false, resource: action.payload }
+        case PUT_USER_FAILURE:
+            return { ...state, loading: false, error: action.payload }
+        case PUT_USER_REQUEST:
+            return { ...state, loading: true, error: null }
+
         case DELETE_PRODUCTS_SUCCESS:
             return { ...state, loading: false, products: state.products.filter(product => product.id !== action.payload)}
         case DELETE_PRODUCTS_FAILURE:
             return { ...state, loading: false, error: action.payload}
         case DELETE_PRODUCTS_REQUEST:
             return { ...state, loading: true}
+
+        
   
         default: return { ...state }
     }
