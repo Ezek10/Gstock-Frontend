@@ -124,7 +124,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 <select name="filter_by_product" style={{fontSize: 10, textOverflow: "ellipsis"}} value={filters.filter_by_product || ""} onChange={changeHandler} >
                 <option value="null"></option>
                 { products && products.map( prod => 
-                    <option key={capitalizeWords(prod.name)} value={prod.id} style={{margin: "0px"}}>{capitalizeWords(prod.name)}</option>
+                    <option key={prod.id} value={prod.id} style={{margin: "0px"}}>{capitalizeWords(prod.name)}</option>
                 )}
                 </select>
                 <CalendarFilters
@@ -140,14 +140,14 @@ const DataTransactions = ({filters, setFilters}) => {
                 <select name="filter_by_supplier" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_supplier || ""} onChange={changeHandler}>
                     <option value="null"></option>
                     {suppliers ? suppliers.map((suppliers) => (
-                        <option key={capitalizeWords(suppliers.name)} value={suppliers.id} style={{margin: "0px"}}>{capitalizeWords(suppliers.name)}</option>
+                        <option key={suppliers.id} value={suppliers.id} style={{margin: "0px"}}>{capitalizeWords(suppliers.name)}</option>
                     )) : null} 
                 </select>
                 <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Cliente <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                 <select name="filter_by_client" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_client || ""} onChange={changeHandler}>
                     <option value="null"></option>
                     {clients ? clients.map((client) => (
-                        <option key={capitalizeWords(client.name)} value={client.id} style={{margin: "0px"}}>{capitalizeWords(client.name)}</option>
+                        <option key={client.id} value={client.id} style={{margin: "0px"}}>{capitalizeWords(client.name)}</option>
                     )) : null} 
                 </select>
             </div>
@@ -159,7 +159,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 <select name="filter_by_seller" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_seller || ""} onChange={changeHandler}>
                     <option value="null"></option>
                     {sellers ? sellers.map((seller) => (
-                        <option key={capitalizeWords(seller.name)} value={seller.id} style={{margin: "0px"}}>{capitalizeWords(seller.name)}</option>
+                        <option key={seller.id} value={seller.id} style={{margin: "0px"}}>{capitalizeWords(seller.name)}</option>
                     )) : null} 
                 </select>
                 <button

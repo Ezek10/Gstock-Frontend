@@ -149,7 +149,7 @@ const TablaTransactions = ({filters}) => {
                     closeAfterTransition>
                     <Fade in={openDetailSellTransaction}>
                         <div ref={modalRef}>
-                            {selectedTransaction && <SellTransactionDetail handleCloseDetail={handleCloseDetail}/>}
+                            {selectedTransaction && <SellTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction}/>}
                         </div>
                     </Fade>
                 </Modal>

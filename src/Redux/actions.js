@@ -14,6 +14,8 @@ export const GET_CLIENTS = "GET_CLIENTS"
 
 export const GET_SELLERS = "GET_SELLERS"
 
+export const GET_USERS = "GET_USERS"
+
 export const GET_LOGIN_GOOGLE = "GET_LOGIN_GOOGLE"
 export const GET_LOGOUT = "GET_LOGOUT"
 
@@ -28,6 +30,9 @@ export const PUT_PRODUCT_DETAIL_FAILURE = "PUT_PRODUCT_DETAIL_FAILURE"
 export const DELETE_PRODUCTS_SUCCESS = "DELETE_PRODUCTS_SUCCESS"
 export const DELETE_PRODUCTS_REQUEST = "DELETE_PRODUCTS_REQUEST"
 export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
+
+
+
 
 const getHeaders = () => ({
     headers: {
@@ -225,3 +230,19 @@ export const getLoginGoogle = () => {
 export const getLogout = () => {
     window.location.href = `${USER_URL}/logout`;
 };
+
+export const getUsers = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`${USER_URL}`, getHeaders());
+            const users = response.data.result.content
+            dispatch({
+                type: GET_USERS,
+                payload: users
+            })
+        } catch (error){
+            console.error("Error al obtener los usuarios", error)
+            handleUnauthorizedError(error)
+        }
+    }
+}

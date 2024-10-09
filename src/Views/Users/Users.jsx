@@ -5,9 +5,12 @@ import logoReverse from "../../assets/logoReverse.png"
 import logo from "../../assets/logo.png"
 import deleteUser from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
+import { useSelector } from "react-redux";
 
 
 const Users = () => {
+
+    const users = useSelector((state) => state.products) || [];
 
     const [ selectedUser, setSelectedUser ] = useState(null)
 
@@ -15,45 +18,45 @@ const Users = () => {
         localStorage.removeItem('access_token');
         getLogout();
     };
-    const users = [
-        {name: "User1",
-        email: "user1@gmail.com",
-        image: logoReverse},
-        {name: "User2",
-        email: "user2@gmail.com",
-        image: logoReverse},
-        {name: "User3",
-        email: "user3@gmail.com",
-        image: logoReverse},
-        {name: "User4",
-        email: "user4@gmail.com",
-        image: logoReverse},
-        {name: "User5",
-        email: "user5@gmail.com",
-        image: logoReverse},
-        {name: "User6",
-        email: "user6@gmail.com",
-        image: logoReverse},
-        {name: "User7",
-        email: "user7@gmail.com",
-        image: logoReverse},
-        {name: "User8",
-        email: "user8@gmail.com",
-        image: logoReverse},
-        {name: "User9",
-        email: "user9@gmail.com",
-        image: logoReverse},
-        {name: "User10",
-        email: "user10@gmail.com",
-        image: logoReverse},
-        {name: "User11",
-        email: "user11@gmail.com",
-        image: logoReverse},
-        {name: "User12",
-        email: "user12@gmail.com",
-        image: logoReverse},
+    // const users = [
+    //     {name: "User1",
+    //     email: "user1@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User2",
+    //     email: "user2@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User3",
+    //     email: "user3@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User4",
+    //     email: "user4@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User5",
+    //     email: "user5@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User6",
+    //     email: "user6@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User7",
+    //     email: "user7@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User8",
+    //     email: "user8@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User9",
+    //     email: "user9@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User10",
+    //     email: "user10@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User11",
+    //     email: "user11@gmail.com",
+    //     image: logoReverse},
+    //     {name: "User12",
+    //     email: "user12@gmail.com",
+    //     image: logoReverse},
         
-    ]
+    // ]
 
     const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
     const handleOpenDelete = (i) => {
