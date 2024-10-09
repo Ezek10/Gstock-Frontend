@@ -10,7 +10,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const CalendarFilters = ({ filters, setFilters }) => {
 
-    const anchorDateRef = useRef(null);
+    const anchorSpanRef = useRef(null); // Nueva referencia para el span
     const anchorCalendarRef = useRef(null);
     const [openCalendar, setCalendar] = useState(false);
     const [tempDate, setTempDate] = useState([
@@ -28,11 +28,11 @@ const CalendarFilters = ({ filters, setFilters }) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (anchorDateRef.current.contains(event.target)) {
-                return
+            if (anchorSpanRef.current.contains(event.target)) {
+                return;
             }
             if (!anchorCalendarRef.current.contains(event.target)) {
-                setCalendar(false);  // Cierra el calendario
+                setCalendar(false); // Cierra el calendario
             }
         };
 
@@ -40,14 +40,11 @@ const CalendarFilters = ({ filters, setFilters }) => {
             document.addEventListener('mousedown', handleClickOutside);
         } else {
             document.removeEventListener('mousedown', handleClickOutside);
-            // Solo actualiza los filtros cuando el calendario se cierra
             if (tempDate[0].startDate) {
                 const { startDate, endDate } = tempDate[0];
-                // Ajustar el startDate a las 00:00 y el endDate a las 23:59
                 const updatedStartDate = new Date(startDate.setHours(0, 0, 0, 0));
                 const updatedEndDate = new Date(endDate.setHours(23, 59, 59, 999));
 
-                // Actualiza los filtros con las fechas en epoch (segundos)
                 setFilters(prevFilters => ({
                     ...prevFilters,
                     filter_by_start_date: Math.floor(updatedStartDate.getTime() / 1000),
@@ -64,63 +61,74 @@ const CalendarFilters = ({ filters, setFilters }) => {
 
     const handleDateChange = (item) => {
         setTempDate([item.selection]);
-        if (item.selection.startDate != item.selection.endDate){
-            setCalendar(false)
+        if (item.selection.startDate !== item.selection.endDate) {
+            setCalendar(false);
         }
     };
 
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
-            <p className={style.letrasWithMargin}>Fecha <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-            <Button 
-                ref={anchorDateRef}
-                variant="outlined" 
-                size="small"
-                target="_blank"
-                style={botonCopiar}
-                onClick={handleCalendar}
+            {/* Hacemos cliqueable la palabra "Fecha" y el icono */}
+            <span 
+                ref={anchorSpanRef} // Usamos esta referencia para el Popper
+                onClick={handleCalendar} 
+                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             >
-                {
-                    filters.filter_by_start_date ? 
-                    `${format(new Date(filters.filter_by_start_date*1000), "dd/MM/yy")} 
-                    - ${format(new Date(filters.filter_by_end_date*1000), "dd/MM/yy")}` 
+                <p className={style.letrasWithMargin}>
+                    Fecha <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+                </p>
+            </span>
+            
+            {/* Mostramos la fecha seleccionada, pero sin hacerla cliqueable */}
+            <div 
+                style={{
+                    ...botonCopiar, // Mantiene los estilos de botón
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid #ccc',
+                    padding: '1px',
+                    borderRadius: '5px',
+                    height: '2.1em'
+                }}
+            >
+                {filters.filter_by_start_date 
+                    ? `${format(new Date(filters.filter_by_start_date * 1000), "dd/MM/yy")} 
+                       - ${format(new Date(filters.filter_by_end_date * 1000), "dd/MM/yy")}` 
                     : ''
                 }
-            </Button>
+            </div>
+            
             <Popper
                 open={openCalendar}
                 ref={anchorCalendarRef}
-                anchorEl={anchorDateRef.current}
+                anchorEl={anchorSpanRef.current}  // Usamos el nuevo span como ancla
                 placement="bottom-end"
                 style={{ zIndex: "10", borderRadius: "5px"}}
                 modifiers={[
                     {
                         name: 'preventOverflow',
                         options: {
-                        boundary: 'window', // Limita el Popper dentro de la ventana del navegador
-                        altBoundary: true,
-                        tether: false,
-                        padding: { left: 325, right: 325 }, // Asegura espacio a los lados de la pantalla
+                            boundary: 'window',
+                            altBoundary: true,
+                            tether: false,
+                            padding: { left: 325, right: 325 },
                         },
                     },
                     {
                         name: 'flip',
                         options: {
-                        fallbackPlacements: ['bottom-start', 'bottom'],
+                            fallbackPlacements: ['bottom-start', 'bottom'],
                         },
                     },
-                    ]}
+                ]}
                 transition>
-                    {({ TransitionProps }) => (
+                {({ TransitionProps }) => (
                     <Fade { ...TransitionProps } timeout={350}>
                         <Box
                             sx={{
-                                '.rdrDateDisplayWrapper': {
-                                    display: 'none'
-                                },
-                                '.rdrDateRangeWrapper': {
-                                backgroundColor: '#B43210',
-                                },
+                                '.rdrDateDisplayWrapper': { display: 'none' },
+                                '.rdrDateRangeWrapper': { backgroundColor: '#B43210' },
                                 '.rdrCalendarWrapper': {
                                     backgroundColor: '#ffffff',
                                     borderRadius: "5px",
@@ -128,36 +136,15 @@ const CalendarFilters = ({ filters, setFilters }) => {
                                     left: "-70px",
                                     border: "2px solid black",
                                 },
-                                '.rdrDay_selected': {
-                                    backgroundColor: '#007bff',
-                                    color: '#ffffff',
-                                },
-                                '.rdrDateRangeWrapper .rdrDateRange': {
-                                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                                },
-                                '.rdrDay_inRange': {
-                                    backgroundColor: 'rgba(0, 123, 255, 0.3)',
-                                    color: '#ffffff',
-                                },
-                                '.rdrDay_day': {
-                                    color: '#000000',
-                                },
-                                '.rdrStartEdge': {
-                                    backgroundColor: '#000000'
-                                },
-                                '.rdrEndEdge':{
-                                    backgroundColor: '#000000'
-                                },
-                                '.rdrInRange': {
-                                    backgroundColor: '#000000'
-                                },
-                                '.rdrDayToday .rdrDayNumber span': {
-                                    '&:after':{
-                                        background: "#000000",
-                                    }
-                                },
+                                '.rdrDay_selected': { backgroundColor: '#007bff', color: '#ffffff' },
+                                '.rdrDay_inRange': { backgroundColor: 'rgba(0, 123, 255, 0.3)', color: '#ffffff' },
+                                '.rdrDay_day': { color: '#000000' },
+                                '.rdrStartEdge': { backgroundColor: '#000000' },
+                                '.rdrEndEdge': { backgroundColor: '#000000' },
+                                '.rdrInRange': { backgroundColor: '#000000' },
+                                '.rdrDayToday .rdrDayNumber span': { '&:after': { background: "#000000" } },
                             }}
-                            >
+                        >
                             <DateRange
                                 editableDateInputs={true}
                                 onChange={handleDateChange}
@@ -167,10 +154,10 @@ const CalendarFilters = ({ filters, setFilters }) => {
                             />
                         </Box>
                     </Fade>
-                    )}
+                )}
             </Popper>
         </div>
-    )
+    );
 }
 
 const botonCopiar = {
