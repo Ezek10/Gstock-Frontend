@@ -215,7 +215,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 size="small"
                 target="_blank"
                 style={buttonStyle}
-                onClick={() => putTransactionSell(transaction)}
+                onClick={() => putTransactionSell(dispatch(transaction))}
                 >Guardar cambios
             </Button>
 

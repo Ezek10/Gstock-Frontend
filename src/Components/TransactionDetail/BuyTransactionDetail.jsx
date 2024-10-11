@@ -80,18 +80,6 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
 
-    const submitHandler = () => {
-        putTransactionBuy({
-            products: transaction.products,
-            type: "BUY",
-            date: transaction.date,
-            payment_method: transaction.payment_method,
-            supplier: {
-                name: transaction.name
-            }
-        })
-    }
-
     return (
         <div className={style.containerTransactionDetail}>
             <Button
@@ -230,7 +218,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={() => submitHandler()}
+                    onClick={() => dispatch(putTransactionBuy(transaction))}
                     >Guardar cambios
                 </Button>
             </div>

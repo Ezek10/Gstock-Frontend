@@ -1,70 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Users.module.css"
 import Button from '@mui/material/Button';
 import logoReverse from "../../assets/logoReverse.png"
 import logo from "../../assets/logo.png"
-import deleteUser from "../../assets/closeConfirm.png"
+import deleteUserIcon from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers, postNewUser, deleteUser } from "../../Redux/actions";
 
 
 const Users = () => {
 
-    const users = useSelector((state) => state.products) || [];
+    const dispatch = useDispatch()
+
+    const users = useSelector((state) => state.users) || [];
 
     const [ selectedUser, setSelectedUser ] = useState(null)
+    const [ newUser, setNewUser ] = useState({
+        email: "",
+        name: "",
+        // cellphone: 0,
+    })
+
+    useEffect(() => {
+        dispatch(getUsers())
+    }, [dispatch])
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         getLogout();
     };
-    // const users = [
-    //     {name: "User1",
-    //     email: "user1@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User2",
-    //     email: "user2@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User3",
-    //     email: "user3@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User4",
-    //     email: "user4@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User5",
-    //     email: "user5@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User6",
-    //     email: "user6@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User7",
-    //     email: "user7@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User8",
-    //     email: "user8@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User9",
-    //     email: "user9@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User10",
-    //     email: "user10@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User11",
-    //     email: "user11@gmail.com",
-    //     image: logoReverse},
-    //     {name: "User12",
-    //     email: "user12@gmail.com",
-    //     image: logoReverse},
-        
-    // ]
+
+    const handleNewUser = (event) => {
+        const property = event.target.name
+        const value = event.target.value
+        setNewUser({...newUser, [property]: value, name: value.split("@")[0]})
+        console.log(newUser);
+    }    
+
+    const submitNewUser = () => {
+        postNewUser(newUser)
+    }
 
     const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
     const handleOpenDelete = (i) => {
         setSelectedUser(i)
-        console.log(selectedUser);
         
         setOpenDeleteModal(true);}
-    const handleCloseDelete = () => setOpenDeleteModal(false);
+        console.log(users[selectedUser].id);
+        const handleCloseDelete = () => setOpenDeleteModal(false);
+        
+        const handleDeleteUser = () => { 
+            dispatch(deleteUser(users[selectedUser].id))
+            getUsers()
+        }
 
     return (
         <div className={style.usersContainer}>
@@ -97,11 +86,11 @@ const Users = () => {
                     <h2 style={{padding: "20px 0px 0px 70px", margin: "0px", fontSize: "36px", boxSizing: "border-box", fontWeight: "400"}}>Usuarios activos</h2>
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", margin: "20px 30px 20px 70px", overflowY: "auto", boxSizing: "border-box"}}>
                         {users.map((user, index) => (
-                            <div style={{display: "flex", flexDirection: "row", alignItems: "center", width: "15vw", justifyContent: "space-between", margin: "10px 0px 10px 0px"}}>
-                                <img src={user.image} alt="Profile" style={{height: "40px", backgroundColor: "white", padding: "5px", borderRadius: "50px", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)"}}/> 
-                                    <p style={{fontSize: "24px", margin: "0px 0px 0px 0px"}}>{user.name}</p>   
+                            <div key={index} style={{display: "flex", flexDirection: "row", alignItems: "center", width: "15vw", justifyContent: "space-between", margin: "10px 0px 10px 0px"}}>
+                                <img src={ user.image ? user.image : logoReverse } alt="Profile" style={{height: "40px", backgroundColor: "white", padding: "5px", borderRadius: "50px", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)"}}/> 
+                                    <p style={{fontSize: "24px", margin: "0px 0px 0px 40px", textAlign: "left", flex: "1"}}>{user.name}</p>   
                                 <button onClick={() => handleOpenDelete(index)} style={{border: "none", backgroundColor: "white", height: "20px", width: "20px", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px"}}>
-                                    <img src={deleteUser} alt="Delete" style={{height: "20px"}}/>
+                                    <img src={deleteUserIcon} alt="Delete" style={{height: "20px"}}/>
                                 </button>
                             </div>
                         ))}
@@ -112,8 +101,8 @@ const Users = () => {
                     <h2 style={{padding: "20px 0px 0px 40px", margin: "0px", fontSize: "36px", boxSizing: "border-box", fontWeight: "400"}}>Crear usuario nuevo</h2>
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Usuario</p>
-                        <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="tuemail@ejemplo.com"/>
-                        <button style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white"}}>Aceptar</button>
+                        <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email"/>
+                        <button onClick={()=>submitNewUser()} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white"}}>Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -141,7 +130,7 @@ const Users = () => {
                             <button style={{ marginTop: "-5px",height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
                                         cursor: "pointer",
                                     }}} onClick={()=>handleCloseDelete()}>
-                                <img src={deleteUser} alt="closeConfirm" style={{width: "25px"}}/>
+                                <img src={deleteUserIcon} alt="closeConfirm" style={{width: "25px"}}/>
                             </button>
                         </div>
                         <p style={{ fontWeight: "500", fontSize: "15px"}}>{selectedUser!==null ? users[selectedUser].email : ""}</p>
@@ -151,7 +140,7 @@ const Users = () => {
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {handleCloseDelete()}}>Confirmar
+                                onClick={()=> {handleDeleteUser(); handleCloseDelete()}}>Confirmar
                             </Button>
                         </div>
                     </div>

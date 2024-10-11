@@ -31,6 +31,10 @@ export const DELETE_PRODUCTS_SUCCESS = "DELETE_PRODUCTS_SUCCESS"
 export const DELETE_PRODUCTS_REQUEST = "DELETE_PRODUCTS_REQUEST"
 export const DELETE_PRODUCTS_FAILURE = "DELETE_PRODUCTS_FAILURE"
 
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS"
+export const DELETE_USER_REQUEST = "DELETE_USER_REQUEST"
+export const DELETE_USER_FAILURE = "DELETE_USER_FAILURE"
+
 export const PUT_TRANSACTION_BUY_SUCCES = "PUT_TRANSACTION_BUY_SUCCES"
 export const PUT_TRANSACTION_BUY_REQUEST = "PUT_TRANSACTION_BUY_REQUEST"
 export const PUT_TRANSACTION_BUY_FAILURE = "PUT_TRANSACTION_BUY_FAILURE"
@@ -244,8 +248,10 @@ export const getLogout = () => {
 export const getUsers = () => {
     return async function (dispatch) {
         try {
-            const response = await axios.get(`${USER_URL}`, getHeaders());
-            const users = response.data.result.content
+            const response = await axios.get(`${USER_URL}/users/all`, getHeaders());
+            console.log(response);
+            
+            const users = response.data
             dispatch({
                 type: GET_USERS,
                 payload: users
@@ -259,10 +265,10 @@ export const getUsers = () => {
 
 export const postNewUser = async (user) => {
     try {
-        const response = await axios.post(``, user, getHeaders());
+        const response = await axios.post(`${USER_URL}/users/create`, user, getHeaders());
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error al cargar la compra");
+        throw new Error(error.response?.data?.message || "Error al crear un usuario nuevo");
     }
 };
 
@@ -270,14 +276,33 @@ export const putUser = (user) => {
     return async function (dispatch) {
         dispatch({type: PUT_USER_REQUEST})
         try {
-            const response = await axios.put(`${GSTOCK_URL}/transaction/buy`, user, getHeaders())
+            const response = await axios.put(`${USER_URL}/users/update`, user, getHeaders())
             dispatch({
                 type: PUT_USER_SUCCES,
                 payload: response.data
             }) 
         } catch(error) {
             dispatch({ type: PUT_USER_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos de la transacción", error)
+            console.error("Error al cambiar los datos del usuario", error)
+        }
+    }
+}
+
+export const deleteUser = (userId) => {
+    return async function (dispatch) {
+        try {
+            dispatch({type: DELETE_USER_REQUEST})
+            await axios.delete(`${USER_URL}/users/delete`, {params: {"user_id": userId}, ...getHeaders()});
+
+            dispatch({
+                type: DELETE_USER_SUCCESS,
+                payload: userId
+            })
+        } catch (error) {
+            dispatch({
+                type: DELETE_USER_FAILURE,
+                payload: error.message
+            })
         }
     }
 }
