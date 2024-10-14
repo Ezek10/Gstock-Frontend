@@ -80,7 +80,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"
                     }
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             
             <div>

@@ -83,7 +83,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"
                     }
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             <div>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>

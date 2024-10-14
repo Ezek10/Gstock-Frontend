@@ -76,7 +76,7 @@ const Exchange = React.forwardRef((props, ref) => {
                         color: "#fff",
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"}
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar canje</h2>
             <p className={style.letras}>Proveedor Canje</p>

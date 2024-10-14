@@ -201,7 +201,6 @@ const Compras = React.forwardRef((props, ref) => {
                     height: "30px",
                     minWidth: "0px",
                     backgroundColor: "black",
-                    borderColor: "transparent",
                     borderRadius: "50px",
                     color: "white",
                     position: "absolute",
@@ -210,9 +209,8 @@ const Compras = React.forwardRef((props, ref) => {
                     padding: "0px",
                     '&:hover':{
                         color: "#fff",
-                        borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"}
-                }}><CloseIcon/></Button>
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/></Button>
             <h2 style={{ fontSize: "20px", margin: "" }}>Agregar una compra</h2>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
