@@ -47,7 +47,6 @@ const Users = () => {
         setSelectedUser(i)
         
         setOpenDeleteModal(true);}
-        console.log(users[selectedUser].id);
         const handleCloseDelete = () => setOpenDeleteModal(false);
         
         const handleDeleteUser = () => { 
