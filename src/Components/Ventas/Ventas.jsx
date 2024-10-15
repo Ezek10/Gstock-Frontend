@@ -22,7 +22,7 @@ const Ventas = React.forwardRef((props, ref) => {
     const [ inStock, setInStock ] = useState([])
     const [ product, setProduct ] = useState({})
     const dispatch = useDispatch()
-    const [ sellPrice, setSellPrice ] = useState(0)
+    const [ sellPrice, setSellPrice ] = useState("")
     const [exchangeProducts, setExchangeProducts] = useState([]);
     const [ cart, setCart ] = useState({
         client: {
@@ -223,7 +223,7 @@ const Ventas = React.forwardRef((props, ref) => {
                         color: "#fff",
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"}
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
 
             <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar una venta</h2>
@@ -301,7 +301,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice || 0} onChange={changeHandler} name="sell_price"/>
+                    <input type="text" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price"/>
                     </div>
                     <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>

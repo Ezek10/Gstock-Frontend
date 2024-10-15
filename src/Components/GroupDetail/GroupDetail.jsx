@@ -5,6 +5,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { deleteProducts, putProductDetail, putProductStock } from "../../Redux/actions";
 import { useDispatch } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import CloseIcon from '@mui/icons-material/Close';
 import check from "../../assets/check.png" 
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts, updateProductList }, ref) => {
@@ -83,7 +84,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"
                     }
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             <div>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
