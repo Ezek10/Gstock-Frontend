@@ -2,9 +2,13 @@
     background: transparent
 }
 
-body {
+* {
     font-family: 'Mukta', sans-serif;
+}
+
+body, p, button {
     font-size: 15px;
+    font-weight: 500;
 }
 
 ul {

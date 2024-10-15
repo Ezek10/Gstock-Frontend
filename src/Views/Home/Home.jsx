@@ -85,7 +85,7 @@ const Home = () => {
                             borderColor: "transparent",
                             backgroundColor: "rgb(201, 201, 201)"}
                         }}> 
-                        Cerrar sesión
+                        <p>Cerrar sesión</p>
                 </Button>
             </div>
         </div>

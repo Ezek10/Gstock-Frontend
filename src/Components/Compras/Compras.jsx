@@ -249,7 +249,7 @@ const Compras = React.forwardRef((props, ref) => {
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
-                
+                <p style={{fontSize: 3}}> </p>
                 <Button 
                     variant="outlined" 
                     size="small"
@@ -257,6 +257,7 @@ const Compras = React.forwardRef((props, ref) => {
                     style={buttonStyle}
                     onClick={addProdHandler}>Agregar producto
                 </Button>
+                <p style={{fontSize: 3}}> </p>
                 
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
@@ -296,6 +297,7 @@ const Compras = React.forwardRef((props, ref) => {
                     </div>
                     <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
                 </div>
+                <p style={{fontSize: 3}}> </p>
 
                 <Button 
                     variant="outlined" 
@@ -304,6 +306,7 @@ const Compras = React.forwardRef((props, ref) => {
                     onClick={()=>handleOpenConfirm()}
                     style={buttonStyle}>Finalizar compra
                 </Button>
+                <p style={{fontSize: 3}}> </p>
 
                 <Dialog
                     aria-labelledby="transition-modal-title"
@@ -355,8 +358,6 @@ const Compras = React.forwardRef((props, ref) => {
                             </div>
                         </div>
                 </Dialog>
-
-                <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
                     <div key={product.product_name+"-"+index}>

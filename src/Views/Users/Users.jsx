@@ -41,7 +41,13 @@ const Users = () => {
     const submitNewUser = () => {
         postNewUser(newUser)
     }
-
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
     const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
     const handleOpenDelete = (i) => {
         setSelectedUser(i)
@@ -76,7 +82,7 @@ const Users = () => {
                             borderColor: "transparent",
                             backgroundColor: "rgb(201, 201, 201)"}
                         }}> 
-                        Cerrar sesión
+                        <p>Cerrar sesión</p>
                 </Button>
             </div>
 
@@ -85,11 +91,11 @@ const Users = () => {
                     <h2 style={{padding: "20px 0px 0px 70px", margin: "0px", fontSize: "36px", boxSizing: "border-box", fontWeight: "400"}}>Usuarios activos</h2>
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", margin: "20px 30px 20px 70px", overflowY: "auto", boxSizing: "border-box"}}>
                         {users.map((user, index) => (
-                            <div key={index} style={{display: "flex", flexDirection: "row", alignItems: "center", width: "15vw", justifyContent: "space-between", margin: "10px 0px 10px 0px"}}>
+                            <div key={index} style={{display: "flex", flexDirection: "row", alignItems: "center", width: "18vw", justifyContent: "space-between", margin: "10px 0px 10px 0px"}}>
                                 <img src={ user.image ? user.image : logoReverse } alt="Profile" style={{height: "40px", backgroundColor: "white", padding: "5px", borderRadius: "50px", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)"}}/> 
-                                    <p style={{fontSize: "24px", margin: "0px 0px 0px 40px", textAlign: "left", flex: "1"}}>{user.name}</p>   
-                                <button onClick={() => handleOpenDelete(index)} style={{border: "none", backgroundColor: "white", height: "20px", width: "20px", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px"}}>
-                                    <img src={deleteUserIcon} alt="Delete" style={{height: "20px"}}/>
+                                    <p style={{fontSize: "24px", paddingRight: 10, margin: "0px 0px 0px 40px", textAlign: "left", flex: "1"}}>{capitalizeWords(user.name)}</p>   
+                                <button onClick={() => handleOpenDelete(index)} style={{border: "none", marginRight: 0, backgroundColor: "white", height: "20px", width: "20px", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px"}}>
+                                    <img src={deleteUserIcon} alt="Delete" style={{height: "20px", marginRight: 0}}/>
                                 </button>
                             </div>
                         ))}
