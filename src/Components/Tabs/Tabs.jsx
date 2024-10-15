@@ -106,11 +106,15 @@ const Tabs = () => {
                                 </Modal>
 
                             </div>
-                            <div style={{height: "80%", display: "flex", justifyContent: "center"}}>
-                                <div style={{fontSize: "20px", display: "flex", width: "90%", alignItems: "center"}}>
-                                Seleccione un producto de la tabla para acceder a los datos del grupo.
-                                </div>
+                            <div style={{ height: "65%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                             <div style={{ fontSize: "15px", textAlign: "center" }}>
+                               <strong>Seleccione un producto</strong> de la tabla<br />
+                                para acceder a los <strong>datos del grupo</strong>.
+                             </div>
                             </div>
+
+
+
                         </div>
                     </div> }
                 {activetab===1 && 

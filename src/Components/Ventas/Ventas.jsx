@@ -12,6 +12,7 @@ import Fade from '@mui/material/Fade';
 import { useDispatch, useSelector } from "react-redux";
 import check from "../../assets/check.png" 
 import closeConfirm from "../../assets/closeConfirm.png"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // flechita ABAJO
 
 const Ventas = React.forwardRef((props, ref) => {
 
@@ -245,7 +246,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div className={style.selector}>
-                    <p className={style.letras}>Canal de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                     <select name="contact_via" onChange={changeHandler} value={cart.contact_via}>
                         <option value="INSTAGRAM">Instagram</option>
                         <option value="FACEBOOK">Facebook</option>

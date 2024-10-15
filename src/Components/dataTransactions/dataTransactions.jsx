@@ -248,20 +248,6 @@ const DataTransactions = ({filters, setFilters}) => {
                 />
             </div>
 
-           {/*<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Producto <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <select name="filter_by_product" style={{fontSize: 10, textOverflow: "ellipsis"}} value={filters.filter_by_product || ""} onChange={changeHandler} >
-                <option value="null"></option>
-                { products && products.map( prod => 
-                    <option key={prod.id} value={prod.id} style={{margin: "0px"}}>{capitalizeWords(prod.name)}</option>
-                )}
-                </select>
-                <CalendarFilters
-                    filters={filters}
-                    setFilters={setFilters}
-                />
-            </div>*/}
-
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
        {/* Filtro Proveedor */}
@@ -453,26 +439,33 @@ const DataTransactions = ({filters, setFilters}) => {
             : ""}
     </div>
     <button
-        style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '8px 16px',
-            backgroundColor: 'white',
-            color: 'black',
-            border: '1px solid #e0e0e0',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500',
-            height: "27px",
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            transition: 'all 0.3s ease'
-        }}
-        onClick={resetFilters}
-    >
-        <DeleteOutlineIcon style={{ marginRight: '2px', fontSize: '18px' }} />
-        Eliminar filtros
-    </button>
+    style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 16px',
+        backgroundColor: 'white',
+        color: 'black',
+        border: '1px solid #e0e0e0',
+        borderRadius: '20px',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '500',
+        height: "27px",
+        //boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+        transition: 'all 0.3s ease',
+    }}
+    onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
+    }}
+    onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+    }}
+    onClick={resetFilters}
+>
+    <DeleteOutlineIcon style={{ marginRight: '2px', fontSize: '18px' }} />
+    Eliminar filtros
+</button>
+
 </div>
 
 {/* Contenedor para el Divider y la tarjeta de ganancias */}
