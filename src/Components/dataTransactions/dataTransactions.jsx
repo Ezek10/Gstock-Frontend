@@ -454,6 +454,7 @@ const DataTransactions = ({filters, setFilters}) => {
         cursor: 'pointer',
         height: "27px",
         transition: 'all 0.3s ease',
+        whiteSpace: 'nowrap'
     }}
     onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
@@ -482,31 +483,31 @@ const DataTransactions = ({filters, setFilters}) => {
     {/* Tarjeta de ganancias */}
     <div className={style.cards}>
         <p style={{margin: "5px 0px 0px 20px", fontWeight: 500}}>GANANCIAS TOTALES</p>
-        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>${cards.earns}</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "-15px 10px -10px 0px", fontSize: "50px", fontWeight: "800"}}>${cards.earns}</p>
     </div>
 
     {/* Tarjeta de productos vendidos */}
     <div className={style.cards}>
         <p style={{margin: "5px 0px 0px 20px"}}>PRODUCTOS VENDIDOS</p>
-        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_sold}</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "-15px 10px -10px 0px", fontSize: "50px", fontWeight: "800"}}>{cards.product_sold}</p>
     </div>
 
     {/* Tarjeta de productos comprados */}
     <div className={style.cards}>
         <p style={{margin: "5px 0px 0px 20px"}}>PRODUCTOS COMPRADOS</p>
-        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "-15px 10px -10px 0px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
     </div>
 
             {/* Tarjeta de TOP Vendedores */}
     <div className={style.cards} style={{ height: "110px" }}>
         <p style={{ margin: "5px 0px 0px 20px" }}>VENDEDORES</p>
-        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", margin: "-10px 10px -10px 10px", paddingBottom: 10 }}>
             {cards.sellers 
                 ? Object.entries(cards.sellers)
                     .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
                     .slice(0, 3) // Obtener solo los primeros 3
                     .map(([key, value]) => (
-                        <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value})</p>
+                        <p key={key} style={{ margin: "0px", textAlign: "right" }}>{key} ({value})</p>
                     ))
                 : ""
             }
@@ -516,21 +517,18 @@ const DataTransactions = ({filters, setFilters}) => {
            {/* Tarjeta de Canal de Venta */}
     <div className={style.cards} style={{ height: "110px" }}>
         <p style={{ margin: "5px 0px 0px 20px" }}>CANAL DE VENTA</p>
-        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", margin: "-10px 10px -10px 10px", paddingBottom: 10 }}>
             {cards.channels 
                 ? Object.entries(cards.channels)
                     .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
                     .slice(0, 3) // Obtener solo los primeros 3
                     .map(([key, value]) => (
-                        <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value.toFixed(2)})</p>
+                        <p key={key} style={{ margin: "0px 0px 0px 0px", textAlign: "right" }}>{key} ({value.toFixed(2)})</p>
                     ))
                 : ""
             }
         </div>
     </div>
-
-      
-      
 </div>
 )
 }

@@ -145,6 +145,8 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: 'transparent',
     paddingTop: "2px",
     paddingBottom: "2px",
+    overflow: "hidden",
+    whiteSpace: 'nowrap'
 }));
 
 const HeaderTableCell = styled(TableCell)(({ theme }) => ({
@@ -156,6 +158,8 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
     borderBottomColor: "transparent",
     padding: "15px",
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(224, 224, 224))",
+    overflow: "hidden",
+    whiteSpace: 'nowrap'
 }));
 
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
