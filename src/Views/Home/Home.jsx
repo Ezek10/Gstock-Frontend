@@ -17,7 +17,7 @@ const Home = () => {
     };
 
     return(
-        <div className={style.container0}>
+<div className={style.container0}>
     <div className={style.container1}>
         <div className={style.header}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
@@ -91,7 +91,7 @@ const Home = () => {
         </div>
         <Tabs/>
         <div className={style.footer}>
-            <img src={logo} alt="logo" style={{ height: "5vh", marginLeft: "5%" }}/>
+            <img src={logo} alt="logo" style={{ height: "5vh", marginLeft: "5%", minHeight: 30 }}/>
             <div style={{ color: "white", marginLeft: "0.5%", display: "flex", flexDirection: "column" }}>
                 <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}>Gestión</div>
                 <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}> de Stock</div>

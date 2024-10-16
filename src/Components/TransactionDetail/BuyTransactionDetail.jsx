@@ -97,6 +97,14 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         setTransaction({...transaction, products: newUpdatedCart})
     }
 
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
+
     const totalBuyPrice = newTransaction.products.reduce((total, product) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
@@ -134,7 +142,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="supplier" onChange={transactionDetailHandler}/>
+                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={capitalizeWords(transaction.name)} name="supplier" onChange={transactionDetailHandler}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -183,8 +191,8 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     <div id="cart" className={style.cart}>
                         {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
-                                <div style={{ gridColumn: "span 2" }}>{product.product_name}</div>
-                                <div style={{marginLeft: "15px"}}>{product.color.toUpperCase()}</div>
+                                <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product_name)}</div>
+                                <div style={{marginLeft: "15px"}}>{capitalizeWords(product.color)}</div>
                                 <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
                                 <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.buy_price}</div>
                                 <Button 

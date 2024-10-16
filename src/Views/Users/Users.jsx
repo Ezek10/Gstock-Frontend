@@ -72,7 +72,7 @@ const Users = () => {
     return (
         <div className={style.usersContainer}>
             <div className={style.header}>
-                <Link to="/home" style={{margin: "0px 0px -10px 20px"}}><ArrowBackIosIcon sx={{fontSize: 48, color: "white", margin: "0px"}}/></Link>
+                <Link to="/home" style={{margin: "0px 0px -10px 20px"}}><ArrowBackIosIcon sx={{fontSize: 36, color: "white", margin: "0px 0px 0px 30px"}}/></Link>
                 
                 <Button 
                     variant="outlined" 

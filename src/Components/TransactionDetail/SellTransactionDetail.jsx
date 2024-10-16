@@ -63,6 +63,14 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         setUpdatedTransaction({ ...updatedTransaction, date: selection.startDate.getTime()/1000});
     }
 
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
+
     const handlePaymentChange = (selection) => {
         setUpdatedTransaction({...updatedTransaction, payment_method: selection});
     }
@@ -119,7 +127,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                 <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={updatedTransaction.client.name} name="client" onChange={transactionDetailHandler}/>
+                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={capitalizeWords(updatedTransaction.client.name)} name="client" onChange={transactionDetailHandler}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -128,14 +136,14 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 <p className={style.letras}>Tel <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" style={{ height: "15px", margin: "0px 10px 0px 10px", width: "25%" }} placeholder={updatedTransaction.client.cellphone} name="cellphone" onChange={transactionDetailHandler}/>
                 <p className={style.letras}>Email <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%"  }} placeholder={updatedTransaction.client.email} name="email" onChange={transactionDetailHandler}/>
+                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%"  }} placeholder={capitalizeWords(updatedTransaction.client.email)} name="email" onChange={transactionDetailHandler}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <p className={style.letras}>{transaction.contact_via}</p>
+                <p className={style.letras} style={{ margin: "0px 10px 0px 5px"}}>{capitalizeWords(transaction.contact_via)}</p>
                 <CalendarTransactions onDateChange={handleDateChange}/>
             </div>
 
@@ -143,7 +151,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <p className={style.letras}>{transaction.seller.name}</p>
+                <p className={style.letras}>{capitalizeWords(transaction.seller.name)}</p>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -165,11 +173,11 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <h2>Nuevo producto</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
-                <p className={style.letras}>Product <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select type="text" name="product_name" value={newProduct.product.name || ""} onChange={handleCartChange} style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "80%", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={transaction.products.name} value="">Elija un modelo</option>
                         {stock.map((prod) => (
-                            prod.stocks.length===0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
+                            prod.stocks.length===0 ? null : <option key={prod.name} value={prod.name}>{capitalizeWords(prod.name)}</option>
                         ))}
                     </select>
             </div>
@@ -222,8 +230,8 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 <div id="cart" className={style.cart}>
                     {updatedTransaction.products.length > 0 ? (updatedTransaction.products.map((product, index) => (
                         <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
-                            <div style={{ gridColumn: "span 2", fontSize: "clamp(8px, 0.8vw, 15px)" }}>{product.product.name}</div>
-                            <div style={{marginLeft: "15px"}}>{product.color ? product.color.toUpperCase() : ""}</div>
+                            <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product.name)}</div>
+                            <div style={{marginLeft: "15px"}}>{product.color ? capitalizeWords(product.color) : ""}</div>
                             {/* <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div> */}
                             <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.sell_price}</div>
                             <Button 
@@ -336,7 +344,8 @@ const buttonStyle = {
     marginBottom: "5px",
     textTransform: 'none',
     color: "white",
-    fontSize: "clamp(8px, 0.8vw, 15px)",
+    fontSize: "14",
+    fontWeight: 400,
     '&:hover':{
         color: "#fff",
         borderColor: "transparent",
