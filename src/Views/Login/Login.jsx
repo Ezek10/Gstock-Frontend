@@ -17,7 +17,7 @@ const Login = () => {
             <p style={{color: "white", fontSize: "24px"}}>Iniciar sesión</p>
             <button 
                 onClick={handleLoginGoogle} 
-                style={{borderRadius: "10px", borderColor: "transparent", width: "fit-content", height: "fit-content", padding: "0px 1px 0px 1px", cursor: "pointer"}}
+                style={{borderRadius: "10px", borderColor: "transparent", width: "45px", height: "45px", padding: "0px 1px 0px 1px", cursor: "pointer"}}
             >
                 <img src={googleLogo} alt="googleLogo" style={{width: "40px", margin: "0px"}} />
             </button>
