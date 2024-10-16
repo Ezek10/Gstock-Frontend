@@ -43,6 +43,10 @@ export const PUT_TRANSACTION_SELL_SUCCES = "PUT_TRANSACTION_SELL_SUCCES"
 export const PUT_TRANSACTION_SELL_REQUEST = "PUT_TRANSACTION_SELL_REQUEST"
 export const PUT_TRANSACTION_SELL_FAILURE = "PUT_TRANSACTION_SELL_FAILURE"
 
+export const DELETE_TRANSACTION_SUCCES = "DELETE_TRANSACTION_SUCCES"
+export const DELETE_TRANSACTION_REQUEST = "DELETE_TRANSACTION_REQUEST"
+export const DELETE_TRANSACTION_FAILURE = "DELETE_TRANSACTION_FAILURE"
+
 export const PUT_USER_SUCCES = "PUT_USER_SUCCES"
 export const PUT_USER_REQUEST = "PUT_USER_REQUEST"
 export const PUT_USER_FAILURE = "PUT_USER_FAILURE"
@@ -228,6 +232,7 @@ export const postSellTransaction = async (cart) => {
 };
 
 export const putBuyTransaction = async (cart) => {
+    debugger
     try {
         const response = await axios.put(`${GSTOCK_URL}/transaction/buy`, cart, getHeaders());
         return response.data;
@@ -334,6 +339,25 @@ export const putTransactionSell = (transactionDetail) => {
         } catch(error) {
             dispatch({ type: PUT_TRANSACTION_SELL_FAILURE, payload: error.message });
             console.error("Error al cambiar los datos de la transacción", error)
+        }
+    }
+}
+
+export const deleteTransaction = (id) => {
+    return async function (dispatch) {
+        try {
+            dispatch({type: DELETE_TRANSACTION_REQUEST})
+            await axios.delete(`${GSTOCK_URL}/transaction`, {params: {"transaction_id": id}, ...getHeaders()});
+
+            dispatch({
+                type: DELETE_TRANSACTION_SUCCES,
+                payload: id
+            })
+        } catch (error) {
+            dispatch({
+                type: DELETE_TRANSACTION_FAILURE,
+                payload: error.message
+            })
         }
     }
 }

@@ -7,7 +7,9 @@ import deleteUserIcon from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, postNewUser, deleteUser } from "../../Redux/actions";
+import { Link } from 'react-router-dom'
 import check from "../../assets/check.png" 
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
 const Users = () => {
@@ -40,7 +42,6 @@ const Users = () => {
     }    
 
     const submitNewUser = () => {
-        debugger
         postNewUser(newUser)
     }
     const capitalizeWords = (str) => {
@@ -71,6 +72,8 @@ const Users = () => {
     return (
         <div className={style.usersContainer}>
             <div className={style.header}>
+                <Link to="/home" style={{margin: "0px 0px -10px 20px"}}><ArrowBackIosIcon sx={{fontSize: 48, color: "white", margin: "0px"}}/></Link>
+                
                 <Button 
                     variant="outlined" 
                     size="small"

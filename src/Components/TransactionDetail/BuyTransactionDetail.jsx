@@ -1,35 +1,64 @@
 import React, { useState } from "react";
 import style from "./BuyTransactionDetail.module.css"
-import { Button, Divider } from "@mui/material";
+import { Button, Dialog, Divider } from "@mui/material";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import { useDispatch } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { putTransactionBuy } from "../../Redux/actions";
+import { deleteTransaction, putTransactionBuy } from "../../Redux/actions";
+import closeConfirm from "../../assets/closeConfirm.png"
 
 const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction }, ref) => {
+    
+    const formatingTransaction = () => {
+        const newArray = []
+        transaction.products.map(prod => (
+            newArray.push({
+                battery_percent: prod.battery_percent,
+                buy_price: prod.buy_price,
+                color: prod.color,
+                observations: prod.observations,
+                product_name: prod.product.name,
+                serial_id: prod.serial_id,
+                state: prod.state,
+            })
+        ))        
+        return newArray
+    }
 
+    const [openCheck, setOpenCheck] = useState(false);
+    const handleOpenCheck = () => setOpenCheck(true)
+    const handleCloseCheck = () => setOpenCheck(false);
+    
     const dispatch = useDispatch()
+    const [ newTransaction, setNewTransaction ] = useState({
+        products: formatingTransaction(),
+        type: "BUY",
+        date: transaction.date,
+        payment_method: transaction.payment_method,
+        supplier: transaction.supplier,
+        id: transaction.id
+    })
+
     const [ newProduct, setNewProduct ] = useState({
         battery_percent: 0,
         buy_price: 0,
         color: "",
         observations: "",
-        product: {
-            name: "",
-        },
+        product_name: "",
         serial_id: "",
         state: "AVAILABLE",
         quantity: 1,
     })
+
 
     const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
 
     const transactionDetailHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setTransaction({ ...transaction, [property]: value })
+        setNewTransaction({ ...transaction, supplier:{name: value} })
     }    
 
     const updateproductState = (product, itemIndex) => {
@@ -40,30 +69,24 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     }
 
     const handleDateChange = (selection) => {
-        setTransaction({ ...transaction, date: selection.startDate.getTime()/1000});
+        setNewTransaction({ ...newTransaction, date: selection.startDate.getTime()/1000});
     }
 
     const handlePaymentChange = (selection) => {
-        setTransaction({...transaction, payment_method: selection});
+        setNewTransaction({...newTransaction, payment_method: selection});
     }
 
     const handleCartChange = (event) => {
         const property = event.target.name
         const value = event.target.value
+        setNewProduct({...newProduct, [property]: value })
 
-        if (property==="product") {
-            setNewProduct({...newProduct, product: {name: value} })
-        } else {
-            setNewProduct({...newProduct, [property]: value })
-        }
-        console.log(newProduct);
     }
 
     const addProdHandler = () => {
         const productsArray = Array(parseInt(newProduct.quantity, 10)).fill(newProduct);
-        console.log(productsArray);
-        
-        setTransaction({...transaction, products: [...transaction.products, ...productsArray]})
+        const oldProducts = formatingTransaction()
+        setNewTransaction({...newTransaction, products: [...oldProducts, ...productsArray]})
     }
 
     const deleteFromCart = (index) => {
@@ -74,9 +97,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         setTransaction({...transaction, products: newUpdatedCart})
     }
 
-    console.log(transaction);
-
-    const totalBuyPrice = transaction.products.reduce((total, product) => {
+    const totalBuyPrice = newTransaction.products.reduce((total, product) => {
         return total + (parseFloat(product.buy_price || 0));
     }, 0);
 
@@ -113,7 +134,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="suppplier" onChange={transactionDetailHandler}/>
+                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="supplier" onChange={transactionDetailHandler}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -131,7 +152,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={``} name="product" onChange={handleCartChange}/>
+                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={``} name="product_name" onChange={handleCartChange}/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />  
@@ -160,9 +181,9 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 <div className={style.cuadroTotal}>
                     <p className={style.letras}>TOTAL</p>
                     <div id="cart" className={style.cart}>
-                        {transaction.products.length > 0 ? (transaction.products.map((product, index) => (
+                        {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
                             <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
-                                <div style={{ gridColumn: "span 2" }}>{product.product.name}</div>
+                                <div style={{ gridColumn: "span 2" }}>{product.product_name}</div>
                                 <div style={{marginLeft: "15px"}}>{product.color.toUpperCase()}</div>
                                 <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
                                 <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.buy_price}</div>
@@ -196,9 +217,9 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)"}}>${totalBuyPrice}</h1>
                 </div>
 
-                {transaction.products.length > 0 ? (transaction.products.map((product, index) => (
-                    <div key={product.product.name+"-"+index}>
-                        <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product.name}</p>
+                {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
+                    <div key={product.product_name+"-"+index}>
+                        <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>
                     <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "25% 25% 25% 25%", gap: "0px" }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
@@ -207,20 +228,66 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.color}  name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.serial_id}  name="serial_id"/>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.battery_percent}  name="battery_percent"/>
-                        <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state==="AVAILABLE" ? "Disponible" :  product.state==="RESERVED" ? "Reservado" : product.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
+                        <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", textAlign: "center" }} onClick={() => updateproductState(product, index)}>{product.state==="AVAILABLE" ? "Disponible" :  product.state==="RESERVED" ? "Reservado" : product.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                     </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "92%", borderRadius: "20spx"}}/>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "94%", borderRadius: "20spx"}}/>
                     <Divider variant="middle" component="li" sx={dividerStyle} />
                 </div>))) : (<div></div>) }
 
-                <Button 
-                    variant="outlined" 
-                    size="small"
-                    target="_blank"
-                    style={buttonStyle}
-                    onClick={() => dispatch(putTransactionBuy(transaction))}
-                    >Guardar cambios
-                </Button>
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%", alignItems: "center"}}>
+                    <Button 
+                        variant="outlined" 
+                        size="small"
+                        target="_blank"
+                        style={buttonStyle}
+                        onClick={() => dispatch(putTransactionBuy(newTransaction))}
+                        >Guardar cambios
+                    </Button>
+
+                    <Button 
+                        variant="outlined" 
+                        size="small"
+                        target="_blank"
+                        style={{
+                            width: "fit_content",
+                            backgroundColor: "red",
+                            color: "white",
+                            borderColor: "transparent",
+                            borderRadius: "20px",
+                            textTransform: 'none',
+                            height: "2.5em",
+                        }}
+                        onClick={() => handleOpenCheck()}
+                        >Eliminar transacción
+                    </Button>
+                </div>
+
+                <Dialog
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openCheck}
+                onClose={()=>handleCloseCheck()}
+                closeAfterTransition
+                disablePortal
+                style={{ position: "absolute", display: "flex" }}>
+                    <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
+                        <button style={{ position: "absolute", margin: "-5px 0px 0px 0px", right: "15px", top: "10px",height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
+                                    cursor: "pointer",
+                                }}} onClick={()=>handleCloseCheck()}>
+                            <img src={closeConfirm} alt="closeConfirm" style={{width: "25px"}}/>
+                        </button>
+                        <p style={{display: "flex", margin: "0px", textAlign: "center", marginLeft: "10%",width: "80%", alignItems: "center" }}>¿Quieres eliminar esta transacción de manera permanente?</p>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            <Button 
+                                variant="outlined" 
+                                size="small"
+                                target="_blank"
+                                style={buttonStyle}
+                                onClick={()=> {dispatch(deleteTransaction(transaction.id));handleCloseCheck()}}>Confirmar
+                            </Button>
+                        </div>
+                    </div>
+            </Dialog>
             </div>
         </div>
     )

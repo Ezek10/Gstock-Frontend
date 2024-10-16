@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import { useDispatch, useSelector } from "react-redux";
-import { getTransactions } from "../../Redux/actions";
+import { getTransactions, putTransactionSell } from "../../Redux/actions";
 import style from "./tablaTransactions.module.css"
 import BuyTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
 import SellTransactionDetail from "../TransactionDetail/SellTransactionDetail";
@@ -76,9 +76,18 @@ const TablaTransactions = ({filters}) => {
     }
 
     const updateTransaction = (transaction) => {
+        const newTransaction = {...transaction};
+        newTransaction["has_swap"] = false;
+        newTransaction["products"] = newTransaction["products"].map(p => ({
+            "id": p.id,
+            "sell_price": p.sell_price
+        }));
+
         const updatedTransactions = [...transactions]
-        const transactionIndex = updatedTransactions.findIndex(prod => prod.id === product.id);
+        const transactionIndex = updatedTransactions.findIndex(prod => prod.id === transaction.id);
         updatedTransactions[transactionIndex] = transaction;
+
+        dispatch(putTransactionSell(newTransaction))
         dispatch(temp => temp({
             type: "GET_TRANSACTIONS",
             payload: updatedTransactions,

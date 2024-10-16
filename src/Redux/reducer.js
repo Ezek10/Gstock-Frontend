@@ -20,12 +20,16 @@ import { GET_PRODUCTS_STOCKS,
         DELETE_USER_SUCCESS,
         DELETE_USER_REQUEST,
         DELETE_USER_FAILURE,
+        DELETE_TRANSACTION_SUCCES,
+        DELETE_TRANSACTION_REQUEST,
+        DELETE_TRANSACTION_FAILURE,
         GET_TRANSACTIONS,
         GET_TRANSACTION_CARDS,
         GET_SUPPLIERS,
         GET_CLIENTS,
         GET_SELLERS,
-        GET_USERS} from "./actions"
+        GET_USERS
+        } from "./actions"
 
 const initialState = {
     products: [],
@@ -112,6 +116,12 @@ const rootReducer = (state = initialState, action) => {
         case DELETE_USER_REQUEST:
             return { ...state, loading: true}
         
+        case DELETE_TRANSACTION_SUCCES:
+            return { ...state, loading: false, products: state.transactions.filter(product => product.id !== action.payload)}
+        case DELETE_TRANSACTION_FAILURE:
+            return { ...state, loading: false, error: action.payload}
+        case DELETE_TRANSACTION_REQUEST:
+            return { ...state, loading: true}
   
         default: return { ...state }
     }
