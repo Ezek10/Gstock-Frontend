@@ -177,6 +177,8 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
     border: "4px solid white",
     borderTopWidth:"0px",
     borderBottomWidth: "0px",
+    overflow: "hidden",
+    whiteSpace: 'nowrap'
 }));
 
 const HeaderTableCell = styled(TableCell)(({ theme }) => ({
@@ -193,6 +195,7 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
     borderTopWidth:"0px",
     borderBottomWidth: "0px",
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(224, 224, 224))",
+    whiteSpace: 'nowrap'
 }));
 
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
