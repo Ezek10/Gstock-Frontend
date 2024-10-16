@@ -40,7 +40,6 @@ const Users = () => {
     }    
 
     const submitNewUser = () => {
-        debugger
         postNewUser(newUser)
     }
     const capitalizeWords = (str) => {
