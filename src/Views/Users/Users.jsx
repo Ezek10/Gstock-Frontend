@@ -7,6 +7,7 @@ import deleteUserIcon from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, postNewUser, deleteUser } from "../../Redux/actions";
+import check from "../../assets/check.png" 
 
 
 const Users = () => {
@@ -39,21 +40,27 @@ const Users = () => {
     }    
 
     const submitNewUser = () => {
+        debugger
         postNewUser(newUser)
     }
 
     const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
     const handleOpenDelete = (i) => {
         setSelectedUser(i)
-        
         setOpenDeleteModal(true);}
-        console.log(users[selectedUser].id);
         const handleCloseDelete = () => setOpenDeleteModal(false);
         
         const handleDeleteUser = () => { 
             dispatch(deleteUser(users[selectedUser].id))
             getUsers()
         }
+
+    const [ openAddUserModal, setOpenAddUserModal ] = useState(false);
+    const handleOpenAdd = () => {
+            setOpenAddUserModal(true);
+            setTimeout(() => {
+                setOpenAddUserModal(false)
+            }, 3000)}
 
     return (
         <div className={style.usersContainer}>
@@ -102,7 +109,7 @@ const Users = () => {
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Usuario</p>
                         <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email"/>
-                        <button onClick={()=>submitNewUser()} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white"}}>Aceptar</button>
+                        <button onClick={()=>{submitNewUser(), handleOpenAdd()}} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white"}}>Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -145,6 +152,22 @@ const Users = () => {
                         </div>
                     </div>
             </Dialog>
+
+            <Dialog
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openAddUserModal}
+                    onClose={()=>handleCloseCheck()}
+                    closeAfterTransition
+                    disablePortal
+                    style={{ position: "absolute", display: "flex", justifyContent: "center" }}>
+                        <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
+                            <p style={{margin: "0px", textAlign: "center"}}>El usuario fue agregado</p>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
+                            </div>
+                        </div>
+                </Dialog>
         </div>
     )
 }

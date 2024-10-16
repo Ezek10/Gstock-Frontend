@@ -351,7 +351,7 @@ const Compras = React.forwardRef((props, ref) => {
                     disablePortal
                     style={{ position: "absolute", display: "flex" }}>
                         <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center",}}>
-                            <p style={{margin: "0px", textAlign: "center"}}>Los cambios se guardaron correctamente</p>
+                            <p style={{margin: "0px", textAlign: "center"}}>La compra se agregó correctamente</p>
                             <div style={{display: "flex", justifyContent: "center"}}>
                                 <img src={check} alt="Check" style={{height: "43px", display: "grid", alignSelf: "center"}}/>
                             </div>

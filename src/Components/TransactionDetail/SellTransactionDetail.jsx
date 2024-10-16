@@ -3,27 +3,36 @@ import style from "./BuyTransactionDetail.module.css"
 import { Button , Divider} from "@mui/material";
 import Payment from "../Payment/Payment";
 import CalendarTransactions from "../Calendar/CalendarTransactions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
 import { putTransactionSell } from "../../Redux/actions";
 
 const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction  }, ref) => {
 
-    const [ newProduct, setNewProduct ] = useState({
-        battery_percent: 0,
-        buy_price: 0,
-        product: {
-            name: "",
-            list_price: 0
-        },
-        serial_id: "",
-        state: "AVAILABLE",
+    const [ updatedTransaction, setUpdatedTransaction ] = useState({
+        products: Array.isArray(transaction.products) 
+        ? transaction.products.flatMap(prod => prod.product) 
+        : [],
+        type: "SELL",
+        seller: transaction.seller,
+        client: transaction.client,
+        payment_method: "CASH",
+        date: transaction.date,
+        contact_via: transaction.contact_via,
+        swap_products: transaction.swap_products
     })
+
+    const [ newProduct, setNewProduct ] = useState({})
+
+    const stock = useSelector((state) => state.products) || [];   
 
     const transactionDetailHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
+        if (property==="client" || property==="cellphone" || property==="email") {
+            setUpdatedTransaction({...updatedTransaction, client: {[property]: value} })
+        }
         setTransaction({ ...transaction, [property]: value })
     }
 
@@ -31,31 +40,37 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         const property = event.target.name
         const value = event.target.value
 
-        if (property==="product" || property==="list_price") {
-            setNewProduct({...newProduct, product: {[property]: value} })
+        if (property==="product_name") {
+            setNewProduct({...newProduct, name: value})
         } else {
             setNewProduct({...newProduct, [property]: value })
-        }
-        console.log(newProduct);
+        } 
     }
 
     const handleDateChange = (selection) => {
-        setTransaction({ ...newProduct, date: selection.startDate.getTime()/1000});
+        setUpdatedTransaction({ ...updatedTransaction, date: selection.startDate.getTime()/1000});
     }
 
     const handlePaymentChange = (selection) => {
-        setTransaction({...newProduct, payment_method: selection});
+        setUpdatedTransaction({...updatedTransaction, payment_method: selection});
     }
 
     const addProdHandler = () => {
-        setTransaction({...transaction, products: [...transaction.products, newProduct]})
+
+        setUpdatedTransaction({...updatedTransaction, products: [...updatedTransaction.products, newProduct]})
     }
 
     const deleteFromCart = (index) => {
-        const newUpdatedCart = [...transaction.products]
+        const newUpdatedCart = [...updatedTransaction.products]
         newUpdatedCart.splice(index, 1)
-        setTransaction({...transaction, products: newUpdatedCart})
+        setUpdatedTransaction({...updatedTransaction, products: newUpdatedCart})
     }
+
+    console.log(newProduct.name);
+    
+    console.log("Transacciones", transaction);
+    console.log("STOCK",stock);
+    
 
     return (
         <div className={style.containerTransactionDetail}>
@@ -90,16 +105,16 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                 <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="client" onChange={transactionDetailHandler}/>
+                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={updatedTransaction.client.name} name="client" onChange={transactionDetailHandler}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                 <p className={style.letras}>Tel <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 10px 0px 10px", width: "25%" }} placeholder={transaction.name} name="tel" onChange={transactionDetailHandler}/>
+                <input type="text" style={{ height: "15px", margin: "0px 10px 0px 10px", width: "25%" }} placeholder={updatedTransaction.client.cellphone} name="cellphone" onChange={transactionDetailHandler}/>
                 <p className={style.letras}>Email <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%"  }} placeholder={transaction.name} name="email" onChange={transactionDetailHandler}/>
+                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%"  }} placeholder={updatedTransaction.client.email} name="email" onChange={transactionDetailHandler}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -113,7 +128,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-                <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <p className={style.letras}>{transaction.seller.name}</p>
             </div>
 
@@ -133,18 +148,35 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
-            <h2>Producto</h2>
+            <h2>Nuevo producto</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                 <p className={style.letras}>Product <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="product" onChange={handleCartChange}/>
+                <select type="text" name="product_name" value={newProduct.name || ""} onChange={handleCartChange} style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "80%", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
+                        <option key={transaction.products.name} value="">Elija un modelo</option>
+                        {stock.map((prod) => (
+                            prod.stocks.length===0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
+                        ))}
+                    </select>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p className={style.letras}>IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.serial_id} name="serial_id" onChange={handleCartChange}/>
+                <select type="text" value={newProduct.serial_id || ""} onChange={handleCartChange} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
+                        <option key={newProduct.serial_id} value="">Elija un IMEI</option>
+                        {stock
+                            ?.filter(option => option.name === newProduct.name) // Filtrar por nombre específico
+                            .flatMap(option => option.stocks) // Aplanar el arreglo de stocks para acceder a los serial_id
+                            .filter(stockItem => stockItem.serial_id !== "" && !transaction.products.some(prod => prod.serial_id?.includes(stockItem.serial_id))) // Filtrar productos con serial_id disponible
+                            .map(stockItem => (
+                                <option key={stockItem.serial_id} value={stockItem.serial_id}>
+                                    {stockItem.serial_id}
+                                </option>
+                            ))
+                        }
+                    </select>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -157,7 +189,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p className={style.letras}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={transaction.name} name="sell_price" onChange={handleCartChange}/>
+                <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder="$0000" name="sell_price" onChange={handleCartChange}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -176,9 +208,9 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 <div id="cart" className={style.cart}>
                     {transaction.products.length > 0 ? (transaction.products.map((product, index) => (
                         <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
-                            <div style={{ gridColumn: "span 2" }}>{product.product.name}</div>
-                            <div style={{marginLeft: "15px"}}>{product.color.toUpperCase()}</div>
-                            <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
+                            <div style={{ gridColumn: "span 2" }}>{product.name}</div>
+                            <div style={{marginLeft: "15px"}}>{product.color ? product.color.toUpperCase() : ""}</div>
+                            {/* <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div> */}
                             <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.sell_price}</div>
                             <Button 
                                 variant="outlined" 
@@ -215,7 +247,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 size="small"
                 target="_blank"
                 style={buttonStyle}
-                onClick={() => putTransactionSell(dispatch(transaction))}
+                // onClick={() => dispatch(putTransactionSell(updateTransaction))}
                 >Guardar cambios
             </Button>
 

@@ -65,7 +65,6 @@ export const getProductsStocks = () => {
         try {
             const response = await axios.get(`${GSTOCK_URL}/product/stock`, getHeaders());
             const products = response.data.result.content
-            console.log(response);
             dispatch({
                 type: GET_PRODUCTS_STOCKS,
                 payload: products
