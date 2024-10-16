@@ -165,7 +165,7 @@ const botonCopiar = {
     backgroundColor: "transparent",
     borderColor: "transparent",
     borderRadius: "5px",
-    fontSize: 12,
+    fontSize: 14,
     color: "black",
     height: "2.1em",
     whiteSpace: "nowrap",

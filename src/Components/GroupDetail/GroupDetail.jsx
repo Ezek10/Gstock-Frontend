@@ -5,6 +5,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { deleteProducts, putProductDetail, putProductStock } from "../../Redux/actions";
 import { useDispatch } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import CloseIcon from '@mui/icons-material/Close';
 import check from "../../assets/check.png" 
 
 const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts, updateProductList }, ref) => {
@@ -22,7 +23,13 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         const value = event.target.value
         setProducts({ ...products, [property]: value })
     }
-
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
     const [openCheck, setOpenCheck] = useState(false);
     const handleOpenCheck = () => {
         setOpenCheck(true)};
@@ -83,7 +90,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"
                     }
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             <div>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -123,14 +130,14 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={`${products.name}`} name="name" value={products.name} onChange={stockDetailHandler} />
+                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={`${capitalizeWords(products.name)}`} name="name" value={capitalizeWords(products.name)} onChange={stockDetailHandler} />
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <p style={{ fontWeight: "bold", margin: "0px 0px 0px 10%" }}> {products.stocks.length}</p>
+                    <p style={{ fontWeight: 400, margin: "0px 0px 0px 10px" }}> {products.stocks.length}</p>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -141,7 +148,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         if (!aux.includes(prov.supplier.name)) {
                             aux.push(prov.supplier.name)
                             return (
-                                <p key={products.id} style={{ fontWeight: "bold", margin: "0px 0px 0px 10px", color: prov.supplier.color }}>{prov.supplier.name}</p>)
+                                <p key={products.id} style={{ fontWeight: 400, margin: "0px 0px 0px 10px", color: prov.supplier.color }}>{capitalizeWords(prov.supplier.name)}</p>)
                         }
                     })}
                 </div>

@@ -58,6 +58,7 @@ const DataTransactions = ({filters, setFilters}) => {
     };
 
     const capitalizeWords = (str) => {
+        if (!str) {return str}
         return str
             .split(' ') // Divide la cadena en palabras
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
@@ -134,7 +135,7 @@ const DataTransactions = ({filters, setFilters}) => {
             <img src={filtroIcon} alt="Filtro" style={{display: "flex", alignSelf: "flex-end",height: "30px"}}/>
 
             {/*Filtro Compras*/}
-            <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginLeft: -10}}>
                 <button
                     name="filter_by_buy_type"
                     onClick={toggleHandler}
@@ -201,12 +202,13 @@ const DataTransactions = ({filters, setFilters}) => {
                             marginRight: "5px"
                         }}
                     >
-                        <p style={{margin: "0px"}}>Producto</p>
+                        Producto
                         <ArrowDropDownIcon sx={{fontSize: 18, marginLeft: '5px'}}/> {/* Espacio entre "Producto" y flecha */}
                     </div>
                     {isOpenProduct && (
                         <div style={{
                             position: 'absolute',
+                            fontSize: 14,
                             top: '100%',
                             left: 0,
                             zIndex: 1000,
@@ -237,7 +239,7 @@ const DataTransactions = ({filters, setFilters}) => {
                         </div>
                     )}
                 </div>
-                <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275}}>
                     {filters.filter_by_product 
                         ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
                         : ""}
@@ -247,20 +249,6 @@ const DataTransactions = ({filters, setFilters}) => {
                     setFilters={setFilters}
                 />
             </div>
-
-           {/*<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Producto <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <select name="filter_by_product" style={{fontSize: 10, textOverflow: "ellipsis"}} value={filters.filter_by_product || ""} onChange={changeHandler} >
-                <option value="null"></option>
-                { products && products.map( prod => 
-                    <option key={prod.id} value={prod.id} style={{margin: "0px"}}>{capitalizeWords(prod.name)}</option>
-                )}
-                </select>
-                <CalendarFilters
-                    filters={filters}
-                    setFilters={setFilters}
-                />
-            </div>*/}
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
@@ -277,7 +265,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 marginRight: "5px"
             }}
         >
-            <p style={{margin: "0px"}}>Proveedor</p>
+            Proveedor
             <ArrowDropDownIcon sx={{fontSize: 18, marginLeft: '5px'}}/>
         </div>
         {isOpenSupplier && (
@@ -285,6 +273,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 position: 'absolute',
                 top: '100%',
                 left: 0,
+                fontSize: 14,
                 zIndex: 1000,
                 backgroundColor: 'white',
                 border: '1px solid #ccc',
@@ -313,7 +302,7 @@ const DataTransactions = ({filters, setFilters}) => {
             </div>
         )}
     </div>
-    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275}}>
         {filters.filter_by_supplier 
             ? capitalizeWords(suppliers.find(s => s.id === filters.filter_by_supplier)?.name || '')
             : ""}
@@ -335,7 +324,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 marginRight: "5px"
             }}
         >
-            <p style={{margin: "0px"}}>Cliente</p>
+            Cliente
             <ArrowDropDownIcon sx={{fontSize: 18}}/>
         </div>
         {isOpenClient && (
@@ -344,6 +333,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 top: '100%',
                 left: 0,
                 zIndex: 1000,
+                fontSize: 14,
                 backgroundColor: 'white',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
@@ -371,7 +361,7 @@ const DataTransactions = ({filters, setFilters}) => {
             </div>
         )}
     </div>
-        <div style={{marginLeft: '10px'}}>
+        <div style={{marginLeft: '10px', fontSize: 14, fontWeight: 275}}>
            {filters.filter_by_client 
             ? capitalizeWords(clients.find(c => c.id === filters.filter_by_client)?.name || '')
             : ""}
@@ -411,7 +401,7 @@ const DataTransactions = ({filters, setFilters}) => {
                 marginRight: "5px"
             }}
         >
-            <p style={{margin: "0px"}}>Vendedor</p>
+            Vendedor
             <ArrowDropDownIcon sx={{fontSize: 18,  marginLeft: '5px'}}/>
         </div>
         {isOpenSeller && (
@@ -447,36 +437,38 @@ const DataTransactions = ({filters, setFilters}) => {
             </div>
         )}
     </div>
-    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+    <div style={{marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275}}>
         {filters.filter_by_seller 
             ? capitalizeWords(sellers.find(s => s.id === filters.filter_by_seller)?.name || '')
             : ""}
     </div>
     <button
-        style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '8px 16px',
-            backgroundColor: 'white',
-            color: 'black',
-            border: '1px solid #e0e0e0',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500',
-            height: "27px",
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            transition: 'all 0.3s ease'
-        }}
-        onClick={resetFilters}
-    >
-        <DeleteOutlineIcon style={{ marginRight: '2px', fontSize: '18px' }} />
-        Eliminar filtros
-    </button>
+    style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 10px',
+        backgroundColor: 'white',
+        color: 'black',
+        border: '1px solid #e0e0e0',
+        borderRadius: '20px',
+        cursor: 'pointer',
+        height: "27px",
+        transition: 'all 0.3s ease',
+    }}
+    onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
+    }}
+    onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+    }}
+    onClick={resetFilters}
+>
+    <DeleteOutlineIcon style={{ marginRight: '2px', fontSize: '18px', marginBottom: "2px" }} />
+    Eliminar filtros
+</button>
 </div>
 
 {/* Contenedor para el Divider y la tarjeta de ganancias */}
-<div style={{ width: '100%' }}>
     {/* Divider */}
     <Divider variant="middle" component="li" sx={{
         ...dividerStyle,
@@ -484,59 +476,58 @@ const DataTransactions = ({filters, setFilters}) => {
         width: '100%',  // Asegura que el divisor ocupe todo el ancho
     }}/>
 
-    {/* Espaciador */}
-    <div style={{ height: '8px' }}></div>
+    {/* Separador */}
+    <p style={{fontSize: 5}}> </p>
 
     {/* Tarjeta de ganancias */}
-    <div className={style.cards} style={{ width: '100%' }}>
-        <p style={{margin: "5px 0px 0px 20px", fontWeight: "400"}}>GANANCIAS TOTALES</p>
+    <div className={style.cards}>
+        <p style={{margin: "5px 0px 0px 20px", fontWeight: 500}}>GANANCIAS TOTALES</p>
         <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>${cards.earns}</p>
     </div>
-</div>
 
-            {/* Tarjeta de productos vendidos */}
-             <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "400"}}>PRODUCTOS VENDIDOS</p>
-                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_sold}</p>
-             </div>
+    {/* Tarjeta de productos vendidos */}
+    <div className={style.cards}>
+        <p style={{margin: "5px 0px 0px 20px"}}>PRODUCTOS VENDIDOS</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_sold}</p>
+    </div>
 
-            {/* Tarjeta de productos comprados */}
-             <div className={style.cards}>
-                <p style={{margin: "5px 0px 0px 20px", marginLeft: "10px", fontWeight: "400"}}>PRODUCTOS COMPRADOS</p>
-                <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
-             </div>
+    {/* Tarjeta de productos comprados */}
+    <div className={style.cards}>
+        <p style={{margin: "5px 0px 0px 20px"}}>PRODUCTOS COMPRADOS</p>
+        <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "0px", marginRight: "10px", marginTop: "-20px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
+    </div>
 
             {/* Tarjeta de TOP Vendedores */}
-<div className={style.cards} style={{ height: "105px" }}>
-    <p style={{ margin: "5px 0px 0px 20px", marginLeft: "10px", marginTop: "5px", fontWeight: "400" }}>VENDEDORES</p>
-    <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px", alignItems: "flex-end" }}>
-        {cards.sellers 
-            ? Object.entries(cards.sellers)
-                .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
-                .slice(0, 3) // Obtener solo los primeros 3
-                .map(([key, value]) => (
-                    <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value})</p>
-                ))
-            : ""
-        }
+    <div className={style.cards} style={{ height: "110px" }}>
+        <p style={{ margin: "5px 0px 0px 20px" }}>VENDEDORES</p>
+        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px", alignItems: "flex-end" }}>
+            {cards.sellers 
+                ? Object.entries(cards.sellers)
+                    .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
+                    .slice(0, 3) // Obtener solo los primeros 3
+                    .map(([key, value]) => (
+                        <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value})</p>
+                    ))
+                : ""
+            }
+        </div>
     </div>
-</div>
 
            {/* Tarjeta de Canal de Venta */}
-<div className={style.cards} style={{ height: "105px" }}>
-    <p style={{ margin: "5px 0px 0px 20px", marginLeft: "10px", marginTop: "5px", fontWeight: "400" }}>CANAL DE VENTA</p>
-    <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px" }}>
-        {cards.channels 
-            ? Object.entries(cards.channels)
-                .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
-                .slice(0, 3) // Obtener solo los primeros 3
-                .map(([key, value]) => (
-                    <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value.toFixed(2)})</p>
-                ))
-            : ""
-        }
+    <div className={style.cards} style={{ height: "110px" }}>
+        <p style={{ margin: "5px 0px 0px 20px" }}>CANAL DE VENTA</p>
+        <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", marginLeft: "10px" }}>
+            {cards.channels 
+                ? Object.entries(cards.channels)
+                    .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
+                    .slice(0, 3) // Obtener solo los primeros 3
+                    .map(([key, value]) => (
+                        <p key={key} style={{ margin: "0px", textAlign: "right", marginRight: "10px" }}>{key} ({value.toFixed(2)})</p>
+                    ))
+                : ""
+            }
+        </div>
     </div>
-</div>
 
       
       

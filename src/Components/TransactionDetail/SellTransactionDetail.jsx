@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
 import { putTransactionSell } from "../../Redux/actions";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction  }, ref) => {
 
@@ -95,7 +96,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                         borderColor: "transparent",
                         backgroundColor: "rgb(80, 80, 80)"
                     }
-                }}>X
+                }}><CloseIcon sx={{fontSize: 15, fontWeight: "bold", color: "white" }}/>
             </Button>
             
             <div>
@@ -120,7 +121,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <p className={style.letras}>Canal de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                 <p className={style.letras}>{transaction.contact_via}</p>
                 <CalendarTransactions onDateChange={handleDateChange}/>
             </div>

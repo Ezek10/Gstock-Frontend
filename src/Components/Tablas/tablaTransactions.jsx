@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, capitalize } from '@mui/material';
 import { styled } from '@mui/system';
 import { useEffect } from "react";
 import { Modal } from '@mui/base/Modal';
@@ -18,7 +18,13 @@ const TablaTransactions = ({filters}) => {
     const [selectedTransaction, setSelectedTransaction] = useState([]);
     const modalRef = useRef(null);
     const dispatch = useDispatch()
-
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
     const handleOpenDetail = (prod) => {
         setSelectedTransaction(prod);
         if (prod.type==="BUY") {
@@ -46,7 +52,7 @@ const TablaTransactions = ({filters}) => {
     useEffect(() => {
         const calculateEmptyRows = () => {
             const tableHeight = window.innerHeight * 0.65;
-            const rowHeight = 34;
+            const rowHeight = 36;
             const displayedRows = transactions.length;
             const rowsThatFit = Math.floor(tableHeight / rowHeight);
             const emptyRows = Math.max(0, rowsThatFit - displayedRows);
@@ -109,12 +115,12 @@ const TablaTransactions = ({filters}) => {
                     <TableBody >
                     {transactions.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ fontWeight: "bold", '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{prod.name}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"} }}>{prod.total}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", fontWeight: "bold", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{capitalizeWords(prod.name)}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "15%", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{`$ ${prod.total}`}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
                         </TableRow>
                     ))}
                     {Array.from({ length: emptyRowCount }).map((_, index) => (
@@ -161,38 +167,42 @@ const TablaTransactions = ({filters}) => {
 }
 
 const CustomTableCell = styled(TableCell)(({ theme }) => ({
+    fontFamily: 'Mukta',
+    fontSize: 20,
+    fontWeight: 400,
     borderBottom: "1px solid transparent",
     backgroundColor: 'transparent',
-    paddingTop: "5px",
-    paddingBottom: "5px",
-    height: "10px",
+    paddingTop: "2px",
+    paddingBottom: "2px",
     border: "4px solid white",
     borderTopWidth:"0px",
     borderBottomWidth: "0px",
-  }));
+}));
 
-  const HeaderTableCell = styled(TableCell)(({ theme }) => ({
+const HeaderTableCell = styled(TableCell)(({ theme }) => ({
+    fontFamily: 'Mukta',
+    fontSize: 20,
+    fontWeight: 600,
     textAlign: 'center',
     backgroundColor: "transparent",
     borderBottomColor: "transparent",
     borderTopColor: "transparent",
     padding: "15px",
-    fontSize: "20px",
-    fontWeight: "600",
     overflow: "hidden",
     border: "4px solid white",
     borderTopWidth:"0px",
     borderBottomWidth: "0px",
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(224, 224, 224))",
-  }));
+}));
 
-  const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
+const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
+    fontFamily: 'Mukta',
     background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
     boxShadow: "0px 0px 0px 0px transparent",
     position: "relative",
     width: "100%",
     height: "65vh",
     overflow: "hidden"
-  }));
+}));
 
 export default TablaTransactions;

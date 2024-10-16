@@ -9,6 +9,8 @@ import Fade from '@mui/material/Fade';
 import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
 import DataTransactions from "../dataTransactions/dataTransactions";
+import { IoIosSearch } from "react-icons/io";
+
 
 const Tabs = () => {
 
@@ -68,8 +70,11 @@ const Tabs = () => {
                             </Button>
                         </div>
                         <div className={style.container2}>
-                            <input type="text" placeholder="Busca un producto" style={{ width: "60%", height: "25px", borderRadius: "50px" }}/>
-                            <div style={{ display:"flex", justifyContent: "space-between", width: "100%", padding: "0px 17% 0px 17%", boxSizing: "border-box" }}>
+                            <div style={{ position: "relative",  display: "flex", alignItems: "center", width: "70%"}}>
+                                <input type="text" placeholder="Busca un producto" style={{ height: "25px", marginLeft: 0, marginRight: 0, borderRadius: "50px", fontSize: 15, paddingLeft: 35, width: "100%"}}/>
+                                <IoIosSearch style={{position: "absolute", left: "10px", top: "35%", fontSize: "22px"}}/>
+                            </div>
+                            <div style={{ display:"flex", justifyContent: "space-between", width: "70%", boxSizing: "border-box" }}>
                                 <Button 
                                     onClick={handleOpenCompras}
                                     variant="outlined"
@@ -106,10 +111,11 @@ const Tabs = () => {
                                 </Modal>
 
                             </div>
-                            <div style={{height: "80%", display: "flex", justifyContent: "center"}}>
-                                <div style={{fontSize: "20px", display: "flex", width: "90%", alignItems: "center"}}>
-                                Seleccione un producto de la tabla para acceder a los datos del grupo.
-                                </div>
+                            <div style={{ height: "65%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                             <div style={{ fontSize: "15px", textAlign: "center" }}>
+                               <strong>Seleccione un producto</strong> de la tabla<br />
+                                para acceder a los <strong>datos del grupo</strong>.
+                             </div>
                             </div>
                         </div>
                     </div> }
@@ -153,15 +159,16 @@ const botonCopiar = {
 }
 
 const butonStyle = {
+    fontFamily: 'Mukta',
+    fontWeight: 400,
+    fontSize: 15,
     backgroundColor: "black",
     borderColor: "transparent",
     borderRadius: "50px",
-    minWidth: "45px",
     height: "2em",
-    width:"90px",
-    marginLeft: "3%",
-    padding: "5px",
-    marginRight: "3%",
+    width:"45%",
+    overflow: "clip",
+    whiteSpace: "nowrap",
     textTransform: 'none',
     color: "white",
     boxSizing: "border-box",

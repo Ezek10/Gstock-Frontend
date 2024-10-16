@@ -1,138 +1,128 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Box, Popper } from "@mui/material";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Fade from '@mui/material/Fade';
-import { DateRange } from 'react-date-range';
-import style from "./Calendar.module.css"
+import { Calendar } from 'react-date-range'; 
+import style from "./Calendar.module.css";
 import { format } from 'date-fns';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const CalendarTransactions = ( { onDateChange } ) => {
+const CalendarTransactions = ({ onDateChange }) => {
+    const anchorRef = useRef(null); // Referencia para el botón que activa el calendario
+    const calendarRef = useRef(null); // Nueva referencia para el calendario
 
-    const anchorRef = useRef(null);
     const [openCalendar, setCalendar] = useState(false);
-    const [ date, setDate ] = useState([
-        {
-            startDate: new Date(),
-            endDate: null,
-            key: 'selection'
-        }
-    ])
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
-    const handleCalendar = () => {
+    const handleCalendarToggle = () => {
         setCalendar((prevOpen) => !prevOpen);
-    }
+    };
 
-    const handleDateChange = (item) => {
-        setDate([item.selection]);
+    const handleDateChange = (date) => {
+        setSelectedDate(date); 
         if (onDateChange) {
-            onDateChange(item.selection);
+            onDateChange(date);
         }
-        setCalendar(false)
-    }
+        setCalendar(false);
+    };
+
+    // Cerrar el calendario solo si se hace clic fuera del contenedor del calendario y el botón
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                anchorRef.current && 
+                !anchorRef.current.contains(event.target) &&
+                calendarRef.current && 
+                !calendarRef.current.contains(event.target) // Añadir esta condición para evitar cerrar cuando se hace clic dentro del calendario
+            ) {
+                setCalendar(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [anchorRef, calendarRef]);
 
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
-                    <p className={style.letras}>Fecha <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                    <Button 
-                        ref={anchorRef}
-                        variant="outlined" 
-                        size="small"
-                        target="_blank"
-                        style={botonCopiar}
-                        onClick={handleCalendar}
-                    >
-                        {format(date[0].startDate, "dd/MM/yy")}
-                    </Button>
-                    <Popper
-                        open={openCalendar}
-                        anchorEl={anchorRef.current}
-                        placement="bottom-end"
-                        style={{ zIndex: "10", borderRadius: "5px"}}
+            <div ref={anchorRef} onClick={handleCalendarToggle} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <p className={style.letras} style={{ cursor: 'pointer' }}>Fecha</p>
+                <ArrowDropDownIcon sx={{ fontSize: 18 }} style={{ cursor: 'pointer' }} />
+            </div>
+            <Button 
+                variant="outlined" 
+                size="small"
+                style={{ ...botonCopiar, cursor: 'default' }}
+            >
+                {format(selectedDate, "dd/MM/yy")}
+            </Button>
+            <Popper
+                open={openCalendar}
+                anchorEl={anchorRef.current} 
+                placement="bottom-start"
+                style={{ zIndex: "10", borderRadius: "5px", maxWidth: "90vw" }} 
                 modifiers={[
                     {
                         name: 'preventOverflow',
                         options: {
-                        boundary: 'window', // Limita el Popper dentro de la ventana del navegador
-                        altBoundary: true,
-                        tether: false,
-                        padding: { left: 325, right: 325 }, // Asegura espacio a los lados de la pantalla
+                            boundary: 'window',
+                            altBoundary: true,
+                            tether: false,
                         },
                     },
                     {
                         name: 'flip',
                         options: {
-                        fallbackPlacements: ['bottom-start', 'bottom'],
+                            fallbackPlacements: ['bottom-start', 'bottom'],
                         },
                     },
-                    ]}
-                        transition>
-                            {({ TransitionProps }) => (
-                            <Fade { ...TransitionProps } timeout={350}>
-                                <Box
-                                    sx={{
-                                        '.rdrDateDisplayWrapper': {
-                                            display: 'none'
-                                        },
-                                        '.rdrDateRangeWrapper': {
-                                        backgroundColor: '#B43210',
-                                        },
-                                        '.rdrCalendarWrapper': {
-                                            backgroundColor: '#ffffff',
-                                            borderRadius: "5px",
-                                            position: "fixed",
-                                            left: "-70px",
-                                            border: "2px solid black",
-                                        },
-                                        '.rdrDay_selected': {
-                                            backgroundColor: '#007bff',
-                                            color: '#ffffff',
-                                        },
-                                        '.rdrDateRangeWrapper .rdrDateRange': {
-                                            backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                                        },
-                                        '.rdrDay_inRange': {
-                                            backgroundColor: 'rgba(0, 123, 255, 0.3)',
-                                            color: '#ffffff',
-                                        },
-                                        '.rdrDay_day': {
-                                            color: '#000000',
-                                        },
-                                        '.rdrStartEdge': {
-                                            backgroundColor: '#000000'
-                                        },
-                                        '.rdrEndEdge':{
-                                            backgroundColor: '#000000'
-                                        },
-                                        '.rdrInRange': {
-                                            backgroundColor: '#000000'
-                                        },
-                                        '.rdrDayToday .rdrDayNumber span': {
-                                            '&:after':{
-                                                background: "#000000",
-                                            }
-                                        },
-                                    }}
-                                    >
-                                    <DateRange
-                                        editableDateInputs={true}
-                                        onChange={handleDateChange}
-                                        moveRangeOnFirstSelection={false}
-                                        ranges={date}
-                                        showMonthArrow={false}
-                                    />
-                                </Box>
-                            </Fade>
-                            )}
-                    </Popper>
-
-                </div>
-    )
+                ]}
+                transition
+            >
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                        <Box
+                            ref={calendarRef} // Asignamos la referencia aquí
+                            sx={{
+                                maxWidth: "100%", 
+                                '.rdrCalendarWrapper': {
+                                    backgroundColor: '#ffffff',
+                                    borderRadius: "5px",
+                                    border: "2px solid black",
+                                    overflow: "hidden",
+                                    maxWidth: "90vw", 
+                                },
+                                '.rdrDay_selected': {
+                                    backgroundColor: '#000000', // Fondo negro para la fecha seleccionada
+                                    color: '#ffffff', // Texto blanco para la fecha seleccionada
+                                },
+                                '.rdrDayToday .rdrDayNumber span': {
+                                    '&:after': {
+                                        background: "#000000", // Cambiar estilo del día actual a negro
+                                    }
+                                },
+                                '.rdrDay_day': {
+                                    color: '#000000', // Texto en negro para días normales
+                                },
+                            }}
+                        >
+                            <Calendar
+                                date={selectedDate} 
+                                onChange={handleDateChange}
+                                showMonthArrow={false}
+                            />
+                        </Box>
+                    </Fade>
+                )}
+            </Popper>
+        </div>
+    );
 }
 
 const botonCopiar = {
-
     backgroundColor: "transparent",
     borderColor: "transparent",
     borderRadius: "5px",
@@ -141,10 +131,11 @@ const botonCopiar = {
     width: "2.1em",
     minWidth: "0px",
     marginLeft: "30px",
-    '&:hover':{
+    '&:hover': {
         color: "#fff",
         borderColor: "transparent",
-        backgroundColor: "rgb(80, 80, 80)"}
+        backgroundColor: "rgb(80, 80, 80)"
+    }
 }
 
 export default CalendarTransactions;
