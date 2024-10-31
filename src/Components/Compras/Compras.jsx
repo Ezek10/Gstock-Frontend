@@ -109,9 +109,7 @@ const Compras = React.forwardRef((props, ref) => {
         updatedCart.products = updatedCart.products.concat(cartProducts)
         if (updatedCart.products[0] && updatedCart.products[0].product_name===""){
             updatedCart.products.shift();
-        }
-        console.log(updatedCart);
-        
+        }        
         setCart(updatedCart)
     }
 
@@ -137,7 +135,6 @@ const Compras = React.forwardRef((props, ref) => {
     }
 
     const handlePaymentChange = (selection) => {
-        console.log(selection);
         setNewProduct({...newProduct, payment_method: selection});
         setCart({...cart, payment_method: selection});
     }
@@ -146,7 +143,6 @@ const Compras = React.forwardRef((props, ref) => {
         const newUpdatedCart = {...cart}
         newUpdatedCart.products.splice(index, 1)
         setCart(newUpdatedCart)
-        console.log(newUpdatedCart);
     }
 
     const totalBuyPrice = cart.products.reduce((total, product) => {
@@ -162,12 +158,9 @@ const Compras = React.forwardRef((props, ref) => {
 
 
     const submitHandler = async (event) => {
-        console.log(errors);
         
         if (Object.values(errors).every((error) => error === "")) {
             try {
-                console.log(cart);
-                
                 await postBuyTransaction(cart) 
                 setCart({
                     quantity: 1,
@@ -183,8 +176,6 @@ const Compras = React.forwardRef((props, ref) => {
                     buy_price: "",
                 })
             } catch(error){
-                console.log("error");
-                
                 window.alert("Error al cargar la compra", error)
             }
         }

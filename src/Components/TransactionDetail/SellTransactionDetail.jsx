@@ -56,7 +56,6 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         } else {
             setNewProduct({...newProduct, [property]:value})
         }
-        console.log(newProduct);
     }
 
     const handleDateChange = (selection) => {
@@ -77,8 +76,6 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
     const addProdHandler = () => {
         const updatedProducts = [...updatedTransaction.products, newProduct]
-        console.log(updatedProducts);
-        
         setUpdatedTransaction({...updatedTransaction, products: updatedProducts})
     }
 
@@ -86,13 +83,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         const newUpdatedCart = [...updatedTransaction.products]
         newUpdatedCart.splice(index, 1)
         setUpdatedTransaction({...updatedTransaction, products: newUpdatedCart})
-    }
-
-    console.log(newProduct.product.name);
-    
-    console.log("Transacciones", transaction);
-    console.log("STOCK",stock);
-    
+    }    
 
     return (
         <div className={style.containerTransactionDetail}>

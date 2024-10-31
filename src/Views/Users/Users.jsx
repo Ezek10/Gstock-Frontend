@@ -38,7 +38,6 @@ const Users = () => {
         const property = event.target.name
         const value = event.target.value
         setNewUser({...newUser, [property]: value, name: value.split("@")[0]})
-        console.log(newUser);
     }    
 
     const submitNewUser = () => {

@@ -130,7 +130,7 @@ const Ventas = React.forwardRef((props, ref) => {
         setOpenCheck(false);
         setTimeout(() => {
             props.handleCloseVentas(); // Cierra Ventas después de que el Dialog se haya cerrado
-        }, 500); // Puedes ajustar este tiempo si es necesario
+        }, 3000); // Puedes ajustar este tiempo si es necesario
     };;
 
     const [openExchange, setOpenExchange] = useState(false);
@@ -169,8 +169,6 @@ const Ventas = React.forwardRef((props, ref) => {
         
         if (Object.values(errors).every((error) => error === "")) {
             try {
-                console.log(cart);
-                
                 await postSellTransaction(cart)
                 setCart({
                     client: {
@@ -194,8 +192,6 @@ const Ventas = React.forwardRef((props, ref) => {
                     buy_price: "",
                 })
             } catch(error){
-                console.log("error");
-                
                 window.alert("Error al cargar la venta", error)
             }
         }

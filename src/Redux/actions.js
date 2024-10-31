@@ -253,8 +253,6 @@ export const getUsers = () => {
     return async function (dispatch) {
         try {
             const response = await axios.get(`${USER_URL}/users/all`, getHeaders());
-            console.log(response);
-            
             const users = response.data
             dispatch({
                 type: GET_USERS,

@@ -28,7 +28,6 @@ const TablaTransactions = ({filters}) => {
     const handleOpenDetail = (prod) => {
         setSelectedTransaction(prod);
         if (prod.type==="BUY") {
-            console.log(prod);
             setOpenDetailSellTransaction(false)
             setOpenDetailBuyTransaction(true);
         } else {

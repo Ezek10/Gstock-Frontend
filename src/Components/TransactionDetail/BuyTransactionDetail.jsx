@@ -91,8 +91,6 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
     const deleteFromCart = (index) => {
         const newUpdatedCart = [...transaction.products]
-        console.log(newUpdatedCart);
-        
         newUpdatedCart.splice(index, 1)
         setTransaction({...transaction, products: newUpdatedCart})
     }
