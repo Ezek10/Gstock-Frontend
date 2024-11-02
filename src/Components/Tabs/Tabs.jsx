@@ -9,6 +9,7 @@ import Fade from '@mui/material/Fade';
 import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
 import DataTransactions from "../dataTransactions/dataTransactions";
+import { useSelector } from "react-redux";
 // import { IoIosSearch } from "react-icons/io";
 
 
@@ -42,6 +43,58 @@ const Tabs = () => {
 
     const markerPosition = activetab === 0 ? 50 : 0;
 
+    const stocks = useSelector((state) => state.products) || [];
+
+    const capitalizeWords = (str) => {
+        if (!str) {return str}
+        return str
+            .split(' ') // Divide la cadena en palabras
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+            .join(' '); // Une las palabras nuevamente
+    };
+
+    // funciones  de copiar
+
+     // Agregar la función de copiado
+     const copyTableToClipboard = () => {
+        // Filtrar solo productos con stock > 0
+        const productsWithStock = stocks.filter(prod => prod.stocks.length > 0);
+      
+        // Función para determinar número de tabulaciones necesarias
+        const getTabsNeeded = (str, targetLength = 24) => {
+            const length = str.length;
+            return '\t'.repeat(Math.ceil((targetLength - length) / 4));
+        };
+
+        // Crear el encabezado con tabulaciones
+        const header = `Producto\t\t\tCantidad\t\t\tPrecio`;
+
+        // Crear filas con tabulación dinámica
+        const rows = productsWithStock.map(prod => {
+            const nombre = capitalizeWords(prod.name);
+            const tabs = getTabsNeeded(nombre);
+            const cantidad = prod.stocks.length;
+            const precio = prod.list_price === null ? 'Sin precio' : `$${prod.list_price}`;
+            
+            return `${nombre}${tabs}${cantidad}\t\t${precio}`;
+        });
+
+      
+        // Unir todo el contenido
+        const tableContent = `${header}\n${rows.join('\n')}`;
+
+      // Copiar al portapapeles
+      navigator.clipboard.writeText(tableContent)
+      .then(() => {
+          alert('Tabla copiada al portapapeles (solo productos con stock)');
+      })
+      .catch(err => {
+          console.error('Error al copiar:', err);
+          alert('Error al copiar la tabla');
+      });
+             
+    };
+
     return(
         <div activetab={`${activetab}00%`} className={style.container}>
             <ul className={style.tabs}>
@@ -62,6 +115,7 @@ const Tabs = () => {
                         <div style={{ display: "flex", height: "100%" }}>
                             <TablaStock/>
                             <Button 
+                                onClick={copyTableToClipboard}
                                 variant="outlined" 
                                 size="small"
                                 target="_blank"

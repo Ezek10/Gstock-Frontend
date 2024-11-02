@@ -74,7 +74,7 @@ const TablaStock = () => {
     };
 
     return(
-        <div className={style.tabla}>
+        <div className={style.tabla}>        
             <CustomTableContainer component={Paper} 
                 sx={{
                     overflowY: "scroll",   
@@ -94,7 +94,8 @@ const TablaStock = () => {
                 <Table >
                     <TableHead>
                     <TableRow>
-                            <HeaderTableCell></HeaderTableCell>
+                            <HeaderTableCell>
+                            </HeaderTableCell>
                             <HeaderTableCell sx={{border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px", borderLeftWidth: "0px" }}>Producto</HeaderTableCell>
                             <HeaderTableCell sx={{border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"}}>Cantidad</HeaderTableCell>
                             <HeaderTableCell sx={{border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"}}>Precio</HeaderTableCell>
