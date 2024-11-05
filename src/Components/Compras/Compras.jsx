@@ -20,6 +20,7 @@ const Compras = React.forwardRef((props, ref) => {
             name: "",
         },
         payment_method: "CASH",
+        parcial_payment: null,
         date: Date.now(),
         products: [{
             product_name: "",
@@ -216,6 +217,15 @@ const Compras = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <Payment className={style.payment} payment={handlePaymentChange}/>
+
+                <Divider variant="middle" component="li" sx={dividerStyle}/>
+
+                <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
+
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
+                    <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
+                </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 

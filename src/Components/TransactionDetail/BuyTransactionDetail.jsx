@@ -154,6 +154,15 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />   
 
+                <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
+
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
+                    <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                   {/* <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>*/}
+                </div>
+
+                <Divider variant="middle" component="li" sx={dividerStyle}/>
+
                 <h2 style={{ fontSize: "20px", fontWeight: "500",margin: "10px 10px 0px 0px" }}>Producto</h2>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>

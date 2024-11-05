@@ -246,7 +246,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     <select name="contact_via" onChange={changeHandler} value={cart.contact_via}>
                         <option value="INSTAGRAM">Instagram</option>
                         <option value="FACEBOOK">Facebook</option>
-                        <option value="TIKTOK">Tiktok</option>
+                        <option value="TIKTOK">Whats App</option>
                         <option value="REFERED">Refered</option>
                         <option value="OTHER">Other</option>
                     </select>
@@ -304,6 +304,16 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
                 
+                <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
+
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
+                    <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} onChange={changeHandler} name="seller"/>
+                </div>
+
+                <Divider variant="middle" component="li" sx={dividerStyle}/>
+
+
                 <div style={{ display: "flex", justifyContent: "flex-start" }}>
                     <Button 
                         variant="outlined" 
