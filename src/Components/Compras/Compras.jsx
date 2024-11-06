@@ -14,13 +14,15 @@ import closeConfirm from "../../assets/closeConfirm.png"
 
 const Compras = React.forwardRef((props, ref) => {
     
+    const [showNewProduct, setShowNewProduct] = useState(false);
+
     const [ newProduct, setNewProduct ] = useState({
         quantity: 1,
         supplier: {
             name: "",
         },
         payment_method: "CASH",
-        parcial_payment: null,
+        partial_payment: "",
         date: Date.now(),
         products: [{
             product_name: "",
@@ -39,6 +41,7 @@ const Compras = React.forwardRef((props, ref) => {
             name: "",
         },
         payment_method: "CASH",
+        partial_payment: "",
         date: Date.now(),
         products: [],
     })
@@ -64,6 +67,25 @@ const Compras = React.forwardRef((props, ref) => {
 
     useEffect(() => {
     }, [newProduct])
+
+    const fetchUpdatedData = async () => {
+        try {
+            const updatedData = await fetchDataFromAPI();
+            setCart(updatedData);
+        } catch (error) {
+            console.error("Error fetching updated data:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (showNewProduct) {
+            // Aquí puedes llamar a una función que actualize tus datos
+            // Por ejemplo, puedes hacer una nueva solicitud a tu API
+            // para obtener los datos actualizados
+            fetchUpdatedData();
+            setShowNewProduct(false); // Resestablece el estado a false
+        }
+    }, [showNewProduct, fetchUpdatedData]);
 
     const changeHandler = (event, index) => {
         const property = event.target.name
@@ -140,6 +162,12 @@ const Compras = React.forwardRef((props, ref) => {
         setCart({...cart, payment_method: selection});
     }
 
+    const handlePartialPaymentChange = (event) => {
+        const value = event.target.value;
+        setNewProduct({ ...newProduct, partial_payment: value });
+        setCart({ ...cart, partial_payment: value });
+    }
+
     const deleteFromCart = (index) => {
         const newUpdatedCart = {...cart}
         newUpdatedCart.products.splice(index, 1)
@@ -159,28 +187,40 @@ const Compras = React.forwardRef((props, ref) => {
 
 
     const submitHandler = async (event) => {
-        
         if (Object.values(errors).every((error) => error === "")) {
             try {
-                await postBuyTransaction(cart) 
+                // Creamos un nuevo objeto "transactionData" que incluye el valor de "partial_payment"
+                const transactionData = {
+                    ...cart,
+                    partial_payment: parseFloat(cart.partial_payment) // Aseguramos que sea un número válido
+                };
+    
+                await postBuyTransaction(transactionData)
+
+            // Actualizar el estado de "TablaStock"
+            dispatch(getProductsStocks());
+
+    
                 setCart({
                     quantity: 1,
                     supplier: {
                         name: "",
                     },
                     payment_method: "CASH",
+                    partial_payment: "", // Restablecemos el valor de "partial_payment" a un campo vacío
                     date: Date.now(),
                     products: [],
                 })
                 setErrors({
                     quantity: "",
                     buy_price: "",
-                })
-            } catch(error){
+                });
+                setShowNewProduct(true); // Actualiza el estado a true
+            } catch (error) {
                 window.alert("Error al cargar la compra", error)
             }
         }
-    }
+    };
 
     return (
         <div ref={ref} className={style.containerCompras} tabIndex={-1}>
@@ -224,7 +264,7 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
+                    <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.partial_payment} onChange={handlePartialPaymentChange} name="partial_payment"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>

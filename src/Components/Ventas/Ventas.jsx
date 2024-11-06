@@ -37,6 +37,7 @@ const Ventas = React.forwardRef((props, ref) => {
         seller: {
             name: ""
         },
+        partial_payment: "",
         products: [],
         has_swap: false,
         swap_products: []
@@ -53,7 +54,10 @@ const Ventas = React.forwardRef((props, ref) => {
             } else {
                 setCart({...cart, client:{...cart.client, [property]: value}})
             }
-        } else if (property==="contact_via") {
+        } else if (property === "partial_payment") { // Add this new condition
+            setCart({...cart, partial_payment: value})
+        }
+        else if (property==="contact_via") {
             setCart({...cart, [property]:value})
         } else if (property==="serial_id"){
             const uniqueItem = inStock.filter(item => item.serial_id.includes(value))
@@ -183,6 +187,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     seller: {
                         name: ""
                     },
+                    partial_payment: "",
                     products: [],
                     has_swap: false,
                     swap_products: []
@@ -308,7 +313,15 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} onChange={changeHandler} name="seller"/>
+                    <input 
+                    type="number" 
+                    value={cart.partial_payment || ""} 
+                    style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }}
+                     onChange={changeHandler} 
+                     name="partial_payment"
+                     placeholder="$ 0"
+                     />
+
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>

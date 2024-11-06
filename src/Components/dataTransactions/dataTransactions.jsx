@@ -28,19 +28,6 @@ const DataTransactions = ({filters, setFilters}) => {
         dispatch(getTransactionCards(filters));
     }, [filters, dispatch])
 
-    const toggleHandler = (event) => {
-        const { name } = event.target;
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            [name]: !prevFilters[name] // Toggle the state of the filter
-        }));
-    };
-
-    const changeHandler = (event) => {
-        const property = event.target.name
-        const value = event.target.value === "null" ? null : event.target.value;
-        setFilters({...filters, [property]: value})
-    }
     
     const resetFilters = () => {
         setFilters({
@@ -55,6 +42,7 @@ const DataTransactions = ({filters, setFilters}) => {
             filter_by_client: null,
             filter_by_seller: null
         });
+        setSelectedFilter('both'); // Agregamos esta línea para restaurar la selección
     };
 
     const capitalizeWords = (str) => {
@@ -82,19 +70,44 @@ const DataTransactions = ({filters, setFilters}) => {
     const toggleDropdownClient = () => setIsOpenClient(!isOpenClient);
     const toggleDropdownSeller = () => setIsOpenSeller(!isOpenSeller);
 
+    const [selectedFilter, setSelectedFilter] = useState('both'); // 'purchases', 'sales', 'both'
+
+    // Estilos base para los filtro de Compras y Ventas
+    const baseButtonStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 10px',
+        color: 'black',
+        border: '1px solid #e0e0e0',
+        borderRadius: '20px',
+        cursor: 'pointer',
+        height: "27px",
+        transition: 'all 0.3s ease',
+        whiteSpace: 'nowrap',
+        marginRight: '8px'
+    };
+
+     // Estilos para botón seleccionado y no seleccionado
+    const getButtonStyle = (buttonType) => ({
+        ...baseButtonStyle,
+        backgroundColor: selectedFilter === buttonType ? 'white' : '#CECECE',
+        color: selectedFilter === buttonType ? 'black' : '#888888',
+        border: selectedFilter === buttonType ? '1px solid #e0e0e0' : '1px solid #858585', // Borde actualizado aquí
+    });
+
     const handleComprasSelect = () => {
-        setFilters({...filters, filter_by_sell_type: true});
-        setFilters({...filters, filter_by_buy_type: false});
+        setSelectedFilter('purchases');
+        setFilters({...filters, filter_by_sell_type: true, filter_by_buy_type: false});
     };
 
     const handleVentasSelect = () => {
-        setFilters({...filters, filter_by_sell_type: false});
-        setFilters({...filters, filter_by_buy_type: true});
+        setSelectedFilter('sales');
+        setFilters({...filters, filter_by_sell_type: false, filter_by_buy_type: true});
     };
 
     const handleComprasVentasSelect = () => {
-        setFilters({...filters, filter_by_sell_type: false});
-        setFilters({...filters, filter_by_buy_type: false});
+        setSelectedFilter('both');
+        setFilters({...filters, filter_by_sell_type: false, filter_by_buy_type: false});
     };
 
     const handleProductSelect = (productId) => {
@@ -150,72 +163,41 @@ const DataTransactions = ({filters, setFilters}) => {
 
             <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginLeft: -10}}>
                 <button
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '8px 10px',
-                        backgroundColor: 'white',
-                        color: 'black',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '20px',
-                        cursor: 'pointer',
-                        height: "27px",
-                        transition: 'all 0.3s ease',
-                        whiteSpace: 'nowrap'
-                    }}
+                    style={getButtonStyle('purchases')}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
-                    }}
+                        if (selectedFilter !== 'purchases') {
+                            e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        }                    }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        e.currentTarget.style.boxShadow = 'none';
                     }}
                     onClick={handleComprasSelect}
                 >
                     Compras
                 </button>
                 <button
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '8px 10px',
-                        backgroundColor: 'white',
-                        color: 'black',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '20px',
-                        cursor: 'pointer',
-                        height: "27px",
-                        transition: 'all 0.3s ease',
-                        whiteSpace: 'nowrap'
-                    }}
+                    style={getButtonStyle('sales')}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
+                        if (selectedFilter !== 'sales') {
+                            e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        }
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        e.currentTarget.style.boxShadow = 'none';
                     }}
                     onClick={handleVentasSelect}
                 >
                     Ventas
                 </button>
                 <button
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '8px 10px',
-                        backgroundColor: 'white',
-                        color: 'black',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '20px',
-                        cursor: 'pointer',
-                        height: "27px",
-                        transition: 'all 0.3s ease',
-                        whiteSpace: 'nowrap'
-                    }}
+                    style={getButtonStyle('both')}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
+                        if (selectedFilter !== 'both') {
+                            e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        }
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        e.currentTarget.style.boxShadow = 'none';
                     }}
                     onClick={handleComprasVentasSelect}
                 >
@@ -405,23 +387,6 @@ const DataTransactions = ({filters, setFilters}) => {
           </div>
     </div>        
 
-        {/*
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-                <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Proveedor <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                <select name="filter_by_supplier" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_supplier || ""} onChange={changeHandler}>
-                    <option value="null"></option>
-                    {suppliers ? suppliers.map((suppliers) => (
-                        <option key={suppliers.id} value={suppliers.id} style={{margin: "0px"}}>{capitalizeWords(suppliers.name)}</option>
-                    )) : null} 
-                    </select>
-                    <p style={{margin: "0px", display: "flex", flexDirection: "row", alignItems: "center"}}>Cliente <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
-                    <select name="filter_by_client" style={{fontSize: 12, textOverflow: "ellipsis"}}  value={filters.filter_by_client || ""} onChange={changeHandler}>
-                    <option value="null"></option>
-                    {clients ? clients.map((client) => (
-                        <option key={client.id} value={client.id} style={{margin: "0px"}}>{capitalizeWords(client.name)}</option>
-                    )) : null} 
-                </select>
-            </div>*/}
 
 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
@@ -574,6 +539,7 @@ const dividerStyle = {
     borderColor: 'transparent',
     background: 'linear-gradient(to right, grey, rgb(201, 201, 201))',
     margin: '1px', 
+    marginTop: '5px', 
     padding:"0px", 
     height: "1px", 
     width:"90%",
