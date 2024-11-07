@@ -1,20 +1,34 @@
 import Home from "./Views/Home/Home"
 import Login from "./Views/Login/Login"
 import { Route, Routes } from 'react-router-dom'
+import { useDispatch } from "react-redux";
 import './App.css'
 import 'typeface-mukta';
 import Users from "./Views/Users/Users";
 import { useEffect } from 'react';
+import { getLogo, getSuppliers, getSellers, getClients, getTransactionCards, getTransactions, getProductsStocks } from "./Redux/actions";
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
 function App() {
   let [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getLogo());
+    dispatch(getTransactionCards(null));
+    dispatch(getProductsStocks());
+    dispatch(getTransactions(null));
+    dispatch(getSuppliers());
+    dispatch(getSellers());
+    dispatch(getClients());
+  }, [dispatch]);
 
   useEffect(() => {
     const currentPath = window.location.pathname;
     const access_token = searchParams.get("access_token");
     const storedToken = localStorage.getItem('access_token');
+
     //localhost para dev
     //si estan en localhost descomenten la de abajo
     //y no sigan el flujo de autorizacion porque los va a llevar a dev

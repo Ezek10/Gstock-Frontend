@@ -8,6 +8,8 @@ export const GET_PRODUCTS_STOCKS = "GET_PRODUCTS_STOCKS"
 
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS"
 
+export const GET_LOGO = "GET_LOGO"
+
 export const GET_SUPPLIERS = "GET_SUPPLIERS"
 
 export const GET_CLIENTS = "GET_CLIENTS"
@@ -51,6 +53,9 @@ export const PUT_USER_SUCCES = "PUT_USER_SUCCES"
 export const PUT_USER_REQUEST = "PUT_USER_REQUEST"
 export const PUT_USER_FAILURE = "PUT_USER_FAILURE"
 
+export const PUT_LOGO_SUCCES = "PUT_LOGO_SUCCES"
+export const PUT_LOGO_REQUEST = "PUT_LOGO_REQUEST"
+export const PUT_LOGO_FAILURE = "PUT_LOGO_FAILURE"
 
 const getHeaders = () => ({
     headers: {
@@ -76,6 +81,38 @@ export const getProductsStocks = () => {
         } catch(error){
             console.error("Error al obtener el stock", error)
             handleUnauthorizedError(error)
+        }
+    }
+}
+
+export const getLogo = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`${USER_URL}/logo/get`, getHeaders());
+            const logo = response.data.data; // Eliminar prefijo si existe
+            dispatch({
+                type: GET_LOGO,
+                payload: logo
+            })
+        } catch(error){
+            console.error("Error al obtener el logo", error)
+            handleUnauthorizedError(error)
+        }
+    }
+}
+
+export const putLogo = (logoUpdate) => {
+    return async function (dispatch) {
+        dispatch({type: PUT_LOGO_REQUEST})
+        try {
+            const response = await axios.put(`${USER_URL}/logo/update`, logoUpdate, getHeaders())
+            dispatch({
+                type: PUT_LOGO_SUCCES,
+                payload: response.data
+            })
+        } catch(error) {
+            dispatch({ type: PUT_LOGO_FAILURE, payload: error.message });
+            console.error("Error al cambiar el logo, Maximo tamaño 200 KB", error)
         }
     }
 }
@@ -232,7 +269,6 @@ export const postSellTransaction = async (cart) => {
 };
 
 export const putBuyTransaction = async (cart) => {
-    debugger
     try {
         const response = await axios.put(`${GSTOCK_URL}/transaction/buy`, cart, getHeaders());
         return response.data;

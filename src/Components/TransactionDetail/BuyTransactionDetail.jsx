@@ -6,7 +6,7 @@ import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import { useDispatch } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { deleteTransaction, putTransactionBuy, getTransactions } from "../../Redux/actions";
+import { deleteTransaction, putTransactionBuy, getTransactions, getProductsStocks } from "../../Redux/actions";
 import closeConfirm from "../../assets/closeConfirm.png"
 
 const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction }, ref) => {
@@ -105,6 +105,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     const deleteTransactionHandler = async () => {
         await dispatch(deleteTransaction(transaction.id))
         dispatch(getTransactions())
+        dispatch(getProductsStocks())
         handleCloseCheck()
         handleCloseDetail()
     }
@@ -112,6 +113,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     const updateTransactionHandler = async () => {
         await dispatch(putTransactionBuy(newTransaction))
         dispatch(getTransactions())
+        dispatch(getProductsStocks())
     }
 
     const capitalizeWords = (str) => {

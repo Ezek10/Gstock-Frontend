@@ -28,7 +28,8 @@ import { GET_PRODUCTS_STOCKS,
         GET_SUPPLIERS,
         GET_CLIENTS,
         GET_SELLERS,
-        GET_USERS
+        GET_USERS,
+        GET_LOGO
         } from "./actions"
 
 const initialState = {
@@ -41,11 +42,15 @@ const initialState = {
     suppliers: [],
     clients: [],
     sellers: [],
-    users: []
+    users: [],
+    logo: null
 }
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_LOGO:
+            return { ...state, logo: action.payload}
+
         case GET_PRODUCTS_STOCKS:
             return { ...state, products: [...action.payload]}
 
@@ -122,7 +127,7 @@ const rootReducer = (state = initialState, action) => {
             return { ...state, loading: false, error: action.payload}
         case DELETE_TRANSACTION_REQUEST:
             return { ...state, loading: true}
-  
+
         default: return { ...state }
     }
 }

@@ -40,10 +40,6 @@ const TablaStock = () => {
     const stocks = useSelector((state) => state.products) || [];
 
     useEffect(() => {
-        dispatch(getProductsStocks())
-    }, [dispatch])
-
-    useEffect(() => {
         const calculateEmptyRows = () => {
             const tableHeight = window.innerHeight * 0.65;
             const rowHeight = 36;

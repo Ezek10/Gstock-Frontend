@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import style from "./dataTransactions.module.css"
 import { useDispatch, useSelector } from "react-redux";
-import { getTransactionCards, getSuppliers, getClients, getSellers } from "../../Redux/actions";
+import { getTransactionCards } from "../../Redux/actions";
 import { Divider } from "@mui/material";
 import CalendarFilters from "../Calendar/CalendarFilters";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // flechita
@@ -19,16 +19,9 @@ const DataTransactions = ({filters, setFilters}) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getSuppliers());
-        dispatch(getSellers());
-        dispatch(getClients());
-    }, [dispatch]);
-
-    useEffect(() => {
         dispatch(getTransactionCards(filters));
     }, [filters, dispatch])
 
-    
     const resetFilters = () => {
         setFilters({
             page: 1,
