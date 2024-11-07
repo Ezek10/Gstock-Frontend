@@ -84,8 +84,10 @@ const CalendarFilters = ({ filters, setFilters }) => {
                 style={{
                     ...botonCopiar, // Mantiene los estilos de botón
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: 'left',
+                    justifyContent: 'left',
+                    fontSize: 14,
+                    fontWeight: 275,
                     border: '1px solid #ccc',
                     padding: '1px',
                     borderRadius: '5px',

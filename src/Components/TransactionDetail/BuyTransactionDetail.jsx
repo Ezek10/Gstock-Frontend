@@ -6,7 +6,7 @@ import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import { useDispatch } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { deleteTransaction, putTransactionBuy } from "../../Redux/actions";
+import { deleteTransaction, putTransactionBuy, getTransactions } from "../../Redux/actions";
 import closeConfirm from "../../assets/closeConfirm.png"
 
 const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction }, ref) => {
@@ -93,6 +93,18 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         const newUpdatedCart = [...transaction.products]
         newUpdatedCart.splice(index, 1)
         setTransaction({...transaction, products: newUpdatedCart})
+    }
+
+    const deleteTransactionHandler = async () => {
+        await dispatch(deleteTransaction(transaction.id))
+        dispatch(getTransactions())
+        handleCloseCheck()
+        handleCloseDetail()
+    }
+
+    const updateTransactionHandler = async () => {
+        await dispatch(putTransactionBuy(newTransaction))
+        dispatch(getTransactions())
     }
 
     const capitalizeWords = (str) => {
@@ -255,7 +267,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                         size="small"
                         target="_blank"
                         style={buttonStyle}
-                        onClick={() => dispatch(putTransactionBuy(newTransaction))}
+                        onClick={updateTransactionHandler}
                         >Guardar cambios
                     </Button>
 
@@ -298,7 +310,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {dispatch(deleteTransaction(transaction.id));handleCloseCheck()}}>Confirmar
+                                onClick={deleteTransactionHandler}>Confirmar
                             </Button>
                         </div>
                     </div>

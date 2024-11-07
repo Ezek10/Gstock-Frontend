@@ -117,7 +117,7 @@ const rootReducer = (state = initialState, action) => {
             return { ...state, loading: true}
         
         case DELETE_TRANSACTION_SUCCES:
-            return { ...state, loading: false, products: state.transactions.filter(product => product.id !== action.payload)}
+            return { ...state, loading: false, transactions: state.transactions.filter(transaction => transaction.id !== action.payload)}
         case DELETE_TRANSACTION_FAILURE:
             return { ...state, loading: false, error: action.payload}
         case DELETE_TRANSACTION_REQUEST:

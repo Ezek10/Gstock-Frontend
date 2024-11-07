@@ -6,7 +6,7 @@ import CalendarTransactions from "../Calendar/CalendarTransactions";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
-import { deleteTransaction, putTransactionSell } from "../../Redux/actions";
+import { deleteTransaction, getTransactions, putTransactionSell } from "../../Redux/actions";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import closeConfirm from "../../assets/closeConfirm.png"
 
@@ -83,7 +83,22 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         const newUpdatedCart = [...updatedTransaction.products]
         newUpdatedCart.splice(index, 1)
         setUpdatedTransaction({...updatedTransaction, products: newUpdatedCart})
-    }    
+    }
+
+    const updateTransactionHandle = async () => {
+        await updateTransaction(updatedTransaction)
+        dispatch(getTransactions())
+    }
+
+    const deleteTransactionHandle = async () => {
+        console.log(stock)
+        await dispatch(deleteTransaction(transaction.id))
+        console.log(stock)
+        dispatch(getTransactions())
+        console.log(stock)
+        handleCloseCheck()
+        handleCloseDetail()
+    }
 
     return (
         <div className={style.containerTransactionDetail}>
@@ -270,7 +285,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                     size="small"
                     target="_blank"
                     style={buttonStyle}
-                    onClick={() => updateTransaction(updatedTransaction)}
+                    onClick={updateTransactionHandle}
                     >Guardar cambios
                 </Button>
 
@@ -313,7 +328,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                                 size="small"
                                 target="_blank"
                                 style={buttonStyle}
-                                onClick={()=> {dispatch(deleteTransaction(transaction.id));handleCloseCheck()}}>Confirmar
+                                onClick={ deleteTransactionHandle }>Confirmar
                             </Button>
                         </div>
                     </div>

@@ -94,10 +94,6 @@ const Ventas = React.forwardRef((props, ref) => {
         return;
     }
 
-    useEffect(() => {
-        dispatch(getProductsStocks())
-    }, [dispatch])
-
     const stocks = useSelector((state) => state.products) || [];
 
     const handleDateChange = (selection) => {
@@ -129,13 +125,9 @@ const Ventas = React.forwardRef((props, ref) => {
         setOpenCheck(true)};
         setTimeout(() => {
             setOpenCheck(false)
-        }, 3000)
-    const handleCloseCheck = () => {
-        setOpenCheck(false);
-        setTimeout(() => {
             props.handleCloseVentas(); // Cierra Ventas después de que el Dialog se haya cerrado
-        }, 3000); // Puedes ajustar este tiempo si es necesario
-    };;
+        }, 3000)
+    const handleCloseCheck = () => setOpenCheck(false)
 
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
@@ -173,7 +165,16 @@ const Ventas = React.forwardRef((props, ref) => {
         
         if (Object.values(errors).every((error) => error === "")) {
             try {
-                await postSellTransaction(cart)
+                const transactionData = {
+                    ...cart,
+                    partial_payment: parseFloat(cart.partial_payment) // Aseguramos que sea un número válido
+                };
+
+                await postSellTransaction(transactionData)
+
+                // Actualizar el estado de "TablaStock"
+                await dispatch(getProductsStocks())
+
                 setCart({
                     client: {
                         name: "",
@@ -453,7 +454,7 @@ const Ventas = React.forwardRef((props, ref) => {
                             </div>
                             {cart.products.length > 0 ? (cart.products.map((product, index) => (
                             <div key={index} style={{marginTop: "5px"}}>
-                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} (${product.sell_price}, {product.color?.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.state}{product.observations ? `, ${product.observations}` : ""})</p>
+                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} ${product.sell_price}</p>
                             </div>)
                             )) : (<p></p>)}
                             <div style={{display: "flex", justifyContent: "center"}}>

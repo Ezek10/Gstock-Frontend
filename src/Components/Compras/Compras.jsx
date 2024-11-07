@@ -6,16 +6,15 @@ import 'react-date-range/dist/theme/default.css';
 import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
-import { postBuyTransaction } from "../../Redux/actions";
+import { postBuyTransaction, getProductsStocks } from "../../Redux/actions";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import check from "../../assets/check.png" 
 import closeConfirm from "../../assets/closeConfirm.png"
+import { useDispatch } from "react-redux";
 
 
 const Compras = React.forwardRef((props, ref) => {
-    
-    const [showNewProduct, setShowNewProduct] = useState(false);
-
+    const dispatch = useDispatch()
     const [ newProduct, setNewProduct ] = useState({
         quantity: 1,
         supplier: {
@@ -57,35 +56,16 @@ const Compras = React.forwardRef((props, ref) => {
 
     const [openCheck, setOpenCheck] = useState(false);
     const handleOpenCheck = () => {
-        setOpenCheck(true)};
+        setOpenCheck(true);
         setTimeout(() => {
             setOpenCheck(false)
+            props.handleCloseCompras();
         }, 3000)
+    };
+
     const handleCloseCheck = () => setOpenCheck(false);
 
     const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
-
-    useEffect(() => {
-    }, [newProduct])
-
-    const fetchUpdatedData = async () => {
-        try {
-            const updatedData = await fetchDataFromAPI();
-            setCart(updatedData);
-        } catch (error) {
-            console.error("Error fetching updated data:", error);
-        }
-    };
-
-    useEffect(() => {
-        if (showNewProduct) {
-            // Aquí puedes llamar a una función que actualize tus datos
-            // Por ejemplo, puedes hacer una nueva solicitud a tu API
-            // para obtener los datos actualizados
-            fetchUpdatedData();
-            setShowNewProduct(false); // Resestablece el estado a false
-        }
-    }, [showNewProduct, fetchUpdatedData]);
 
     const changeHandler = (event, index) => {
         const property = event.target.name
@@ -197,10 +177,9 @@ const Compras = React.forwardRef((props, ref) => {
     
                 await postBuyTransaction(transactionData)
 
-            // Actualizar el estado de "TablaStock"
-            dispatch(getProductsStocks());
+                // Actualizar el estado de "TablaStock"
+                await dispatch(getProductsStocks())
 
-    
                 setCart({
                     quantity: 1,
                     supplier: {
@@ -215,7 +194,6 @@ const Compras = React.forwardRef((props, ref) => {
                     quantity: "",
                     buy_price: "",
                 });
-                setShowNewProduct(true); // Actualiza el estado a true
             } catch (error) {
                 window.alert("Error al cargar la compra", error)
             }
@@ -369,7 +347,7 @@ const Compras = React.forwardRef((props, ref) => {
                             </div>
                             {cart.products.length > 0 ? (cart.products.map((product, index) => (
                             <div key={index} style={{marginTop: "5px"}}>
-                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} (${product.buy_price}, {product.color.toUpperCase()}, {product.serial_id}, {product.battery_percent}%, {product.state}{product.observations ? `, ${product.observations}` : ""})</p>
+                                <p style={{fontWeight: "300", fontSize: "14px"}}>{product.product_name} ${product.buy_price}</p>
                             </div>)
                             )) : (<p></p>)}
                             <div style={{display: "flex", justifyContent: "center"}}>

@@ -98,7 +98,7 @@ const TablaStock = () => {
                             </HeaderTableCell>
                             <HeaderTableCell sx={{border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px", borderLeftWidth: "0px" }}>Producto</HeaderTableCell>
                             <HeaderTableCell sx={{border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"}}>Cantidad</HeaderTableCell>
-                            <HeaderTableCell sx={{border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"}}>Precio</HeaderTableCell>
+                            <HeaderTableCell sx={{border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"}}>Precio Venta</HeaderTableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody >

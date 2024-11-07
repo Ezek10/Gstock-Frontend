@@ -500,18 +500,20 @@ const DataTransactions = ({filters, setFilters}) => {
         <p style={{display: "flex", justifyContent: "flex-end", color: "#8C8C8C", margin: "-15px 10px -10px 0px", fontSize: "50px", fontWeight: "800"}}>{cards.product_bought}</p>
     </div>
 
-            {/* Tarjeta de TOP Vendedores */}
+    {/* Tarjeta de TOP Vendedores */}
     <div className={style.cards} style={{ height: "110px" }}>
         <p style={{ margin: "5px 0px 0px 20px" }}>VENDEDORES</p>
         <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", margin: "-10px 10px -10px 10px", paddingBottom: 10 }}>
-            {cards.sellers 
+            {cards.sellers && Object.keys(cards.sellers).length > 0 
                 ? Object.entries(cards.sellers)
                     .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
                     .slice(0, 3) // Obtener solo los primeros 3
                     .map(([key, value]) => (
                         <p key={key} style={{ margin: "0px", textAlign: "right" }}>{key} ({value})</p>
                     ))
-                : ""
+                : Array.from({ length: 3 }).map((_, index) => (
+                    <p key={index} style={{ margin: "0px", textAlign: "right" }}>-</p>
+                ))
             }
         </div>
     </div>
@@ -520,14 +522,16 @@ const DataTransactions = ({filters, setFilters}) => {
     <div className={style.cards} style={{ height: "110px" }}>
         <p style={{ margin: "5px 0px 0px 20px" }}>CANAL DE VENTA</p>
         <div style={{ display: "flex", flexDirection: "column", color: "#8C8C8C", margin: "-10px 10px -10px 10px", paddingBottom: 10 }}>
-            {cards.channels 
+            {cards.channels && Object.keys(cards.channels).length > 0 
                 ? Object.entries(cards.channels)
                     .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
                     .slice(0, 3) // Obtener solo los primeros 3
                     .map(([key, value]) => (
                         <p key={key} style={{ margin: "0px 0px 0px 0px", textAlign: "right" }}>{key} ({value.toFixed(2)})</p>
                     ))
-                : ""
+                : Array.from({ length: 3 }).map((_, index) => (
+                    <p key={index} style={{ margin: "0px", textAlign: "right" }}>-</p>
+                ))
             }
         </div>
     </div>

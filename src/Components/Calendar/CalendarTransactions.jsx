@@ -57,7 +57,7 @@ const CalendarTransactions = ({ onDateChange }) => {
                 size="small"
                 style={{ ...botonCopiar, cursor: 'default' }}
             >
-                {format(selectedDate, "dd/MM/yy")}
+                <p style={{fontSize:14}}>{format(selectedDate, "dd/MM/yy")}</p>
             </Button>
             <Popper
                 open={openCalendar}
