@@ -177,13 +177,6 @@ const Tabs = () => {
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
                         <div style={{ display: "flex", height: "100%" }}>
                             <TablaTransactions filters={filters}/>
-                            <Button 
-                                variant="outlined" 
-                                size="small"
-                                target="_blank"
-                                style={botonCopiar}>
-                                <ContentCopyIcon/>
-                            </Button>
 
                             <div className={style.container2}>
                                 <DataTransactions filters={filters} setFilters={setFilters}/>

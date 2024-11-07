@@ -32,13 +32,15 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     const handleCloseCheck = () => setOpenCheck(false);
     
     const dispatch = useDispatch()
+
     const [ newTransaction, setNewTransaction ] = useState({
         products: formatingTransaction(),
         type: "BUY",
         date: transaction.date,
         payment_method: transaction.payment_method,
         supplier: transaction.supplier,
-        id: transaction.id
+        id: transaction.id,
+        partial_payment: transaction.partial_payment // Agregamos partial_payment al estado
     })
 
     const [ newProduct, setNewProduct ] = useState({
@@ -52,6 +54,11 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
         quantity: 1,
     })
 
+
+    const handlePartialPaymentChange = (event) => {
+        const value = event.target.value;
+        setNewTransaction({ ...newTransaction, partial_payment: value });
+    }
 
     const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
 
@@ -146,7 +153,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
             </Button>
             <div>
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <h2 style={{ fontSize: "20px", margin: "10px 10px 0px 0px" }}>Datos del grupo</h2>
+                    <h2 style={{ fontSize: "20px", margin: "10px 10px 0px 0px" }}>Datos de la transacción</h2>
                     <p style={{ margin: "-10px 10px 0px 0px" }}>Compra</p>
                 </div>
 
@@ -170,7 +177,13 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                  {/* <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.partial_payment} onChange={changeHandler} name="supplier"/>*/}
+                   <input 
+                    type="number" 
+                    style={{ height: "15px", fontSize: 12 }} 
+                    onChange={handlePartialPaymentChange} 
+                    name="partial_payment"
+                    placeholder={transaction.partial_payment}
+                    />
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>

@@ -76,10 +76,10 @@ const Home = () => {
                                         src={profileImage || logoReverse} 
                                         alt="profile" 
                                         style={{ 
-                                            height: "70%", 
-                                            width: "70%",
+                                            height: "100%", 
+                                            width: "100%",
                                             borderRadius: "50%",
-                                            objectFit: "cover"
+                                            objectFit: "scale-down"
                                         }} 
                                     />
                                     {/* Botón para cambiar la imagen */}

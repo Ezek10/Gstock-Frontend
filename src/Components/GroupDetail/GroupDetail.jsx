@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Dialog, Divider } from "@mui/material";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { deleteProducts, putProductDetail, putProductStock } from "../../Redux/actions";
 import { useDispatch } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -164,13 +163,6 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <h2 style={{ fontSize: "20px", marginRight: "10px" }}>Datos de cada item</h2>
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        target="_blank"
-                        style={botonCopiar}>
-                        <ContentCopyIcon />
-                    </Button>
                 </div>
 
                 {products.stocks.map((prod, prodIndex) => (
@@ -187,13 +179,6 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             {/* <input type="text" style={{ height: "15px", margin: "0px", width: "70%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", fontSize: "1.55vh" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} /> */}
                             <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(prod, prodIndex)}>{prod.state==="AVAILABLE" ? "Disponible" :  prod.state==="RESERVED" ? "Reservado" : prod.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                target="_blank"
-                                style={botonCopiar}>
-                                <ContentCopyIcon />
-                            </Button>
                         </div>
                         <input type="text" style={{ height: "15px", width: "85%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations || "Obsevaciones"} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
                     </div>

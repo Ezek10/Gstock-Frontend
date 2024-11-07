@@ -74,6 +74,11 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         setUpdatedTransaction({...updatedTransaction, payment_method: selection});
     }
 
+    const handlePartialPaymentChange = (event) => {
+        const value = event.target.value;
+        setUpdatedTransaction({ ...updatedTransaction, partial_payment: value });
+    }
+
     const addProdHandler = () => {
         const updatedProducts = [...updatedTransaction.products, newProduct]
         setUpdatedTransaction({...updatedTransaction, products: updatedProducts})
@@ -179,9 +184,15 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
-                    <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                   {/* <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>*/}
-                </div>
+                <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <input 
+                type="number" 
+                style={{ height: "15px", fontSize: 12 }} 
+                onChange={handlePartialPaymentChange} 
+                name="partial_payment"
+                placeholder={transaction.partial_payment}
+                />
+            </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
