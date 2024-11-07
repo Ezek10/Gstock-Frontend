@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from "react";
 import style from "./Home.module.css";
 import Button from '@mui/material/Button';
-import Tabs from "../../Components/Tabs/Tabs"
-import logo from "../../assets/logo.png"
-import logoReverse from "../../assets/logoReverse.png"
-import { getLogout } from "../../Redux/actions";
+import Tabs from "../../Components/Tabs/Tabs";
+import { useDispatch, useSelector } from "react-redux";
+import logoReverse from "../../assets/logoReverse.png";
+import { getLogout, getLogo, putLogo } from "../../Redux/actions";
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [profileImage, setProfileImage] = useState(null);
-
-    useEffect(() => {
-        const savedImage = localStorage.getItem('profileImage');
-        if (savedImage) {
-            setProfileImage(savedImage);
-        }
-    }, []);
+    const dispatch = useDispatch()
+    const logo = useSelector((state) => state.logo) || [];
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
@@ -24,20 +18,21 @@ const Home = () => {
         navigate("/");
     };
 
-    const handleImageChange = (event) => {
+    const handleImageChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const imageBase64 = reader.result;
-                setProfileImage(imageBase64);
-                localStorage.setItem('profileImage', imageBase64);
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append(
+                "file",
+                file,
+                file.name
+            );
+            await dispatch(putLogo(formData));
+            dispatch(getLogo());
         }
     };
 
-    return(
+    return (
         <div className={style.container0}>
             <div className={style.container1}>
                 <div className={style.header}>
@@ -73,7 +68,7 @@ const Home = () => {
                                     }}
                                 >
                                     <img 
-                                        src={profileImage || logoReverse} 
+                                        src={`data:image/png;base64,${logo}`}
                                         alt="profile" 
                                         style={{ 
                                             height: "100%", 
