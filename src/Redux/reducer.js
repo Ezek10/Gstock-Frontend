@@ -1,4 +1,5 @@
 import { GET_PRODUCTS_STOCKS, 
+        GET_CURRENT_USER,
         PUT_PRODUCT_STOCKS_FAILURE, 
         PUT_PRODUCT_STOCKS_REQUEST, 
         PUT_PRODUCT_STOCKS_SUCCES,
@@ -43,11 +44,15 @@ const initialState = {
     clients: [],
     sellers: [],
     users: [],
-    logo: null
+    logo: null,
+    currentUser: {},
 }
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_CURRENT_USER:
+            return { ...state, currentUser: action.payload[0]}
+
         case GET_LOGO:
             return { ...state, logo: action.payload}
 

@@ -10,7 +10,7 @@ import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
 import DataTransactions from "../dataTransactions/dataTransactions";
 import { useSelector } from "react-redux";
-// import { IoIosSearch } from "react-icons/io";
+import { IoIosSearch } from "react-icons/io";
 
 
 const Tabs = () => {
@@ -126,7 +126,7 @@ const Tabs = () => {
                         <div className={style.container2}>
                             <div style={{ position: "relative",  display: "flex", alignItems: "center", width: "70%"}}>
                                 <input type="text" placeholder="Busca un producto" style={{ height: "25px", marginLeft: 0, marginRight: 0, borderRadius: "50px", fontSize: 15, paddingLeft: 35, width: "100%"}}/>
-                                {/* <IoIosSearch style={{position: "absolute", left: "10px", top: "35%", fontSize: "22px"}}/> */}
+                                <IoIosSearch style={{position: "absolute", left: "10px", top: "35%", fontSize: "22px"}}/>
                             </div>
                             <div style={{ display:"flex", justifyContent: "space-between", width: "70%", boxSizing: "border-box" }}>
                                 <Button 

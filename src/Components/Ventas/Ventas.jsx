@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./Ventas.module.css"
 import { Divider, Button, Dialog } from "@mui/material";
 import CalendarTransactions from "../Calendar/CalendarTransactions";
@@ -122,11 +122,12 @@ const Ventas = React.forwardRef((props, ref) => {
 
     const [openCheck, setOpenCheck] = useState(false);
     const handleOpenCheck = () => {
-        setOpenCheck(true)};
+        setOpenCheck(true);
         setTimeout(() => {
-            setOpenCheck(false)
             props.handleCloseVentas(); // Cierra Ventas después de que el Dialog se haya cerrado
-        }, 3000)
+            setOpenCheck(false)
+        }, 500)
+    }
     const handleCloseCheck = () => setOpenCheck(false)
 
     const [openExchange, setOpenExchange] = useState(false);
@@ -175,28 +176,6 @@ const Ventas = React.forwardRef((props, ref) => {
                 // Actualizar el estado de "TablaStock"
                 await dispatch(getProductsStocks())
 
-                setCart({
-                    client: {
-                        name: "",
-                        tel: "",
-                        email: ""
-                    },
-                    type: "SELL",
-                    contact_via: "INSTAGRAM",
-                    payment_method: "CASH",
-                    date: Date.now(),
-                    seller: {
-                        name: ""
-                    },
-                    partial_payment: "",
-                    products: [],
-                    has_swap: false,
-                    swap_products: []
-                })
-                setErrors({
-                    quantity: "",
-                    buy_price: "",
-                })
             } catch(error){
                 window.alert("Error al cargar la venta", error)
             }
@@ -303,7 +282,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -10px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price"/>
+                    <input type="number" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -35px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price"/>
                     </div>
                     <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>
@@ -320,7 +299,7 @@ const Ventas = React.forwardRef((props, ref) => {
                     style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }}
                      onChange={changeHandler} 
                      name="partial_payment"
-                     placeholder="$ 0"
+                     placeholder="$ 00000"
                      />
 
                 </div>
@@ -463,7 +442,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> {submitHandler();handleOpenCheck(), handleCloseConfirm()}}>Confirmar
+                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm();}}>Confirmar
                                 </Button>
                             </div>
                         </div>

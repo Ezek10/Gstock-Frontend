@@ -6,7 +6,7 @@ import './App.css'
 import 'typeface-mukta';
 import Users from "./Views/Users/Users";
 import { useEffect } from 'react';
-import { getLogo, getSuppliers, getSellers, getClients, getTransactionCards, getTransactions, getProductsStocks } from "./Redux/actions";
+import { getLogo, getSuppliers, getSellers, getClients, getTransactionCards, getTransactions, getProductsStocks, getCurrentUser } from "./Redux/actions";
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
     dispatch(getSuppliers());
     dispatch(getSellers());
     dispatch(getClients());
+    dispatch(getCurrentUser());
   }, [dispatch]);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ function App() {
     //si estan en localhost descomenten la de abajo
     //y no sigan el flujo de autorizacion porque los va a llevar a dev
     //vayan directamente a http://localhost/home
-    //localStorage.setItem('access_token', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlemVxdWllbG1hcmNlbDJAZ21haWwuY29tIiwiYXVkIjoicHVibGljIiwiaXNzIjoiZ3N0b2NrLmZyYW5jZWxzb2Z0LmNvbSIsImV4cCI6MTc1OTg0NDk1OH0.fM46jlTddXv862Q12jyYKip3OGxjpNDSXm6g4cc4mYk");
+    localStorage.setItem('access_token', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlemVxdWllbG1hcmNlbDJAZ21haWwuY29tIiwiYXVkIjoicHVibGljIiwiaXNzIjoiZ3N0b2NrLmZyYW5jZWxzb2Z0LmNvbSIsImV4cCI6MTc1OTg0NDk1OH0.fM46jlTddXv862Q12jyYKip3OGxjpNDSXm6g4cc4mYk");
 
     // Solo permitir modificar el access_token en /sso_login
     if (currentPath === "/sso_login") {

@@ -60,7 +60,7 @@ const Compras = React.forwardRef((props, ref) => {
         setTimeout(() => {
             setOpenCheck(false)
             props.handleCloseCompras();
-        }, 3000)
+        }, 500)
     };
 
     const handleCloseCheck = () => setOpenCheck(false);
@@ -180,20 +180,6 @@ const Compras = React.forwardRef((props, ref) => {
                 // Actualizar el estado de "TablaStock"
                 await dispatch(getProductsStocks())
 
-                setCart({
-                    quantity: 1,
-                    supplier: {
-                        name: "",
-                    },
-                    payment_method: "CASH",
-                    partial_payment: "", // Restablecemos el valor de "partial_payment" a un campo vacío
-                    date: Date.now(),
-                    products: [],
-                })
-                setErrors({
-                    quantity: "",
-                    buy_price: "",
-                });
             } catch (error) {
                 window.alert("Error al cargar la compra", error)
             }
@@ -242,7 +228,7 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
                     <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.partial_payment} onChange={handlePartialPaymentChange} name="partial_payment"/>
+                    <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.partial_payment} placeholder="$ 00000" onChange={handlePartialPaymentChange} name="partial_payment"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -257,14 +243,14 @@ const Compras = React.forwardRef((props, ref) => {
                 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", fontSize: 12 }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
+                    <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>Precio Unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", fontSize: 12 }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price"/>
+                    <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -356,7 +342,7 @@ const Compras = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm()}}>Confirmar
+                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm();}}>Confirmar
                                 </Button>
                             </div>
                         </div>

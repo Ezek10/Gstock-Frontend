@@ -34,7 +34,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
         setOpenCheck(true)};
         setTimeout(() => {
             setOpenCheck(false)
-        }, 5000)
+        }, 3000)
     const handleCloseCheck = () => setOpenCheck(false);
 
     const productDetailHandler = (event, i) => {
@@ -129,7 +129,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={`${capitalizeWords(products.name)}`} name="name" value={capitalizeWords(products.name)} onChange={stockDetailHandler} />
+                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} name="name" value={capitalizeWords(products.name)} onChange={stockDetailHandler} />
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -147,7 +147,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                         if (!aux.includes(prov.supplier.name)) {
                             aux.push(prov.supplier.name)
                             return (
-                                <p key={products.id} style={{ fontWeight: 400, margin: "0px 0px 0px 10px", color: prov.supplier.color }}>{capitalizeWords(prov.supplier.name)}</p>)
+                                <p style={{ fontWeight: 400, margin: "0px 0px 0px 10px", color: prov.supplier.color }}>{capitalizeWords(prov.supplier.name)}</p>)
                         }
                     })}
                 </div>
@@ -156,7 +156,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
 
                 <div style={{ display: "flex", flexDirection: "row", height: "22px", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Precio de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", width: "20%" }} placeholder={`$${products.list_price}`} name="list_price" value={products.list_price || "0"} onChange={stockDetailHandler} />
+                    <input type="number" style={{ height: "15px", width: "20%", marginLeft: 5 }} name="list_price" placeholder={"$00000"} value={products.list_price} onChange={stockDetailHandler} />
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle} />

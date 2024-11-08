@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "./Home.module.css";
 import Button from '@mui/material/Button';
 import Tabs from "../../Components/Tabs/Tabs";
 import { useDispatch, useSelector } from "react-redux";
-import logoReverse from "../../assets/logoReverse.png";
+import logo from "../../assets/logo.png"
 import { getLogout, getLogo, putLogo } from "../../Redux/actions";
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch()
-    const logo = useSelector((state) => state.logo) || [];
+    const dispatch = useDispatch();
+    const logo_user = useSelector((state) => state.logo) || [];
+    const currentUser = useSelector((state) => state.currentUser);
+    const logo_footer = logo
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
@@ -46,13 +49,13 @@ const Home = () => {
                                     border: 'none', 
                                     backgroundColor: 'transparent', 
                                     padding: 0, 
-                                    cursor: 'pointer',
+                                    cursor: currentUser.is_admin ? 'pointer' : 'default',
                                     position: 'absolute',
                                     top: '5%',
                                     left: '40%',
                                     zIndex: 1000
                                 }}
-                                onClick={() => navigate("/users")}
+                                onClick={() => currentUser.is_admin? navigate("/users") : null}
                             >
                                 <div 
                                     style={{
@@ -66,9 +69,11 @@ const Home = () => {
                                         boxShadow: '4px 5px 5.5px 0px #0000004D',
                                         position: 'relative'
                                     }}
+                                    onMouseEnter={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
                                 >
                                     <img 
-                                        src={`data:image/png;base64,${logo}`}
+                                        src={`data:image/png;base64,${logo_user}`}
                                         alt="profile" 
                                         style={{ 
                                             height: "100%", 
@@ -94,8 +99,11 @@ const Home = () => {
                                             justifyContent: 'center',
                                             cursor: 'pointer',
                                             boxShadow: '0px 2px 4px rgba(0,0,0,0.2)',
-                                            zIndex: 1001
+                                            zIndex: 1001,
+                                            opacity: isHovered ? 1 : 0,  // Muestra o esconde el botón
+                                            transition: 'opacity 0.3s'
                                         }}
+                                        className="profile-upload-btn"
                                     >
                                         <svg 
                                             width="12" 
@@ -145,7 +153,7 @@ const Home = () => {
                 </div>
                 <Tabs/>
                 <div className={style.footer}>
-                    <img src={logo} alt="logo" style={{ height: "5vh", marginLeft: "5%", minHeight: 30 }}/>
+                    <img src={logo_footer} alt="logo" style={{ height: "5vh", marginLeft: "5%", minHeight: 30 }}/>
                     <div style={{ color: "white", marginLeft: "0.5%", display: "flex", flexDirection: "column" }}>
                         <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}>Gestión</div>
                         <div style={{margin: "-5px -5px -5px 0px", fontSize: "110%"}}> de Stock</div>

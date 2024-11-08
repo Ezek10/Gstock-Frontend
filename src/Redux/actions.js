@@ -18,6 +18,8 @@ export const GET_SELLERS = "GET_SELLERS"
 
 export const GET_USERS = "GET_USERS"
 
+export const GET_CURRENT_USER = "GET_CURRENT_USER"
+
 export const GET_LOGIN_GOOGLE = "GET_LOGIN_GOOGLE"
 export const GET_LOGOUT = "GET_LOGOUT"
 
@@ -69,6 +71,22 @@ const handleUnauthorizedError = (error) => {
     }
 };
 
+export const getCurrentUser = () => {
+    return async function (dispatch) {
+        try {
+            const response = await axios.get(`${USER_URL}/me`, getHeaders());
+            const user = response.data
+            dispatch({
+                type: GET_CURRENT_USER,
+                payload: [user]
+            })
+        } catch(error){
+            handleUnauthorizedError(error)
+            alert("Error al obtener el usuario actual")
+        }
+    }
+}
+
 export const getProductsStocks = () => {
     return async function (dispatch) {
         try {
@@ -79,8 +97,8 @@ export const getProductsStocks = () => {
                 payload: products
             })
         } catch(error){
-            console.error("Error al obtener el stock", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener el stock")
         }
     }
 }
@@ -95,8 +113,8 @@ export const getLogo = () => {
                 payload: logo
             })
         } catch(error){
-            console.error("Error al obtener el logo", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener el logo")
         }
     }
 }
@@ -112,7 +130,7 @@ export const putLogo = (logoUpdate) => {
             })
         } catch(error) {
             dispatch({ type: PUT_LOGO_FAILURE, payload: error.message });
-            console.error("Error al cambiar el logo, Maximo tamaño 200 KB", error)
+            alert("Error al cambiar el logo")
         }
     }
 }
@@ -128,8 +146,8 @@ export const getTransactions = (filters) => {
                 payload: transactions
             })
         } catch (error) {
-            console.error("Error al obtener las transacciones", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener las transacciones")
         }
     }
 }
@@ -145,7 +163,7 @@ export const putProductStock = (stockDetail) => {
             })
         } catch(error) {
             dispatch({ type: PUT_PRODUCT_STOCKS_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos del producto", error)
+            alert("Error al cambiar los datos del producto")
         }
     }
 }
@@ -161,7 +179,7 @@ export const putProductDetail = (productDetail) => {
             }) 
         } catch(error) {
             dispatch({ type: PUT_PRODUCT_DETAIL_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos del producto", error)
+            alert("Error al cambiar los datos del producto")
         }
     }
 }
@@ -196,8 +214,8 @@ export const getTransactionCards = (filters) => {
                 payload: cards
             })
         } catch (error) {
-            console.error("Error al obtener las tarjetas", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener las tarjetas")
         }
     }
 }
@@ -212,8 +230,8 @@ export const getSuppliers = () => {
                 payload: suppliers
             })
         } catch (error){
-            console.error("Error al obtener los proveedores", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -228,8 +246,8 @@ export const getClients = () => {
                 payload: clients
             })
         } catch (error){
-            console.error("Error al obtener los proveedores", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -244,8 +262,8 @@ export const getSellers = () => {
                 payload: sellers
             })
         } catch (error){
-            console.error("Error al obtener los proveedores", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -295,8 +313,8 @@ export const getUsers = () => {
                 payload: users
             })
         } catch (error){
-            console.error("Error al obtener los usuarios", error)
             handleUnauthorizedError(error)
+            alert("Error al obtener los usuarios")
         }
     }
 }
@@ -321,7 +339,7 @@ export const putUser = (user) => {
             }) 
         } catch(error) {
             dispatch({ type: PUT_USER_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos del usuario", error)
+            alert("Error al cambiar los datos del usuario")
         }
     }
 }
@@ -356,7 +374,7 @@ export const putTransactionBuy = (transactionDetail) => {
             }) 
         } catch(error) {
             dispatch({ type: PUT_TRANSACTION_BUY_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos de la transacción", error)
+            alert("Error al cambiar los datos de la transacción")
         }
     }
 }
@@ -372,7 +390,7 @@ export const putTransactionSell = (transactionDetail) => {
             }) 
         } catch(error) {
             dispatch({ type: PUT_TRANSACTION_SELL_FAILURE, payload: error.message });
-            console.error("Error al cambiar los datos de la transacción", error)
+            alert("Error al cambiar los datos de la transacción")
         }
     }
 }

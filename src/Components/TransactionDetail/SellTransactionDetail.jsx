@@ -6,7 +6,7 @@ import CalendarTransactions from "../Calendar/CalendarTransactions";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
-import { deleteTransaction, getTransactions, putTransactionSell } from "../../Redux/actions";
+import { deleteTransaction, getTransactions, putTransactionSell, getProductsStocks } from "../../Redux/actions";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import closeConfirm from "../../assets/closeConfirm.png"
 
@@ -96,14 +96,16 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
     }
 
     const deleteTransactionHandle = async () => {
-        console.log(stock)
         await dispatch(deleteTransaction(transaction.id))
-        console.log(stock)
         dispatch(getTransactions())
-        console.log(stock)
+        dispatch(getProductsStocks())
         handleCloseCheck()
         handleCloseDetail()
     }
+
+    const totalSellPrice = updatedTransaction.products.reduce((total, product) => {
+        return total + (parseFloat(product.sell_price || 0));
+    }, 0);
 
     return (
         <div className={style.containerTransactionDetail}>
@@ -229,12 +231,6 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <CalendarTransactions/>
-            </div>
-
-            <Divider variant="middle" component="li" sx={dividerStyle} />
-
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
                 <p className={style.letras}>Precio de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder="$0000" name="sell_price" onChange={handleCartChange}/>
@@ -258,7 +254,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                         <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
                             <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product.name)}</div>
                             <div style={{marginLeft: "15px"}}>{product.color ? capitalizeWords(product.color) : ""}</div>
-                            {/* <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div> */}
+                            <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
                             <div style={{ display: "flex", alignItems: "center", justifySelf: "flex-end" }}>${product.sell_price}</div>
                             <Button 
                                 variant="outlined" 
@@ -287,7 +283,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                         )) : (<p></p>
                     )}
                 </div>
-                <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)"}}>$</h1>
+                <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)"}}>${totalSellPrice}</h1>
             </div>
 
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%", alignItems: "center"}}>

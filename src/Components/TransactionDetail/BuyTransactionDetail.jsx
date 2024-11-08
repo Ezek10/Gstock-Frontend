@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { deleteTransaction, putTransactionBuy, getTransactions, getProductsStocks } from "../../Redux/actions";
 import closeConfirm from "../../assets/closeConfirm.png"
 
-const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction }, ref) => {
+const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction }, ref) => {
     
     const formatingTransaction = () => {
         const newArray = []
@@ -184,7 +184,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     style={{ height: "15px", fontSize: 12 }} 
                     onChange={handlePartialPaymentChange} 
                     name="partial_payment"
-                    placeholder={transaction.partial_payment}
+                    placeholder={transaction.partial_payment || "$ 00000"}
                     />
                 </div>
 
@@ -201,14 +201,14 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={``} name="quantity" onChange={handleCartChange}/>
+                    <input type="number" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={``} name="quantity" onChange={handleCartChange}/>
                 </div>
                 
                 <Divider variant="middle" component="li" sx={dividerStyle} />  
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
                     <p className={style.letras}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={``} name="buy_price" onChange={handleCartChange}/>
+                    <input type="number" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={"$ 00000"} name="buy_price" onChange={handleCartChange}/>
                 </div>
 
                 <Button 
@@ -224,7 +224,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     <p className={style.letras}>TOTAL</p>
                     <div id="cart" className={style.cart}>
                         {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
-                            <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
+                            <div style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
                                 <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product_name)}</div>
                                 <div style={{marginLeft: "15px"}}>{capitalizeWords(product.color)}</div>
                                 <div style={{marginLeft: "15px"}}>{product.battery_percent}%</div>
@@ -260,7 +260,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 </div>
 
                 {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
-                    <div key={product.product_name+"-"+index}>
+                    <div>
                         <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>
                     <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "25% 25% 25% 25%", gap: "0px" }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
@@ -269,7 +269,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.color}  name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.serial_id}  name="serial_id"/>
-                        <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.battery_percent}  name="battery_percent"/>
+                        <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.battery_percent}  name="battery_percent"/>
                         <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", textAlign: "center" }} onClick={() => updateproductState(product, index)}>{product.state==="AVAILABLE" ? "Disponible" :  product.state==="RESERVED" ? "Reservado" : product.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                     </div>
                     <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "94%", borderRadius: "20spx"}}/>

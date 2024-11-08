@@ -4,7 +4,6 @@ import { styled } from '@mui/system';
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
 import GroupDetail from "../GroupDetail/GroupDetail";
-import { getProductsStocks } from "../../Redux/actions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import warning from "../../assets/warning.png"
