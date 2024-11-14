@@ -27,11 +27,10 @@ const Tabs = () => {
         filter_by_client: null, 
         filter_by_seller: null
     })
+    const stocks = useSelector((state) => state.products) || [];
 
-    const [activetab, setActiveTab] = useState(0);
-    const seleccionar = (index) => {
-        setActiveTab(index);
-    }
+    const [search, setSearch] = useState("");
+    const [filteredStocks, setFilteredStocks] = useState(stocks);
 
     const [openCompras, setOpenCompras] = useState(false);
     const handleOpenCompras = () => setOpenCompras(true);
@@ -41,9 +40,23 @@ const Tabs = () => {
     const handleOpenVentas = () => setOpenVentas(true);
     const handleCloseVentas = () => setOpenVentas(false);
 
-    const markerPosition = activetab === 0 ? 50 : 0;
+    const handleSearch = (event) => {
+        const search = event.target.value.toLowerCase();
+        setSearch(search);
 
-    const stocks = useSelector((state) => state.products) || [];
+        // Filtrar los productos en base al término de búsqueda
+        const filtered = stocks.filter((product) =>
+            product.name.toLowerCase().includes(search)
+        );
+        setFilteredStocks(filtered);
+    };
+
+    const [activetab, setActiveTab] = useState(0);
+    const seleccionar = (index) => {
+        setActiveTab(index);
+    }
+
+    const markerPosition = activetab === 0 ? 50 : 0;
 
     const capitalizeWords = (str) => {
         if (!str) {return str}
@@ -55,8 +68,8 @@ const Tabs = () => {
 
     // funciones  de copiar
 
-     // Agregar la función de copiado
-     const copyTableToClipboard = () => {
+    // Agregar la función de copiado
+    const copyTableToClipboard = () => {
         // Filtrar solo productos con stock > 0
         const productsWithStock = stocks.filter(prod => prod.stocks.length > 0);
       
@@ -67,7 +80,7 @@ const Tabs = () => {
         };
 
         // Crear el encabezado con tabulaciones
-        const header = `Producto\t\t\tCantidad\t\t\tPrecio`;
+        const header = `Producto\t\t\tCantidad\t\t\tPrecio de Venta`;
 
         // Crear filas con tabulación dinámica
         const rows = productsWithStock.map(prod => {
@@ -113,7 +126,7 @@ const Tabs = () => {
                 {activetab===0 && 
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
                         <div style={{ display: "flex", height: "100%" }}>
-                            <TablaStock/>
+                        <TablaStock stocks={filteredStocks} />
                             <Button 
                                 onClick={copyTableToClipboard}
                                 variant="outlined" 
@@ -125,8 +138,22 @@ const Tabs = () => {
                         </div>
                         <div className={style.container2}>
                             <div style={{ position: "relative",  display: "flex", alignItems: "center", width: "70%"}}>
-                                <input type="text" placeholder="Busca un producto" style={{ height: "25px", marginLeft: 0, marginRight: 0, borderRadius: "50px", fontSize: 15, paddingLeft: 35, width: "100%"}}/>
-                                <IoIosSearch style={{position: "absolute", left: "10px", top: "35%", fontSize: "22px"}}/>
+                                <input 
+                                type="text" 
+                                placeholder="Busca un producto" 
+                                style={{ 
+                                    height: "25px",
+                                    marginLeft: 0,
+                                    marginRight: 0,
+                                    borderRadius: "50px",
+                                    fontSize: 15, 
+                                    paddingLeft: 35,
+                                    width: "100%"
+                                }}
+                                value={search}
+                                onChange={handleSearch}
+                                />
+                                 <IoIosSearch style={{position: "absolute", left: "10px", top: "35%", fontSize: "22px"}}/> 
                             </div>
                             <div style={{ display:"flex", justifyContent: "space-between", width: "70%", boxSizing: "border-box" }}>
                                 <Button 

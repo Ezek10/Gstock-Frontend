@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import warning from "../../assets/warning.png"
 import style from "./tablaStock.module.css"
 
-const TablaStock = () => {
+const TablaStock = ({stocks}) => {
 
     const [emptyRowCount, setEmptyRowCount] = useState(0);
     const [openDetail, setOpenDetail] = useState(false);
@@ -36,7 +36,6 @@ const TablaStock = () => {
             payload: updatedProducts,
         }))
     }
-    const stocks = useSelector((state) => state.products) || [];
 
     useEffect(() => {
         const calculateEmptyRows = () => {
