@@ -160,7 +160,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                    <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={capitalizeWords(transaction.name)} name="supplier" onChange={transactionDetailHandler}/>
                 </div>
 
@@ -173,6 +173,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
                 <Payment payment={handlePaymentChange}/>
 
+                {/*
                 <Divider variant="middle" component="li" sx={dividerStyle} />   
 
                 <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
@@ -187,7 +188,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                     placeholder={transaction.partial_payment || "$ 00000"}
                     />
                 </div>
-
+                */}
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <h2 style={{ fontSize: "20px", fontWeight: "500",margin: "10px 10px 0px 0px" }}>Producto</h2>

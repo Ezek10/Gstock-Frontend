@@ -49,7 +49,7 @@ const CalendarTransactions = ({ onDateChange }) => {
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px"}}>
             <div ref={anchorRef} onClick={handleCalendarToggle} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                <p className={style.letras} style={{ cursor: 'pointer' }}>Fecha</p>
+                <p className={style.letras} style={{ cursor: 'pointer' }}>*Fecha</p>
                 <ArrowDropDownIcon sx={{ fontSize: 18 }} style={{ cursor: 'pointer' }} />
             </div>
             <Button 

@@ -33,8 +33,16 @@ function App() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
+    const currentPath = window.location.pathname;
+    const access_token = searchParams.get("access_token");
     if (storedToken){
       get_all()
+    }
+    if (currentPath === "/sso_login") {
+      if (access_token) {
+        localStorage.setItem('access_token', access_token);
+        get_all()
+      }
     }
   }, [dispatch]);
 
@@ -48,7 +56,6 @@ function App() {
     if (currentPath === "/sso_login") {
       if (access_token) {
         // Si se recibe un nuevo token, se guarda en localStorage
-        localStorage.setItem('access_token', access_token);
         navigate('/home'); // Redirigir a /home después de guardar
       }
       else{

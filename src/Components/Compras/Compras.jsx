@@ -210,7 +210,7 @@ const Compras = React.forwardRef((props, ref) => {
             <h2 style={{ fontSize: "20px", margin: "" }}>Agregar una compra</h2>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Proveedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.supplier.name} onChange={changeHandler} name="supplier"/>
                 </div>
 
@@ -222,6 +222,7 @@ const Compras = React.forwardRef((props, ref) => {
 
                 <Payment className={style.payment} payment={handlePaymentChange}/>
 
+                {/*
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
@@ -230,26 +231,27 @@ const Compras = React.forwardRef((props, ref) => {
                     <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.partial_payment} placeholder="$ 00000" onChange={handlePartialPaymentChange} name="partial_payment"/>
                 </div>
+                */}
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <h2 style={{ fontSize: "20px" }}>Agregar un producto</h2>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ height: "15px", fontSize: 12 }} value={newProduct.products.product_name} onChange={changeHandler} name="product_name"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
                 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
-                    <p className={style.letras}>Precio Unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Precio Unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price"/>
                 </div>
 

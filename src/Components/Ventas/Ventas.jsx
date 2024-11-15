@@ -211,7 +211,7 @@ const Ventas = React.forwardRef((props, ref) => {
 
             <div style={{ width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client"/>
                 </div>
 
@@ -240,14 +240,14 @@ const Ventas = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
-                    <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }} onChange={changeHandler} name="seller"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "40%", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={product.product_name} value="">Elija un modelo</option>
                         {stocks.map((prod) => (
@@ -259,7 +259,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px"}}>
-                    <p className={style.letras}>IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p className={style.letras}>*IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={product.serial_id} value="">Elija un IMEI</option>
                         {inStock?.map(option => (
@@ -269,8 +269,10 @@ const Ventas = React.forwardRef((props, ref) => {
                              ))
                             }
                     </select>
+                    {/*
                     <p className={style.letras}>Color <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <p style={{ alignItems: "center", paddingLeft: "15px"}}>{product.color?.toUpperCase()}</p>
+                    */}
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -281,12 +283,13 @@ const Ventas = React.forwardRef((props, ref) => {
 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                    <p style={{display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>*Precio Unitario <ArrowRightIcon sx={{fontSize: 18}}/></p>
                     <input type="number" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -35px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price"/>
                     </div>
                     <Payment style={{display: "flex", justifyContent: "flex-end"}} payment={handlePaymentChange}/>
                 </div>
 
+                {/*
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
                 
                 <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
@@ -303,6 +306,7 @@ const Ventas = React.forwardRef((props, ref) => {
                      />
 
                 </div>
+                */}
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
 

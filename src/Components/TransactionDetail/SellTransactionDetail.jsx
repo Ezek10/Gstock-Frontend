@@ -139,7 +139,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             </div>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
-                <p className={style.letras}>Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>*Cliente <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder={capitalizeWords(updatedTransaction.client.name)} name="client" onChange={transactionDetailHandler}/>
             </div>
 
@@ -163,7 +163,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-                <p className={style.letras}>Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <p className={style.letras}>{capitalizeWords(transaction.seller.name)}</p>
             </div>
 
@@ -181,6 +181,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 </Button>
             </div>
 
+            {/*
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
@@ -195,13 +196,13 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
                 placeholder={transaction.partial_payment}
                 />
             </div>
-
+            */}
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
             <h2>Nuevo producto</h2>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
-                <p className={style.letras}>Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>*Producto <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select type="text" name="product_name" value={newProduct.product.name || ""} onChange={handleCartChange} style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "80%", borderRadius: "20px", border: "0px", paddingLeft: "10px" }}>
                         <option key={transaction.products.name} value="">Elija un modelo</option>
                         {stock.map((prod) => (
@@ -213,7 +214,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
-                <p className={style.letras}>IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>*IMEI <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <select type="text" value={newProduct.serial_id || ""} onChange={handleCartChange} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
                         <option key={newProduct.serial_id} value="">Elija un IMEI</option>
                         {stock
@@ -232,7 +233,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-                <p className={style.letras}>Precio de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>*Precio de venta <ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} placeholder="$0000" name="sell_price" onChange={handleCartChange}/>
             </div>
 
