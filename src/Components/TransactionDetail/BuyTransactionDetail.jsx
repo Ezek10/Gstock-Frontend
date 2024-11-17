@@ -21,6 +21,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 observations: prod.observations,
                 product_name: prod.product.name,
                 serial_id: prod.serial_id,
+                sell_price: prod.sell_price,
                 state: prod.state,
             })
         ))        
@@ -44,14 +45,15 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     })
 
     const [ newProduct, setNewProduct ] = useState({
-        battery_percent: 0,
-        buy_price: 0,
+        battery_percent: null,
+        buy_price: null,
         color: "",
-        observations: "",
+        observations: null,
         product_name: "",
-        serial_id: "",
+        serial_id: null,
         state: "AVAILABLE",
         quantity: 1,
+        sell_price: null,
     })
 
 
@@ -263,17 +265,25 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
                     <div>
                         <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>
-                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "25% 25% 25% 25%", gap: "0px" }}>
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", // Etiqueta y campo en dos columnas
+                        gridGap: "5px",
+                        rowGap: "10px",
+                        alignItems: "center", // Alinea verticalmente el contenido
+                    }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>Precio de Venta</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.color}  name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.serial_id}  name="serial_id"/>
                         <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.battery_percent}  name="battery_percent"/>
+                        <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder={product.sell_price}  name="sell_price"/>
                         <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", textAlign: "center" }} onClick={() => updateproductState(product, index)}>{product.state==="AVAILABLE" ? "Disponible" :  product.state==="RESERVED" ? "Reservado" : product.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                     </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "94%", borderRadius: "20spx"}}/>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "10px 0px 10px 0px", width: "95%", borderRadius: "20spx"}}/>
                     <Divider variant="middle" component="li" sx={dividerStyle} />
                 </div>))) : (<div></div>) }
 

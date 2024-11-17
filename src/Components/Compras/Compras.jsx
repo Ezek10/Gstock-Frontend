@@ -25,22 +25,23 @@ const Compras = React.forwardRef((props, ref) => {
         date: Date.now(),
         products: [{
             product_name: "",
-            buy_price: "",
+            buy_price: null,
             color: "",
-            serial_id: "",
-            battery_percent: 0,
+            serial_id: null,
+            battery_percent: 100,
             state: "AVAILABLE",
-            observations: "",
+            observations: null,
+            sell_price: null,
         }],
     })
 
     const [ cart, setCart ] = useState({
         quantity: 1,
         supplier: {
-            name: "",
+            name: null,
         },
         payment_method: "CASH",
-        partial_payment: "",
+        partial_payment: null,
         date: Date.now(),
         products: [],
     })
@@ -69,7 +70,7 @@ const Compras = React.forwardRef((props, ref) => {
 
     const changeHandler = (event, index) => {
         const property = event.target.name
-        const value = event.target.value
+        const value = event.target.value === "" ? null: event.target.value
 
         if (property === "supplier") {
             setNewProduct({...newProduct, supplier:{name: value}})
@@ -172,9 +173,10 @@ const Compras = React.forwardRef((props, ref) => {
                 // Creamos un nuevo objeto "transactionData" que incluye el valor de "partial_payment"
                 const transactionData = {
                     ...cart,
-                    partial_payment: parseFloat(cart.partial_payment) // Aseguramos que sea un número válido
+                    partial_payment: parseFloat(cart.partial_payment),
+                    buy_price: parseFloat(cart.buy_price)
                 };
-    
+
                 await postBuyTransaction(transactionData)
 
                 // Actualizar el estado de "TablaStock"
@@ -369,17 +371,25 @@ const Compras = React.forwardRef((props, ref) => {
                 {cart.products[0]?.product_name !== "" && cart.products.length > 0 ? (cart.products.map((product, index) => (
                     <div key={product.product_name+"-"+index}>
                         <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>
-                    <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "25% 25% 25% 25%", gap: "0px" }}>
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", // Etiqueta y campo en dos columnas
+                        gridGap: "5px",
+                        rowGap: "10px",
+                        alignItems: "center", // Alinea verticalmente el contenido
+                    }}>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Color</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
+                        <p style={{ marginTop: "5px", marginBottom: "3px" }}>Precio de Venta</p>
                         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.color} onChange={e => changeHandler(e, index)} name="color"/>
                         <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id"/>
-                        <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
+                        <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="100%" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent"/>
+                        <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.sell_price} onChange={e => changeHandler(e, index)} name="sell_price"/>
                         <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state==="AVAILABLE" ? "Disponible" :  product.state==="RESERVED" ? "Reservado" : product.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                     </div>
-                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "92%", borderRadius: "20spx"}}/>
+                    <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "95%", borderRadius: "20spx"}}/>
                     {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle}/> : <div></div>}
                 </div>))) : (<div></div>) }
         </div>

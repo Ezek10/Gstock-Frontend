@@ -168,19 +168,26 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
                 {products.stocks.map((prod, prodIndex) => (
                     <div key={prodIndex}>
                         <h2 style={{ fontSize: "18px", margin: "10px 0px 0px 0px", color: prod.supplier.color }}>{products.name}</h2>
-                        <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "22.5% 22.5% 22.5% 22.5% 10%", gap: "0px", alignItems: "center" }}>
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", // Etiqueta y campo en dos columnas
+                            gridGap: "5px",
+                            rowGap: "10px",
+                            alignItems: "center", // Alinea verticalmente el contenido
+                        }}>
                             <p style={{ margin: "10px 0px 0px 0px" }}>Color</p>
                             <p style={{ margin: "10px 0px 0px 0px" }}>IMEI</p>
                             <p style={{ margin: "10px 0px 0px 0px" }}>Baterí­a</p>
+                            <p style={{ margin: "10px 0px 0px 0px" }}>Precio de Venta</p>
                             <p style={{ margin: "10px 0px 0px 0px" }}>Estado</p>
-                            <p style={{ margin: "10px 0px 0px 0px", width: "10px" }}></p>
                             <input type="text" style={{ height: "15px", margin: "0px 5px 0px 0px", width: "70%", fontSize: "1.7vh" }} placeholder={prod.color} name="color" value={products.stocks[prodIndex]?.color || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.serial_id} name="serial_id" value={products.stocks[prodIndex]?.serial_id || ""} onChange={e => productDetailHandler(e, prodIndex)} />
-                            <input type="text" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            <input type="number" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.battery_percent} name="battery_percent" value={products.stocks[prodIndex]?.battery_percent || ""} onChange={e => productDetailHandler(e, prodIndex)} />
+                            <input type="number" style={{ height: "15px", margin: "0px", width: "70%" }} placeholder={prod.sell_price} name="sell_price" value={products.stocks[prodIndex]?.sell_price || ""} onChange={e => productDetailHandler(e, prodIndex)} />
                             {/* <input type="text" style={{ height: "15px", margin: "0px", width: "70%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", fontSize: "1.55vh" }} placeholder={prod.state} name="state" value={prod.state} onChange={e => productDetailHandler(e, prodIndex)} /> */}
                             <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(prod, prodIndex)}>{prod.state==="AVAILABLE" ? "Disponible" :  prod.state==="RESERVED" ? "Reservado" : prod.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
                         </div>
-                        <input type="text" style={{ height: "15px", width: "85%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations || "Obsevaciones"} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
+                        <input type="text" style={{ height: "15px", width: "95%", margin: "0px", paddingLeft: "5px" }} placeholder={prod.observations || "Obsevaciones"} name="observations" value={prod.observations} onChange={e => productDetailHandler(e, prodIndex)} />
                     </div>
                 ))}
                 <Button

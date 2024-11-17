@@ -75,7 +75,7 @@ const CalendarFilters = ({ filters, setFilters }) => {
                 style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             >
                 <p className={style.letrasWithMargin}>
-                    *Fecha <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+                    Fecha <ArrowDropDownIcon sx={{ fontSize: 18 }} />
                 </p>
             </span>
             

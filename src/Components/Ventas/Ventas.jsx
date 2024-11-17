@@ -61,6 +61,8 @@ const Ventas = React.forwardRef((props, ref) => {
             setCart({...cart, [property]:value})
         } else if (property==="serial_id"){
             const uniqueItem = inStock.filter(item => item.serial_id.includes(value))
+            aux = stocks.filter(item => item.name === product.product_name)[0]
+            setSellPrice(uniqueItem[0].sell_price || aux.list_price || "")
             setProduct({ ...product, ...uniqueItem[0] })
         } else if (property==="sell_price"){
             setSellPrice(value)

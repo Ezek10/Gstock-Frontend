@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./Tabs.module.css"
 import TablaStock from "../Tablas/tablaStock";
 import { Button } from "@mui/material";
@@ -30,7 +30,11 @@ const Tabs = () => {
     const stocks = useSelector((state) => state.products) || [];
 
     const [search, setSearch] = useState("");
-    const [filteredStocks, setFilteredStocks] = useState(stocks);
+    const [filteredStocks, setFilteredStocks] = useState([]);
+
+    useEffect(() => {
+        setFilteredStocks(stocks); // Actualiza el estado local cuando stocks cambia
+    }, [stocks]); 
 
     const [openCompras, setOpenCompras] = useState(false);
     const handleOpenCompras = () => setOpenCompras(true);

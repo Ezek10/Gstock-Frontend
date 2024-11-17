@@ -82,7 +82,6 @@ export const getCurrentUser = () => {
             })
         } catch(error){
             handleUnauthorizedError(error)
-            alert("Error al obtener el usuario actual")
         }
     }
 }
@@ -98,7 +97,6 @@ export const getProductsStocks = () => {
             })
         } catch(error){
             handleUnauthorizedError(error)
-            alert("Error al obtener el stock")
         }
     }
 }
@@ -114,7 +112,6 @@ export const getLogo = () => {
             })
         } catch(error){
             handleUnauthorizedError(error)
-            alert("Error al obtener el logo")
         }
     }
 }
@@ -130,7 +127,6 @@ export const putLogo = (logoUpdate) => {
             })
         } catch(error) {
             dispatch({ type: PUT_LOGO_FAILURE, payload: error.message });
-            alert("Error al cambiar el logo")
         }
     }
 }
@@ -147,7 +143,6 @@ export const getTransactions = (filters) => {
             })
         } catch (error) {
             handleUnauthorizedError(error)
-            alert("Error al obtener las transacciones")
         }
     }
 }
@@ -163,7 +158,6 @@ export const putProductStock = (stockDetail) => {
             })
         } catch(error) {
             dispatch({ type: PUT_PRODUCT_STOCKS_FAILURE, payload: error.message });
-            alert("Error al cambiar los datos del producto")
         }
     }
 }
@@ -179,7 +173,6 @@ export const putProductDetail = (productDetail) => {
             }) 
         } catch(error) {
             dispatch({ type: PUT_PRODUCT_DETAIL_FAILURE, payload: error.message });
-            alert("Error al cambiar los datos del producto")
         }
     }
 }
@@ -215,7 +208,6 @@ export const getTransactionCards = (filters) => {
             })
         } catch (error) {
             handleUnauthorizedError(error)
-            alert("Error al obtener las tarjetas")
         }
     }
 }
@@ -231,7 +223,6 @@ export const getSuppliers = () => {
             })
         } catch (error){
             handleUnauthorizedError(error)
-            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -247,7 +238,6 @@ export const getClients = () => {
             })
         } catch (error){
             handleUnauthorizedError(error)
-            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -263,7 +253,6 @@ export const getSellers = () => {
             })
         } catch (error){
             handleUnauthorizedError(error)
-            alert("Error al obtener los proveedores")
         }
     }
 }
@@ -314,7 +303,6 @@ export const getUsers = () => {
             })
         } catch (error){
             handleUnauthorizedError(error)
-            alert("Error al obtener los usuarios")
         }
     }
 }
@@ -324,6 +312,7 @@ export const postNewUser = async (user) => {
         const response = await axios.post(`${USER_URL}/users/create`, user, getHeaders());
         return response.data;
     } catch (error) {
+        handleUnauthorizedError(error)
         throw new Error(error.response?.data?.message || "Error al crear un usuario nuevo");
     }
 };
@@ -338,8 +327,8 @@ export const putUser = (user) => {
                 payload: response.data
             }) 
         } catch(error) {
+            handleUnauthorizedError(error)
             dispatch({ type: PUT_USER_FAILURE, payload: error.message });
-            alert("Error al cambiar los datos del usuario")
         }
     }
 }
@@ -355,6 +344,7 @@ export const deleteUser = (userId) => {
                 payload: userId
             })
         } catch (error) {
+            handleUnauthorizedError(error)
             dispatch({
                 type: DELETE_USER_FAILURE,
                 payload: error.message
@@ -373,8 +363,8 @@ export const putTransactionBuy = (transactionDetail) => {
                 payload: response.data
             }) 
         } catch(error) {
+            handleUnauthorizedError(error)
             dispatch({ type: PUT_TRANSACTION_BUY_FAILURE, payload: error.message });
-            alert("Error al cambiar los datos de la transacción")
         }
     }
 }
@@ -389,8 +379,8 @@ export const putTransactionSell = (transactionDetail) => {
                 payload: response.data
             }) 
         } catch(error) {
+            handleUnauthorizedError(error)
             dispatch({ type: PUT_TRANSACTION_SELL_FAILURE, payload: error.message });
-            alert("Error al cambiar los datos de la transacción")
         }
     }
 }
@@ -406,6 +396,7 @@ export const deleteTransaction = (id) => {
                 payload: id
             })
         } catch (error) {
+            handleUnauthorizedError(error)
             dispatch({
                 type: DELETE_TRANSACTION_FAILURE,
                 payload: error.message
