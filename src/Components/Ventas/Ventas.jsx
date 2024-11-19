@@ -4,7 +4,7 @@ import { Divider, Button, Dialog } from "@mui/material";
 import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { getProductsStocks, postSellTransaction } from "../../Redux/actions";
+import { getClients, getProductsStocks, getSellers, getTransactionCards, postSellTransaction } from "../../Redux/actions";
 import CloseIcon from '@mui/icons-material/Close';
 import Exchange from "../Exchange/Exchange";
 import { Modal } from '@mui/base/Modal';
@@ -15,9 +15,6 @@ import closeConfirm from "../../assets/closeConfirm.png"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // flechita ABAJO
 
 const Ventas = React.forwardRef((props, ref) => {
-
-    const [ errors, setErrors ] = useState({        
-    })
 
     const [ inStock, setInStock ] = useState([])
     const [ product, setProduct ] = useState({})
@@ -68,11 +65,11 @@ const Ventas = React.forwardRef((props, ref) => {
             setSellPrice(value)
         } else if (property==="product_name") {
             aux = stocks.filter(item => item.name === value)
-            
             setInStock(aux[0].stocks)
             setProduct({...product, product_name: value})
-            
         } else {
+            if (!product.product_name || !product.serial_id || sellPrice<1) return
+            // create cart
             let newCart = [{
                 product_name: product.product_name,
                 id: product.id,
@@ -81,7 +78,7 @@ const Ventas = React.forwardRef((props, ref) => {
                 serial_id: product.serial_id,
                 battery_percent: product.battery_percent
             }]
-            
+
             if (cart!=="") {
                 const updateCart = cart.products.concat(newCart)
                 setCart({...cart, products: updateCart})
@@ -117,9 +114,23 @@ const Ventas = React.forwardRef((props, ref) => {
         newUpdatedCart.swap_products.splice(index, 1)
         setCart(newUpdatedCart)
     }
-    
+
     const [openConfirm, setOpenConfirm] = useState(false);
-    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleOpenConfirm = () => {
+        if (!cart.client.name){
+            alert("Falta Cliente")
+            return
+        }
+        if (!cart.seller.name){
+            alert("Falta Vendedor")
+            return
+        }
+        if (cart.products.length < 1){
+            alert("Faltan Productos")
+            return
+        }
+        setOpenConfirm(true);
+    }
     const handleCloseConfirm = () => setOpenConfirm(false);
 
     const [openCheck, setOpenCheck] = useState(false);
@@ -135,7 +146,7 @@ const Ventas = React.forwardRef((props, ref) => {
     const [openExchange, setOpenExchange] = useState(false);
     const handleOpenExchange = () => setOpenExchange(true);
     const handleCloseExchange = () => setOpenExchange(false);
-    
+
     const handleAddExchange = (exchangeCart) => {
         setExchangeProducts(prevExchangeProducts => {
             const newExchangeProducts = [...prevExchangeProducts, ...exchangeCart];
@@ -146,7 +157,13 @@ const Ventas = React.forwardRef((props, ref) => {
         return newExchangeProducts;
         });
     } 
-    
+
+    const finishSell = async (event) => {
+        submitHandler();
+        handleOpenCheck();
+        handleCloseConfirm();
+    }
+
     const totalBuyPrice = () => {
         let swap = 0
         
@@ -163,24 +180,24 @@ const Ventas = React.forwardRef((props, ref) => {
         }, 0) - swap
         
     }
-    
+
     const submitHandler = async (event) => {
         
-        if (Object.values(errors).every((error) => error === "")) {
-            try {
-                const transactionData = {
-                    ...cart,
-                    partial_payment: parseFloat(cart.partial_payment) // Aseguramos que sea un número válido
-                };
+        try {
+            const transactionData = {
+                ...cart,
+                partial_payment: parseFloat(cart.partial_payment) // Aseguramos que sea un número válido
+            };
 
-                await postSellTransaction(transactionData)
+            await postSellTransaction(transactionData)
 
-                // Actualizar el estado de "TablaStock"
-                await dispatch(getProductsStocks())
+            // Actualizar el estado de "TablaStock"
+            await dispatch(getProductsStocks())
+            await dispatch(getClients())
+            await dispatch(getSellers())
 
-            } catch(error){
-                window.alert("Error al cargar la venta", error)
-            }
+        } catch(error){
+            window.alert("Error al cargar la venta", error)
         }
     }
     
@@ -448,7 +465,7 @@ const Ventas = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm();}}>Confirmar
+                                    onClick={()=> finishSell()}>Confirmar
                                 </Button>
                             </div>
                         </div>

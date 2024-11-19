@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { styled } from '@mui/system';
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
+import Tooltip from '@mui/material/Tooltip';
 import GroupDetail from "../GroupDetail/GroupDetail";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,7 +99,7 @@ const TablaStock = ({stocks}) => {
                     <TableBody >
                     {stocks.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px", '&:hover': {cursor: "pointer"},  }}>{hasEmptyValue(prod) ? <img src={warning} alt="Warning" style={{height: "10px"}}/> : ""}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%",  padding: "0px 0px 0px 10px", '&:hover': {cursor: "pointer"},  }}>{hasEmptyValue(prod) ? (<Tooltip title="Faltan datos en algun item de este producto" arrow><img src={warning} alt="Warning" style={{height: "10px"}}/> </Tooltip> ) : ""}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px",  '&:hover': {cursor: "pointer"}, border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px", borderLeftWidth: "0px" }}>{capitalizeWords(prod.name)}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%",  color: prod.stocks.length > 3 ? "black" : "red", '&:hover': {cursor: "pointer"},border: "8px solid white",borderTopWidth:"0px",borderBottomWidth: "0px"  }}>{prod.stocks.length ? prod.stocks.length : 0}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%",  '&:hover': {cursor: "pointer"}, border: "4px solid white",borderTopWidth:"0px",borderBottomWidth: "0px" }}>{prod.list_price===null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>

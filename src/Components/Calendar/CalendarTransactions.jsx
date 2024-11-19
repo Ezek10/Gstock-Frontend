@@ -8,12 +8,12 @@ import style from "./Calendar.module.css";
 import { format } from 'date-fns';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const CalendarTransactions = ({ onDateChange }) => {
+const CalendarTransactions = ({ onDateChange, value }) => {
     const anchorRef = useRef(null); // Referencia para el botón que activa el calendario
     const calendarRef = useRef(null); // Nueva referencia para el calendario
 
     const [openCalendar, setCalendar] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(value || new Date());
 
     const handleCalendarToggle = () => {
         setCalendar((prevOpen) => !prevOpen);
@@ -52,13 +52,7 @@ const CalendarTransactions = ({ onDateChange }) => {
                 <p className={style.letras} style={{ cursor: 'pointer' }}>*Fecha</p>
                 <ArrowDropDownIcon sx={{ fontSize: 18 }} style={{ cursor: 'pointer' }} />
             </div>
-            <Button 
-                variant="outlined" 
-                size="small"
-                style={{ ...botonCopiar, cursor: 'default' }}
-            >
-                <p style={{fontSize:14}}>{format(selectedDate, "dd/MM/yy")}</p>
-            </Button>
+            <p style={{fontSize:14, marginLeft: '8px'}}>{format(selectedDate, "dd/MM/yy")}</p>
             <Popper
                 open={openCalendar}
                 anchorEl={anchorRef.current} 

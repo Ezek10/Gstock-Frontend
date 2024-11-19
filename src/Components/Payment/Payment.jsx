@@ -3,9 +3,9 @@ import style from "./Payment.module.css";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
-const PagoSelector = ({ payment }) => {
+const PagoSelector = ({ payment, value }) => {
     const [isOpenPago, setIsOpenPago] = useState(false);
-    const [selectedPago, setSelectedPago] = useState('CASH'); // Valor inicial
+    const [selectedPago, setSelectedPago] = useState(value || 'CASH'); // Valor inicial
     const dropdownRefPago = useRef(null);
 
     const paymentOptions = {

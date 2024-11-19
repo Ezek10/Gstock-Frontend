@@ -6,7 +6,7 @@ import 'react-date-range/dist/theme/default.css';
 import CalendarTransactions from "../Calendar/CalendarTransactions";
 import Payment from "../Payment/Payment";
 import CloseIcon from '@mui/icons-material/Close';
-import { postBuyTransaction, getProductsStocks } from "../../Redux/actions";
+import { postBuyTransaction, getProductsStocks, getSuppliers } from "../../Redux/actions";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import check from "../../assets/check.png" 
 import closeConfirm from "../../assets/closeConfirm.png"
@@ -38,7 +38,7 @@ const Compras = React.forwardRef((props, ref) => {
     const [ cart, setCart ] = useState({
         quantity: 1,
         supplier: {
-            name: null,
+            name: "",
         },
         payment_method: "CASH",
         partial_payment: null,
@@ -46,13 +46,18 @@ const Compras = React.forwardRef((props, ref) => {
         products: [],
     })
 
-    const [ errors, setErrors ] = useState({
-        quantity: "",
-        buy_price: "",
-    })
-
     const [openConfirm, setOpenConfirm] = useState(false);
-    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleOpenConfirm = () => {
+        if (!cart.supplier.name){
+            alert("Falta Proveedor")
+            return
+        }
+        if (cart.products.length < 1){
+            alert("Faltan Productos")
+            return
+        }
+        setOpenConfirm(true);
+    }
     const handleCloseConfirm = () => setOpenConfirm(false);
 
     const [openCheck, setOpenCheck] = useState(false);
@@ -72,44 +77,43 @@ const Compras = React.forwardRef((props, ref) => {
         const property = event.target.name
         const value = event.target.value === "" ? null: event.target.value
 
+        // change products properties
+        if (index>=0) {
+            const updateNewProd = cart.products
+            updateNewProd[index] = {...updateNewProd[index], [property]: value } 
+            setCart({...cart, products: updateNewProd})
+        }
+
+        // change supplier 
         if (property === "supplier") {
             setNewProduct({...newProduct, supplier:{name: value}})
             setCart({...newProduct, supplier:{name: value}})
             return;
         }
 
-        if (["product_name","buy_price","quantity"].includes(property)) {
-            const updatedNewProduct = {... newProduct}
+        const updatedNewProduct = {...newProduct}
 
-            if (property!=="quantity") {
-                const updatedProducts = newProduct.products.map((product) => {
-                    return { ...product, [property]: value };
-                });
-                updatedNewProduct.products = updatedProducts;
-            } else {
-                validate({...newProduct, [property]: value})
-                updatedNewProduct[property] = value;
-            }
-            if (updatedNewProduct.quantity>0){
-                const productsArray = Array(parseInt(updatedNewProduct.quantity, 10)).fill(updatedNewProduct.products[0]);
-                updatedNewProduct.products = productsArray;
-            } else {
-                const productsArray = Array(parseInt(1, 10)).fill(updatedNewProduct.products[0]);
-                updatedNewProduct.products = productsArray;
-            }
-            setNewProduct(updatedNewProduct);            
+        if (property==="quantity") {
+            updatedNewProduct[property] = value > 0 ? value : "";
+        } else {
+            const updatedProducts = newProduct.products.map((product) => {
+                return { ...product, [property]: value };
+            });
+            updatedNewProduct.products = updatedProducts;
         }
-
-        if (index>=0) {
-            const updateNewProd = cart.products
-            updateNewProd[index] = {...updateNewProd[index], [property]: value } 
-            setCart({...cart, products: updateNewProd})
+        if (updatedNewProduct.quantity > 0) {
+            const productsArray = Array(parseInt(updatedNewProduct.quantity)).fill(updatedNewProduct.products[0]);
+            updatedNewProduct.products = productsArray;
         }
+        setNewProduct(updatedNewProduct);
     }   
 
     const addProdHandler = () => {
         const updatedCart = {...cart}
         const cartProducts = newProduct.products
+        if (cartProducts[0].product_name==="" || cartProducts[0].buy_price<1){
+            return
+        }
         updatedCart.products = updatedCart.products.concat(cartProducts)
         if (updatedCart.products[0] && updatedCart.products[0].product_name===""){
             updatedCart.products.shift();
@@ -117,32 +121,17 @@ const Compras = React.forwardRef((props, ref) => {
         setCart(updatedCart)
     }
 
-    const validate = (newProduct) => {
-        let newErrors = {}
-        const numberRegex = /^\d+$/;
-        if(numberRegex.test(newProduct.quantity) && newProduct.quantity > 0){
-            setErrors({...errors, quantity:""})
-        } else {
-            newErrors["quantity"] = "Debe ser un número entero mayor a 0"
-        }
-        // if(numberRegex.test(newProduct.products.buy_price)){
-        //     setErrors({...errors, buy_price:""})
-        // } else {
-        //     newErrors["buy_price"] = "Ingrese un número válido"
-        // }
-        setErrors(newErrors)
-    }
-
     const handleDateChange = (selection) => {
         setNewProduct({ ...newProduct, date: selection.startDate.getTime()/1000});
         setCart({ ...cart, date: selection.startDate.getTime()/1000});
-    }
+    } 
 
     const handlePaymentChange = (selection) => {
         setNewProduct({...newProduct, payment_method: selection});
         setCart({...cart, payment_method: selection});
     }
 
+    // keep for partial payment
     const handlePartialPaymentChange = (event) => {
         const value = event.target.value;
         setNewProduct({ ...newProduct, partial_payment: value });
@@ -166,25 +155,29 @@ const Compras = React.forwardRef((props, ref) => {
         setCart(updatedProducts);
     }
 
+    const finishBuy = async (event) => {
+        submitHandler();
+        handleOpenCheck();
+        handleCloseConfirm();
+    }
 
     const submitHandler = async (event) => {
-        if (Object.values(errors).every((error) => error === "")) {
-            try {
-                // Creamos un nuevo objeto "transactionData" que incluye el valor de "partial_payment"
-                const transactionData = {
-                    ...cart,
-                    partial_payment: parseFloat(cart.partial_payment),
-                    buy_price: parseFloat(cart.buy_price)
-                };
+        try {
+            // Creamos un nuevo objeto "transactionData" que incluye el valor de "partial_payment"
+            const transactionData = {
+                ...cart,
+                partial_payment: parseFloat(cart.partial_payment),
+                buy_price: parseFloat(cart.buy_price)
+            };
 
-                await postBuyTransaction(transactionData)
+            await postBuyTransaction(transactionData)
 
-                // Actualizar el estado de "TablaStock"
-                await dispatch(getProductsStocks())
+            // Actualizar el estado de "TablaStock"
+            await dispatch(getProductsStocks())
+            await dispatch(getSuppliers())
 
-            } catch (error) {
-                window.alert("Error al cargar la compra", error)
-            }
+        } catch (error) {
+            window.alert("Error al cargar la compra", error)
         }
     };
 
@@ -247,7 +240,7 @@ const Compras = React.forwardRef((props, ref) => {
                 
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
                     <p className={style.letras}>*Cantidad <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="1" value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
+                    <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.quantity} onChange={changeHandler} name="quantity"/>
                 </div>
 
                 <Divider variant="middle" component="li" sx={dividerStyle}/>
@@ -346,7 +339,7 @@ const Compras = React.forwardRef((props, ref) => {
                                     size="small"
                                     target="_blank"
                                     style={buttonStyle}
-                                    onClick={()=> {submitHandler();handleOpenCheck();handleCloseConfirm();}}>Confirmar
+                                    onClick={()=> finishBuy()}>Confirmar
                                 </Button>
                             </div>
                         </div>

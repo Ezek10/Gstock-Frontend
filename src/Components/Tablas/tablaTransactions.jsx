@@ -18,6 +18,7 @@ const TablaTransactions = ({filters}) => {
     const [selectedTransaction, setSelectedTransaction] = useState([]);
     const modalRef = useRef(null);
     const dispatch = useDispatch()
+
     const capitalizeWords = (str) => {
         if (!str) {return str}
         return str
@@ -25,6 +26,7 @@ const TablaTransactions = ({filters}) => {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
             .join(' '); // Une las palabras nuevamente
     };
+
     const handleOpenDetail = (prod) => {
         setSelectedTransaction(prod);
         if (prod.type==="BUY") {

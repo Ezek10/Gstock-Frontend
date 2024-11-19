@@ -157,7 +157,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{fontSize: 18}}/></p>
                 <p className={style.letras} style={{ margin: "0px 10px 0px 5px"}}>{capitalizeWords(transaction.contact_via)}</p>
-                <CalendarTransactions onDateChange={handleDateChange}/>
+                <CalendarTransactions value={transaction.date} onDateChange={handleDateChange}/>
             </div>
 
             <Divider variant="middle" component="li" sx={dividerStyle} />
@@ -170,7 +170,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             <Divider variant="middle" component="li" sx={dividerStyle} />
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <Payment payment={handlePaymentChange}/>
+                <Payment value={transaction.payment_method} payment={handlePaymentChange}/>
                 <Button 
                     variant="outlined" 
                     size="small"

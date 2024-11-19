@@ -8,13 +8,13 @@ const Exchange = React.forwardRef((props, ref) => {
 
     const [ exchangeCart, setExchangeCart ] = useState([])
     const [ newProdExchange, setNewProdExchange ] = useState({
-            product_name: "",
-            buy_price: "",
-            color: "",
-            serial_id: "",
-            battery_percent: 0,
-            state: "AVAILABLE",
-            observations: "",
+        product_name: "",
+        buy_price: "",
+        color: "",
+        serial_id: "",
+        battery_percent: 100,
+        state: "AVAILABLE",
+        observations: "",
     })
 
     const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
@@ -28,6 +28,8 @@ const Exchange = React.forwardRef((props, ref) => {
             return;
         }
 
+        // Add Product to cart
+        if (newProdExchange.buy_price <= 0 || !newProdExchange.product_name) return
         const updatedCart = [...exchangeCart]
         updatedCart.push(newProdExchange)
         setExchangeCart(updatedCart)
@@ -93,14 +95,7 @@ const Exchange = React.forwardRef((props, ref) => {
             <Divider variant="middle" component="li" sx={dividerStyle}/>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
-                <p className={style.letras}>Cantidad<ArrowRightIcon sx={{fontSize: 18}}/></p>
-                <input type="text" />
-            </div>
-
-            <Divider variant="middle" component="li" sx={dividerStyle}/>
-
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "15px", margin: "12px 10px 12px 0px" }}>
-                <p className={style.letras}>Precio unitario<ArrowRightIcon sx={{fontSize: 18}}/></p>
+                <p className={style.letras}>Precio<ArrowRightIcon sx={{fontSize: 18}}/></p>
                 <input type="text" placeholder="$0000"  value={newProdExchange.buy_price} onChange={changeHandler} name="buy_price"/>
             </div>
 
@@ -111,11 +106,11 @@ const Exchange = React.forwardRef((props, ref) => {
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
                 <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder="" 
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }}
                      value={newProdExchange.color} onChange={changeHandler} name="color"/>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder=""
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }}
                     value={newProdExchange.serial_id} onChange={changeHandler} name="serial_id"/>
-                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }} placeholder=""
+                <input type="text" style={{ height: "12px", margin: "0px", paddingLeft: "5px", width: "70%" }}
                     value={newProdExchange.battery_percent} onChange={changeHandler} name="battery_percent"/>
                 <button style={{ height: "18px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", "&:hover": { cursor: "pointer"} }} onClick={() => updateproductState()}>
                     {newProdExchange.state==="AVAILABLE" ? "Disponible" :  newProdExchange.state==="RESERVED" ? "Reservado" : newProdExchange.state==="DEFECTIVE" ? "Fallado" : "Roto" }</button>
