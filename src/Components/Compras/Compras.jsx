@@ -71,7 +71,7 @@ const Compras = React.forwardRef((props, ref) => {
 
   const handleCloseCheck = () => setOpenCheck(false);
 
-  const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
+  const states = ["AVAILABLE", "RESERVED", "DEFECTS", "BROKEN"]
 
   const changeHandler = (event, index) => {
     const property = event.target.name
@@ -133,6 +133,7 @@ const Compras = React.forwardRef((props, ref) => {
 
   const addProdHandler = () => {
     const updatedCart = { ...cart }
+    updatedCart.supplier.name = newProduct.supplier.name
     updatedCart.supplier.name = newProduct.supplier.name
     const cartProducts = newProduct.products
     if (cartProducts[0].product_name === "" || cartProducts[0].buy_price < 1) {
@@ -407,7 +408,7 @@ const Compras = React.forwardRef((props, ref) => {
             <input type="text" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.serial_id} onChange={e => changeHandler(e, index)} name="serial_id" />
             <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="100%" value={newProduct.products.battery_percent} onChange={e => changeHandler(e, index)} name="battery_percent" />
             <input type="number" style={{ height: "12px", margin: "0px", width: "70%" }} placeholder="" value={newProduct.products.sell_price} onChange={e => changeSellPrice(e, index)} name="sell_price" />
-            <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state === "AVAILABLE" ? "Disponible" : product.state === "RESERVED" ? "Reservado" : product.state === "DEFECTIVE" ? "Fallado" : "Roto"}</button>
+            <button style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh" }} onClick={() => updateproductState(product, index)}>{product.state === "AVAILABLE" ? "Disponible" : product.state === "RESERVED" ? "Reservado" : product.state === "DEFECTS" ? "Fallado" : "Roto"}</button>
           </div>
           <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "95%", borderRadius: "20spx" }} />
           {index > newProduct.products.length ? <Divider variant="middle" component="li" sx={dividerStyle} /> : <div></div>}
