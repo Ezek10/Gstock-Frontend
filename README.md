@@ -16,6 +16,7 @@ Transacciones -->
     - Modificaciones al producto unitario como tal, afecta el objeto a enviar y también la visual del TOTAL.
     
 [x] - Stock -> Agregar Compra -> Manejo del selector una vez agregada la lista de productos(BUG)
+[] - Transacciones -> Guardar Cambios | Eliminar transaccion
 [] - Seleccionas una transaccion ya creada
 [] - Se mostraban los valores por default y no
 [] - los pasados por props
@@ -27,7 +28,8 @@ Transacciones -->
 [] - Select diseño tipo mac para todos. Y para mac default.
 [] - Precio de venta a la hora de targetear un imei, mostrar esto, en el caso de no tener toma el precio general.
 [] - Parseo de numeros evitar que coloque el 0 adelante.
-[] - Eliminar transacciones tipo venta y tipo compra. ATENTO A ESTO.
-[] - Boton de edicion de transaccion de compra, cambiar el estado. Disponible-reservado-fallado-roto. Dispatchea solamente al guardar.
+[x] - Eliminar transacciones tipo venta y tipo compra. ATENTO A ESTO. Funciona mal desde back
+[x] - Boton de edicion de transaccion de compra, cambiar el estado. Disponible-reservado-fallado-roto. Dispatchea solamente al guardar.
+[] - Transacción - Compra Guardar Cambios BUG.
 [] - Checkeo y modal para cuando se edite algo del sidebar
-[] - Mapeo de tipo de Pago al i18n
+[x] - Mapeo de tipo de Pago

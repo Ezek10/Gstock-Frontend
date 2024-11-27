@@ -9,6 +9,7 @@ import { getTransactions, putTransactionSell } from "../../Redux/actions";
 import style from "./tablaTransactions.module.css"
 import BuyTransactionDetail from "../TransactionDetail/BuyTransactionDetail";
 import SellTransactionDetail from "../TransactionDetail/SellTransactionDetail";
+import { paymentOptions, typeTransaction } from "../../utils/constants";
 
 const TablaTransactions = ({filters}) => {
 
@@ -126,11 +127,11 @@ const TablaTransactions = ({filters}) => {
                     {transactions.map((prod) => (
                         <TableRow sx={{ '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.1)'}}} key={prod.id}>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ '&:hover': {cursor: "pointer"}, borderLeftWidth: "0px" }}>{capitalizeWords(prod.name)}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "15%", '&:hover': {cursor: "pointer"}  }}>{prod.type}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "15%", '&:hover': {cursor: "pointer"}  }}>{typeTransaction[prod.type]}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{prod.products.length}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{formatDate(prod.date)}</CustomTableCell>
                             <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"} }}>{`$ ${prod.total}`}</CustomTableCell>
-                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"}  }}>{prod.payment_method}</CustomTableCell>
+                            <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "15%", '&:hover': {cursor: "pointer"}  }}>{paymentOptions[prod.payment_method]}</CustomTableCell>
                         </TableRow>
                     ))}
                     {Array.from({ length: emptyRowCount }).map((_, index) => (
