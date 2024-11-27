@@ -358,7 +358,7 @@ const Compras = React.forwardRef((props, ref) => {
           </div>
           {cart.products.length > 0 ? (cart.products.map((product, index) => (
             <div key={index} style={{ marginTop: "5px" }}>
-              <p style={{ fontWeight: "300", fontSize: "14px" }}>{product.product_name} ${product.buy_price}</p>
+              <p style={{ fontWeight: "300", fontSize: "14px" }}>{product.product_name} ${product.sell_price ?? product.buy_price}</p>
             </div>)
           )) : (<p></p>)}
           <div style={{ display: "flex", justifyContent: "center" }}>

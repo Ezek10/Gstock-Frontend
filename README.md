@@ -15,7 +15,7 @@ Transacciones -->
     - Producto, cantidad, precio unitario se comportan separados
     - Modificaciones al producto unitario como tal, afecta el objeto a enviar y también la visual del TOTAL.
     
-[] - Stock -> Agregar Compra -> Manejo del selector una vez agregada la lista de productos(BUG)
+[x] - Stock -> Agregar Compra -> Manejo del selector una vez agregada la lista de productos(BUG)
 [] - Seleccionas una transaccion ya creada
 [] - Se mostraban los valores por default y no
 [] - los pasados por props
