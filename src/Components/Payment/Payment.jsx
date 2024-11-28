@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import style from "./Payment.module.css";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+
 
 
 const PagoSelector = ({ payment, value }) => {
@@ -41,41 +42,18 @@ const PagoSelector = ({ payment, value }) => {
   }, [dropdownRefPago]);
 
   return (
-    <div className={style.selector} style={{ position: 'relative' }}>
-      <div
-        onClick={toggleDropdownPago}
-        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px" }}>
+      <p className={style.letras}>Pago <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+      <select 
+        value={selectedPago}
+        onChange={(e) => handlePagoSelect(e.target.value)}
       >
-        <p className={style.letras}>
-          Pago <ArrowDropDownIcon sx={{ fontSize: 18 }} />
-        </p>
-        {/* Mostrar la opción seleccionada aquí, al lado del texto "Pago" */}
-        <span style={{ marginLeft: '8px' }}>{paymentOptions[selectedPago]}</span>
-      </div>
-      {isOpenPago && (
-        <div
-          ref={dropdownRefPago}
-          className={style.selectPago}
-        >
-          {Object.keys(paymentOptions).map(option => (
-            <div
-              key={option}
-              onClick={() => handlePagoSelect(option)}
-              className={style.customOptions}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#CECECE';
-                e.currentTarget.style.color = 'black';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'white';
-                e.currentTarget.style.backgroundColor = '#5a5a5a3a';
-              }}
-            >
-              {paymentOptions[option]} {/* Muestra el texto amigable */}
-            </div>
-          ))}
-        </div>
-      )}
+        {Object.keys(paymentOptions).map(option => (
+          <option key={option} value={option}>
+            {paymentOptions[option]}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };

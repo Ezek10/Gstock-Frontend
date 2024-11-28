@@ -28,3 +28,13 @@ li{
     font-size: 24px;
     font-weight: 800;
 }
+
+select {
+  font-size: 12;
+  height: 20px;
+  margin: 12px 10px 12px 10px;
+  width: 120px;
+  border-radius: 20px;
+  border: 0px;
+  padding-left: 5px;
+}

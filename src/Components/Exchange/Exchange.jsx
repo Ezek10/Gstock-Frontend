@@ -174,6 +174,8 @@ const Exchange = React.forwardRef((props, ref) => {
     )
 })
 
+Exchange.displayName = "Exchange"
+
 const dividerStyle = {
     borderColor: 'transparent',
     background: 'linear-gradient(to right, grey, rgb(201, 201, 201))',
