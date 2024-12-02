@@ -62,7 +62,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     setNewTransaction({ ...newTransaction, partial_payment: value });
   }
 
-  const states = ["AVAILABLE", "RESERVED", "DEFECTIVE", "BROKEN"]
+  const states = ["AVAILABLE", "RESERVED", "DEFECTS", "BROKEN"]
 
   const transactionDetailHandler = (event) => {
     const property = event.target.name
@@ -72,9 +72,9 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
   const updateproductState = (product, itemIndex) => {
     const newState = (states.indexOf(product.state) + 1) % states.length;
-    const updatedProducts = { ...transaction };
-    updatedProducts.products[itemIndex].state = states[newState];
-    setTransaction(updatedProducts);
+    const updateProduct = {...newTransaction}
+    updateProduct.products[itemIndex].state = states[newState]
+    setNewTransaction(updateProduct)
   }
 
   const handleDateChange = (selection) => {
@@ -325,8 +325,24 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 onChange={e => product.sell_price = e.target.value}
               />
               <button 
-                style={{ height: "22px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", textAlign: "center" }} 
-                onClick={() => updateproductState(product, index)}>{product.state === "AVAILABLE" ? "Disponible" : product.state === "RESERVED" ? "Reservado" : product.state === "DEFECTIVE" ? "Fallado" : "Roto"}
+                style={{ 
+                  height: "22px", 
+                  margin: "0px", 
+                  width: "88%", 
+                  boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", 
+                  borderRadius: "20px", 
+                  border: "transparent", 
+                  fontSize: "1.7vh", 
+                  textAlign: "center" 
+                }} 
+                onClick={() => updateproductState(product, index)}
+              >
+                  {
+                    product.state === "AVAILABLE" ? "Disponible" 
+                    : product.state === "RESERVED" ? "Reservado" 
+                    : product.state === "DEFECTIVE" ? "Fallado" 
+                    : "Roto"
+                  }
               </button>
             </div>
             <input 

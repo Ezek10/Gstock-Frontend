@@ -21,13 +21,14 @@ Transacciones -->
 [x] - Stock -> Venta -> Selects similares al select de compra
 [x] - Stock -> Venta -> Select Canal de venta
 
-[] - Transacciones -> Guardar Cambios
-[x] - Transacciones -> Eliminar transaccion
-[x] - Transacciones -> Campo editable Cliente, telefono, email
-[x] - Transacciones -> Campo editable Vendedor
-[] - Transacciones -> Agregar canje funcional
-[] - Transacciones -> Seleccionas una transaccion ya creada
-[] - Transacciones -> Se mostraban los valores por default y no los pasados por props
+[x] - Transacciones -> VENTA -> Guardar Cambios
+[x] - Transacciones -> VENTA -> Eliminar transaccion
+[x] - Transacciones -> VENTA -> Campo editable Cliente, telefono, email
+[x] - Transacciones -> VENTA -> Campo editable Vendedor
+[x] - Transacciones -> VENTA -> Agregar canje funcional
+[] - Transacciones -> COMPRA -> Botones de Estado mutables
+[x] - UPDATE GENERAL -> Tablas ahora cargan de manera correcta el producto y actualizan
+
 [] - Transacciones -> Input de transacciones, muestra los valores normal
 [] - Transacciones -> Canal de venta editable (HAcer editable)
 [] - Transacciones -> Vendedor hacer editable

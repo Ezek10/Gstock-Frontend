@@ -24,7 +24,7 @@ const Ventas = React.forwardRef((props, ref) => {
   const [cart, setCart] = useState({
     client: {
       name: "",
-      tel: "",
+      cellphone: "",
       email: ""
     },
     type: "SELL",
@@ -44,7 +44,7 @@ const Ventas = React.forwardRef((props, ref) => {
     const property = event.target.name
     const value = event.target.value
     let aux = []
-    if (["client", "seller", "tel", "email"].includes(property)) {
+    if (["client", "seller", "cellphone", "email"].includes(property)) {
 
       if (["client", "seller"].includes(property)) {
         setCart({ ...cart, [property]: { name: value } })
@@ -238,8 +238,8 @@ const Ventas = React.forwardRef((props, ref) => {
         <Divider variant="middle" component="li" sx={dividerStyle} />
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input type="number" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.tel || ""} onChange={changeHandler} name="tel" />
+          <p className={style.letras}>cell <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+          <input type="number" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.cellphone || ""} onChange={changeHandler} name="cellphone" />
           <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
           <input type="email" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.email || ""} onChange={changeHandler} name="email" />
         </div>
@@ -369,8 +369,18 @@ const Ventas = React.forwardRef((props, ref) => {
           <p className={style.letras}>TOTAL</p>
           <div id="cart" className={style.cart}>
             {cart.products.map((prod, index) => (
-              <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
-                <div style={{ gridColumn: "span 2" }}>{prod.product_name}</div>
+              <div 
+                key={index} 
+                style={{ 
+                  display: "grid", 
+                  gridTemplateRows: "repeat(1, 1fr)", 
+                  gridTemplateColumns: "repeat(6, 1fr)", 
+                  flexDirection: "row"
+                }}
+              >
+                <div style={{ gridColumn: "span 2" }}>
+                  {prod.product_name}
+                </div>
                 <div>{prod.serial_id}</div>
                 <div>{prod.color?.toUpperCase()} </div>
                 <div> {prod.battery_percent}%</div>
