@@ -20,6 +20,7 @@ Transacciones -->
 [x] - Stock -> Venta -> Fix Seccion IMEI select
 [x] - Stock -> Venta -> Selects similares al select de compra
 [x] - Stock -> Venta -> Select Canal de venta
+[x] - Stock -> detalle -> A veces las observaciones se quedan pegadas
 
 [x] - Transacciones -> VENTA -> Guardar Cambios
 [x] - Transacciones -> VENTA -> Eliminar transaccion
@@ -34,6 +35,7 @@ Transacciones -->
 
 [x] - Select diseño tipo mac para todos. Y para mac default.
 [-] - Parseo de numeros evitar que coloque el 0 adelante.
+
 [x] - Eliminar transacciones tipo venta y tipo compra.
 [x] - Boton de edicion de transaccion de compra, cambiar el estado. Disponible-reservado-fallado-roto. Dispatchea solamente al guardar.
 [x] - Mapeo de tipo de Pago

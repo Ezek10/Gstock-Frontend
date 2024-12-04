@@ -123,7 +123,15 @@ const TablaStock = ({ stocks }) => {
           closeAfterTransition>
           <Fade in={openDetail}>
             <div ref={modalRef}>
-              {selectedProduct && <GroupDetail handleCloseDetail={handleCloseDetail} products={selectedProduct} setProducts={setSelectedProduct} updateProductList={updateProduct} />}
+              {
+                selectedProduct && 
+                <GroupDetail 
+                  key={selectedProduct.id}
+                  handleCloseDetail={handleCloseDetail} 
+                  products={selectedProduct} 
+                  setProducts={setSelectedProduct} 
+                  updateProductList={updateProduct} 
+                />}
             </div>
           </Fade>
         </Modal>
