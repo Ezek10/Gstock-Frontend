@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, capitalize } from '@mui/material';
 import { styled } from '@mui/system';
 import { useEffect } from "react";
@@ -29,7 +29,8 @@ const TablaTransactions = ({ filters }) => {
   };
 
   const handleOpenDetail = (prod) => {
-    setSelectedTransaction(prod);
+    const transactionCopy = {...prod};
+    setSelectedTransaction(transactionCopy);
     if (prod.type === "BUY") {
       setOpenDetailSellTransaction(false)
       setOpenDetailBuyTransaction(true);
@@ -46,15 +47,10 @@ const TablaTransactions = ({ filters }) => {
   };
 
   const transactions = useSelector((state) => state.transactions) || [];
-  const prevTransactions = useRef(JSON.stringify(transactions));
 
   useEffect(() => {
-    const currentTransactions = JSON.stringify(transactions);
-    if (currentTransactions !== prevTransactions.current) {
-      prevTransactions.current = currentTransactions;
-      dispatch(getTransactions(filters));
-    }
-  }, [transactions, filters, dispatch]);
+    dispatch(getTransactions(filters));
+  }, [filters, dispatch]);
 
   useEffect(() => {
     const calculateEmptyRows = () => {
@@ -71,6 +67,7 @@ const TablaTransactions = ({ filters }) => {
     window.addEventListener('resize', calculateEmptyRows);
     return () => window.removeEventListener('resize', calculateEmptyRows);
   }, [transactions]);
+
 
   const formatDate = (rawDate) => {
     const date = new Date(rawDate)
@@ -176,7 +173,17 @@ const TablaTransactions = ({ filters }) => {
           closeAfterTransition>
           <Fade in={openDetailBuyTransaction}>
             <div ref={modalRef}>
-              {selectedTransaction && openDetailBuyTransaction && <BuyTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction} />}
+              {
+                selectedTransaction && 
+                openDetailBuyTransaction && 
+                <BuyTransactionDetail 
+                  key={selectedTransaction.id}
+                  handleCloseDetail={handleCloseDetail} 
+                  transaction={selectedTransaction} 
+                  setTransaction={setSelectedTransaction} 
+                  updateTransaction={updateTransaction} 
+                />
+              }
             </div>
           </Fade>
         </Modal>
@@ -189,7 +196,17 @@ const TablaTransactions = ({ filters }) => {
           closeAfterTransition>
           <Fade in={openDetailSellTransaction}>
             <div ref={modalRef}>
-              {selectedTransaction && openDetailSellTransaction && <SellTransactionDetail handleCloseDetail={handleCloseDetail} transaction={selectedTransaction} setTransaction={setSelectedTransaction} updateTransaction={updateTransaction} />}
+              {
+                selectedTransaction && 
+                openDetailSellTransaction && 
+                <SellTransactionDetail 
+                  key={selectedTransaction.id}
+                  handleCloseDetail={handleCloseDetail} 
+                  transaction={selectedTransaction} 
+                  setTransaction={setSelectedTransaction} 
+                  updateTransaction={updateTransaction} 
+                />
+              }
             </div>
           </Fade>
         </Modal>

@@ -75,7 +75,7 @@ const Compras = React.forwardRef((props, ref) => {
 
   const changeHandler = (event, index) => {
     const property = event.target.name
-    const value = event.target.value === "" ? null : event.target.value
+    let value = event.target.value === "" ? null : event.target.value
 
     // change products properties
     if (index >= 0 && property !== "supplier") {
@@ -109,7 +109,10 @@ const Compras = React.forwardRef((props, ref) => {
   }
 
   const changeSellPrice = (event, index) => {
-    const value = event.target.value;
+    let value = event.target.value;
+    if(/^0/.test(value)) {
+      value = value.replace(/^0+/, '');
+    }
     // Actualiza `newProduct`
     const updatedNewProduct = {
       ...newProduct,
@@ -266,14 +269,32 @@ const Compras = React.forwardRef((props, ref) => {
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
         <p className={style.letras}>*Cantidad <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-        <input type="number" style={{ height: "15px", fontSize: 12 }} value={newProduct.quantity} onChange={changeHandler} name="quantity" />
+        <input 
+          type="number" 
+          style={{ height: "15px", fontSize: 12 }} 
+          value={newProduct.quantity} 
+          onChange={(e) => {
+            e.preventDefault()
+            if(/^0/.test(e.target.value)) {
+              return
+            }
+            changeHandler(e)
+          }} 
+          name="quantity" 
+        />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "5vh" }}>
         <p className={style.letras}>*Precio Unitario<ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-        <input type="number" style={{ height: "15px", fontSize: 12 }} placeholder="$ 00000" value={newProduct.products.buy_price} onChange={changeHandler} name="buy_price" />
+        <input 
+          type="number" 
+          style={{ height: "15px", fontSize: 12 }} 
+          placeholder="$ 00000" 
+          value={newProduct.products.buy_price} 
+          onChange={changeHandler} name="buy_price" 
+        />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />

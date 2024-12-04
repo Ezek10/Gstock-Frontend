@@ -144,6 +144,20 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
     return total + (parseFloat(product.buy_price || 0));
   }, 0);
 
+  const listenerChangeInfoProduct = (e, idx) => {
+    const property = e.target.name;
+    const value = e.target.value;
+  
+    setNewTransaction(prevTransaction => ({
+      ...prevTransaction,
+      products: prevTransaction.products.map((prod, index) => 
+        index === idx
+          ? { ...prod, [property]: value }
+          : prod
+      )
+    }));
+  };
+
   return (
     <div className={style.containerTransactionDetail}>
       <Button
@@ -301,28 +315,28 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
                 style={{ height: "12px", margin: "0px", width: "70%" }} 
                 value={product.color ?? ''} 
                 name="color" 
-                onChange={e => product.color = e.target.value}
+                onChange={e => listenerChangeInfoProduct(e, index)}
               />
               <input 
                 type="text" 
                 style={{ height: "12px", margin: "0px", width: "70%" }} 
                 value={product.serial_id ?? ''} 
                 name="serial_id" 
-                onChange={e => product.serial_id = e.target.value}
+                onChange={e => listenerChangeInfoProduct(e, index)}
               />
               <input 
                 type="number" 
                 style={{ height: "12px", margin: "0px", width: "70%" }} 
                 value={product.battery_percent ?? ''}
                 name="battery_percent" 
-                onChange={e => product.battery_percent = e.target.value}
+                onChange={e => listenerChangeInfoProduct(e, index)}
               />
               <input 
                 type="number" 
                 style={{ height: "12px", margin: "0px", width: "70%" }} 
                 value={product.sell_price ?? ''} 
                 name="sell_price" 
-                onChange={e => product.sell_price = e.target.value}
+                onChange={e => listenerChangeInfoProduct(e, index)}
               />
               <button 
                 style={{ 
@@ -348,7 +362,10 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
             <input 
               type="text" 
               placeholder="Observaciones" 
+              name="observations"
+              value={product.observations ?? ''}
               style={{ margin: "10px 0px 10px 0px", width: "95%", borderRadius: "20spx" }} 
+              onChange={e => listenerChangeInfoProduct(e, index)}
             />
             <Divider variant="middle" component="li" sx={dividerStyle} />
           </div>))) : (<div></div>)}

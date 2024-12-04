@@ -26,19 +26,14 @@ Transacciones -->
 [x] - Transacciones -> VENTA -> Campo editable Cliente, telefono, email
 [x] - Transacciones -> VENTA -> Campo editable Vendedor
 [x] - Transacciones -> VENTA -> Agregar canje funcional
-[] - Transacciones -> COMPRA -> Botones de Estado mutables
+[x] - Transacciones -> Tabla -> Filtros funcionales
+[x] - Transacciones -> Ambos -> cuando seleccionas una transacción se cargan sus datos en la pantalla de edición, pero cuando seleccionas otra transacción del mismo tipo se quedan los datos de la transacción anterior
+[x] - Transacciones -> COMPRA -> Botones de Estado mutables
+[x] - Transacciones -> COMPRA -> Inputs reactivos
 [x] - UPDATE GENERAL -> Tablas ahora cargan de manera correcta el producto y actualizan
 
-[] - Transacciones -> Input de transacciones, muestra los valores normal
-[] - Transacciones -> Canal de venta editable (HAcer editable)
-[] - Transacciones -> Vendedor hacer editable
-[] - Transacciones ->Boton Value sin cursor pointer y el accionar donde corresponda
-[] - Validar con figma los textos y diseño 
-[] - Select diseño tipo mac para todos. Y para mac default.
-[] - Precio de venta a la hora de targetear un imei, mostrar esto, en el caso de no tener toma el precio general.
-[] - Parseo de numeros evitar que coloque el 0 adelante.
+[x] - Select diseño tipo mac para todos. Y para mac default.
+[-] - Parseo de numeros evitar que coloque el 0 adelante.
 [x] - Eliminar transacciones tipo venta y tipo compra.
 [x] - Boton de edicion de transaccion de compra, cambiar el estado. Disponible-reservado-fallado-roto. Dispatchea solamente al guardar.
-[] - Transacción - Compra Guardar Cambios BUG.
-[] - Checkeo y modal para cuando se edite algo del sidebar
 [x] - Mapeo de tipo de Pago

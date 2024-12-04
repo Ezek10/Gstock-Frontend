@@ -38,3 +38,18 @@ select {
   border: 0px;
   padding-left: 5px;
 }
+
+select::-webkit-scrollbar {
+    width: 20px !important;
+}
+
+select::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+  
+select::-webkit-scrollbar-thumb {
+    background-color: #d6dee1 !important;
+    border-radius: 20px !important;
+    border: 6px solid transparent !important;
+    background-clip: content-box !important;
+}
