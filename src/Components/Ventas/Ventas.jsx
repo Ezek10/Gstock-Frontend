@@ -238,7 +238,7 @@ const Ventas = React.forwardRef((props, ref) => {
         <Divider variant="middle" component="li" sx={dividerStyle} />
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>cell <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+          <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
           <input type="number" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.cellphone || ""} onChange={changeHandler} name="cellphone" />
           <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
           <input type="email" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.email || ""} onChange={changeHandler} name="email" />

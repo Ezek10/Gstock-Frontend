@@ -100,8 +100,11 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
   const deleteFromCart = (index) => {
     const newUpdatedCart = [...transaction.products]
+    const newTransactionCart = [...newTransaction.products]
     newUpdatedCart.splice(index, 1)
+    newTransactionCart.splice(index, 1)
     setTransaction({ ...transaction, products: newUpdatedCart })
+    setNewTransaction({ ...newTransaction, products: newTransactionCart })
   }
 
   const deleteTransactionHandler = async () => {
@@ -260,7 +263,15 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
           <p className={style.letras}>TOTAL</p>
           <div id="cart" className={style.cart}>
             {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
-              <div key={`${product.id} + ${index}`} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", alignItems: "center" }}>
+              <div 
+                key={`${product.id} + ${index}`} 
+                style={{ 
+                    display: "grid",
+                    gridTemplateRows: "repeat(1, 1fr)", 
+                    gridTemplateColumns: "repeat(6, 1fr)", 
+                    alignItems: "center", 
+                  }}
+              >
                 <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product_name)}</div>
                 <div style={{ marginLeft: "15px" }}>{capitalizeWords(product.color)}</div>
                 <div style={{ marginLeft: "15px" }}>{product.battery_percent}%</div>
@@ -294,7 +305,6 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
           </div>
           <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)" }}>${totalBuyPrice}</h1>
         </div>
-
         {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
           <div key={`${index}-SubTarget`}>
             <p style={{ margin: "0px", fontWeight: "bold" }}>{product.product_name}</p>

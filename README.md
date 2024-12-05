@@ -39,3 +39,7 @@ Transacciones -->
 [x] - Eliminar transacciones tipo venta y tipo compra.
 [x] - Boton de edicion de transaccion de compra, cambiar el estado. Disponible-reservado-fallado-roto. Dispatchea solamente al guardar.
 [x] - Mapeo de tipo de Pago
+
+update - 5-12
+[x] - los desplegables no están bien alineados
+[x] - la edición de transacción de compra anda mal el carrito. A la hora de borrar productos no los borra hasta que le das a agregar un producto nuevo. Y cuando queres agregar 2 productos diferentes desde ese segundo producto se pisa todo el carrito
