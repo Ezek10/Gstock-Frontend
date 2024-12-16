@@ -71,20 +71,9 @@ const TablaStock = ({ stocks }) => {
     <div className={style.tabla}>
       <CustomTableContainer component={Paper}
         sx={{
-          overflowY: "scroll",
-          "&::-webkit-scrollbar": {
-            width: "7px",
-            borderRadius: "100%",
-            position: "absolute",
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "rgb(255, 255, 255)"
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgb(141, 141, 141)",
-            borderRadius: "5px",
-          }
-        }} >
+          tableLayout: "fixed",
+          width: "100%",
+        }}>
         <Table >
           <TableHead>
             <TableRow>
@@ -148,7 +137,6 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: 'transparent',
   paddingTop: "2px",
   paddingBottom: "2px",
-  overflow: "hidden",
   whiteSpace: 'nowrap'
 }));
 
@@ -161,17 +149,16 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   borderBottomColor: "transparent",
   padding: "15px",
   background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(224, 224, 224))",
-  overflow: "hidden",
   whiteSpace: 'nowrap'
 }));
 
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
-  background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))", // Apply gradient background
+  background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))",
   boxShadow: "0px 0px 0px 0px transparent",
   width: "100%",
-  height: "65vh",
+  height: "auto",
+  overflowY: "auto",
   position: "relative",
-  overflow: "hidden"
 }));
 
 export default TablaStock;

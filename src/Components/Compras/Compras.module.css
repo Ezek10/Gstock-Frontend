@@ -1,5 +1,9 @@
 .containerCompras {
-    background-color: rgb(201, 201, 201);
+  background-color: rgb(201, 201, 201);
+}
+
+@media screen and (min-width: 1024px) {
+  .containerCompras {
     display: flex;
     position: relative;
     left: calc(100% - 30%);
@@ -16,115 +20,116 @@
     z-index: 10;
     box-sizing: border-box;
     overflow-y: auto;
+  }
 }
 
 .containerCompras input {
-    height: 15px;
+  height: 15px;
 }
 
 .containerCompras select {
-    width: max-content;
-    height: 18px;
-    border-radius: 20px;
-    border: none;
+  width: max-content;
+  height: 18px;
+  border-radius: 20px;
+  border: none;
 }
 
 .containerCompras::-webkit-scrollbar {
-    width: 7px;
-    border-radius: 100%;
-    position: absolute;
+  width: 7px;
+  border-radius: 100%;
+  position: absolute;
 }
 
 .containerCompras::-webkit-scrollbar-track {
-    background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .containerCompras::-webkit-scrollbar-thumb {
-    background-color: rgb(141, 141, 141);
-    border-radius: 5px;
-    
+  background-color: rgb(141, 141, 141);
+  border-radius: 5px;
+
 }
 
 .cuadroTotal {
-    min-height: 180px;
-    height: 20vh;
-    width: 85%;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    flex-wrap: wrap;
+  min-height: 180px;
+  height: 20vh;
+  width: 85%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-wrap: wrap;
 
 }
 
 .letras {
-    margin: 0px;
-    display: flex;
-    align-items: center;
-    overflow: clip;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  overflow: clip;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .payment {
-    justify-content: flex-start;
-    margin-left: 2.5rem;
+  justify-content: flex-start;
+  margin-left: 2.5rem;
 }
 
 .cart {
-    font-size: 14px;
-    font-weight: 300;
-    margin: 0px;
-    max-height: 50%;
-    height: 50%;
-    overflow-y: scroll;
-    align-content: flex-start;
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0px;
+  max-height: 50%;
+  height: 50%;
+  overflow-y: scroll;
+  align-content: flex-start;
 }
 
 .cart::-webkit-scrollbar {
-    width: 7px;
-    border-radius: 100%;
+  width: 7px;
+  border-radius: 100%;
 }
 
 .cart::-webkit-scrollbar-track {
-    background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .cart::-webkit-scrollbar-thumb {
-    background-color: rgb(141, 141, 141);
-    border-radius: 5px;
-    
+  background-color: rgb(141, 141, 141);
+  border-radius: 5px;
+
 }
 
 .cart::-webkit-scrollbar-thumb:hover {
-    background: #555;
-    cursor: pointer;
+  background: #555;
+  cursor: pointer;
 }
 
 .deleteProduct {
-    background-color: red;
-    height: 10px;
-    min-width: 0px;
-    width: 10px;
-    margin: 0px 5px 0px 5px;
-    border: 1px solid white;
+  background-color: red;
+  height: 10px;
+  min-width: 0px;
+  width: 10px;
+  margin: 0px 5px 0px 5px;
+  border: 1px solid white;
 }
 
 .deleteProduct:hover {
-    background-color: rgb(129, 0, 0);
+  background-color: rgb(129, 0, 0);
 }
 
-.confirmationModal{
-    position: absolute;
-    font-weight: bold;
-    font-size: 20px;
-    padding: "10px";
+.confirmationModal {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  padding: "10px";
 
 }
 

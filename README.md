@@ -43,3 +43,11 @@ Transacciones -->
 update - 5-12
 [x] - los desplegables no están bien alineados
 [x] - la edición de transacción de compra anda mal el carrito. A la hora de borrar productos no los borra hasta que le das a agregar un producto nuevo. Y cuando queres agregar 2 productos diferentes desde ese segundo producto se pisa todo el carrito
+
+
+Update responsive:
+[] - Sección /home stock
+[] - Sección de stock - venta
+[] - Sección de stock - compra
+[] - Sección de transferencias - compra
+[] - Sección de transferencias - venta
