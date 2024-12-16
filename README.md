@@ -46,7 +46,8 @@ update - 5-12
 
 
 Update responsive:
-[] - Sección /home stock
+[x] - Sección stock tabla
+[] - Sección transacciones tabla
 [] - Sección de stock - venta
 [] - Sección de stock - compra
 [] - Sección de transferencias - compra
