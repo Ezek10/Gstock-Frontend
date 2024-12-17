@@ -10,32 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import warning from "../../assets/warning.png"
 import style from "./tablaStock.module.css"
 
-const TablaStock = ({ stocks }) => {
+const TablaStock = ({ stocks, onOpenDetail }) => {
   const [emptyRowCount, setEmptyRowCount] = useState(0);
-  const [openDetail, setOpenDetail] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState([]);
-  const modalRef = useRef(null);
-  const dispatch = useDispatch()
-
-  const handleOpenDetail = (prod) => {
-    setSelectedProduct(prod);
-    setOpenDetail(true);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedProduct(null)
-    setOpenDetail(false)
-  };
-
-  const updateProduct = (product) => {
-    const updatedProducts = [...stocks]
-    const productIndex = updatedProducts.findIndex(prod => prod.id === product.id);
-    updatedProducts[productIndex] = product;
-    dispatch(temp => temp({
-      type: "GET_PRODUCTS_STOCKS",
-      payload: updatedProducts,
-    }))
-  }
 
   useEffect(() => {
     const calculateEmptyRows = () => {
@@ -70,9 +46,13 @@ const TablaStock = ({ stocks }) => {
   return (
     <div className={style.tabla}>
       <CustomTableContainer component={Paper}
+        className="customContainer"
         sx={{
-          tableLayout: "fixed",
-          width: "100%",
+          tableLayout: "auto",
+          width: "86%",
+          overflowY: "hidden",
+          margin: "auto",
+          padding: "0px"
         }}>
         <Table >
           <TableHead>
@@ -87,10 +67,10 @@ const TablaStock = ({ stocks }) => {
           <TableBody >
             {stocks.map((prod) => (
               <TableRow sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' } }} key={prod.id}>
-                <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "3%", padding: "0px 0px 0px 10px", '&:hover': { cursor: "pointer" }, }}>{hasEmptyValue(prod) ? (<Tooltip title="Faltan datos en algun item de este producto" arrow><img src={warning} alt="Warning" style={{ height: "10px" }} /> </Tooltip>) : ""}</CustomTableCell>
-                <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ width: "52%", padding: "0px", '&:hover': { cursor: "pointer" }, border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px", borderLeftWidth: "0px" }}>{capitalizeWords(prod.name)}</CustomTableCell>
-                <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': { cursor: "pointer" }, border: "8px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>{prod.stocks.length ? prod.stocks.length : 0}</CustomTableCell>
-                <CustomTableCell onClick={() => handleOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", '&:hover': { cursor: "pointer" }, border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>{prod.list_price === null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
+                <CustomTableCell onClick={() => onOpenDetail(prod)} sx={{ width: "3%", padding: "0px 0px 0px 10px", '&:hover': { cursor: "pointer" }, }}>{hasEmptyValue(prod) ? (<Tooltip title="Faltan datos en algun item de este producto" arrow><img src={warning} alt="Warning" style={{ height: "10px" }} /> </Tooltip>) : ""}</CustomTableCell>
+                <CustomTableCell onClick={() => onOpenDetail(prod)} sx={{ width: "52%", padding: "0px", '&:hover': { cursor: "pointer" }, border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px", borderLeftWidth: "0px" }}>{capitalizeWords(prod.name)}</CustomTableCell>
+                <CustomTableCell onClick={() => onOpenDetail(prod)} sx={{ textAlign: 'center', width: "20%", color: prod.stocks.length > 3 ? "black" : "red", '&:hover': { cursor: "pointer" }, border: "8px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>{prod.stocks.length ? prod.stocks.length : 0}</CustomTableCell>
+                <CustomTableCell onClick={() => onOpenDetail(prod)} sx={{ textAlign: "center", width: "25%", '&:hover': { cursor: "pointer" }, border: "4px solid white", borderTopWidth: "0px", borderBottomWidth: "0px" }}>{prod.list_price === null ? "Sin precio" : `$${prod.list_price}`}</CustomTableCell>
               </TableRow>
             ))}
             {Array.from({ length: emptyRowCount }).map((_, index) => (
@@ -104,26 +84,6 @@ const TablaStock = ({ stocks }) => {
           </TableBody>
         </Table>
 
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openDetail}
-          onClose={handleCloseDetail}
-          closeAfterTransition>
-          <Fade in={openDetail}>
-            <div ref={modalRef}>
-              {
-                selectedProduct && 
-                <GroupDetail 
-                  key={selectedProduct.id}
-                  handleCloseDetail={handleCloseDetail} 
-                  products={selectedProduct} 
-                  setProducts={setSelectedProduct} 
-                  updateProductList={updateProduct} 
-                />}
-            </div>
-          </Fade>
-        </Modal>
       </CustomTableContainer>
     </div>
   )

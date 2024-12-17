@@ -203,308 +203,326 @@ const Ventas = React.forwardRef((props, ref) => {
 
   return (
     <div ref={ref} className={style.containerVentas} tabIndex={-1}>
-      <Button
-        onClick={props.handleCloseVentas}
-        variant="contained"
-        target="_blank"
-        sx={{
-          width: "30px",
-          height: "30px",
-          minWidth: "0px",
-          backgroundColor: "black",
-          borderColor: "transparent",
-          borderRadius: "50px",
-          color: "white",
-          position: "absolute",
-          top: "15px",
-          right: "20px",
-          padding: "0px",
-          '&:hover': {
-            color: "#fff",
+      <div className={style.containerVentasIntern}>
+        <Button
+          onClick={props.handleCloseVentas}
+          variant="contained"
+          target="_blank"
+          sx={{
+            width: "30px",
+            height: "30px",
+            minWidth: "0px",
+            backgroundColor: "black",
             borderColor: "transparent",
-            backgroundColor: "rgb(80, 80, 80)"
-          }
-        }}><CloseIcon sx={{ fontSize: 15, fontWeight: "bold", color: "white" }} />
-      </Button>
-
-      <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar una venta</h2>
-
-      <div style={{ width: "100%" }}>
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>*Cliente <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client" />
-        </div>
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input type="number" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.cellphone || ""} onChange={changeHandler} name="cellphone" />
-          <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input type="email" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.email || ""} onChange={changeHandler} name="email" />
-        </div>
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{ fontSize: 18 }} /></p>
-          <select name="contact_via" onChange={changeHandler} value={cart.contact_via} >
-            <option value="INSTAGRAM">Instagram</option>
-            <option value="FACEBOOK">Facebook</option>
-            <option value="TIKTOK">Whats App</option>
-            <option value="REFERED">Refered</option>
-            <option value="OTHER">Other</option>
-          </select>
-        </div>
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "20px", margin: "12px 10px 12px 0px" }}>
-          <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} onChange={changeHandler} name="seller" />
-        </div>
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <p className={style.letras}>*Producto <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} className="custom-select sources">
-            <option key={product.product_name} value="">
-              Elija un modelo
-            </option>
-            {stocks.map((prod) => (
-              prod.stocks.length === 0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px" }}>
-          <p className={style.letras}>*IMEI <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id">
-            <option key={product.serial_id} value="">
-              Elija un IMEI
-            </option>
-            {
-              inStock?.map(option => (
-                option.serial_id === "" || cart.products.some(prod => prod.serial_id.includes(option.serial_id)) ? null : option.serial_id ? 
-                <option key={option.serial_id} value={option.serial_id}>
-                  {option.serial_id}
-                </option> : undefined
-              ))
+            borderRadius: "50px",
+            color: "white",
+            position: "absolute",
+            top: "15px",
+            right: "20px",
+            padding: "0px",
+            '&:hover': {
+              color: "#fff",
+              borderColor: "transparent",
+              backgroundColor: "rgb(80, 80, 80)"
             }
-          </select>
-          {/*
-                    <p className={style.letras}>Color <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <p style={{ alignItems: "center", paddingLeft: "15px"}}>{product.color?.toUpperCase()}</p>
-                    */}
-        </div>
+          }}><CloseIcon sx={{ fontSize: 15, fontWeight: "bold", color: "white" }} />
+        </Button>
 
-        <Divider variant="middle" component="li" sx={dividerStyle} />
+        <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar una venta</h2>
 
-        <CalendarTransactions onDateChange={handleDateChange} />
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+        <div style={{ width: "100%" }}>
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-            <p style={{ display: "flex", alignItems: "center", width: "9vw", margin: "0px" }}>*Precio Unitario <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-            <input type="number" style={{ fontSize: 12, height: "15px", width: "4vw", margin: "0px 10px 0px -35px" }} placeholder="$ 00000" value={sellPrice} onChange={changeHandler} name="sell_price" />
+            <p className={style.letras}>*Cliente <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <input type="text" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "100px" }} value={cart.client.name ? cart.client.name : ""} onChange={changeHandler} name="client" />
           </div>
-          <Payment style={{ display: "flex", justifyContent: "flex-start" }} payment={handlePaymentChange} />
-        </div>
 
-        {/*
-                <Divider variant="middle" component="li" sx={dividerStyle}/>
-                
-                <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
+          <Divider variant="middle" component="li" sx={dividerStyle} />
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
-                    <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
-                    <input 
-                    type="number" 
-                    value={cart.partial_payment || ""} 
-                    style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }}
-                     onChange={changeHandler} 
-                     name="partial_payment"
-                     placeholder="$ 00000"
-                     />
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <input type="number" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.cellphone || ""} onChange={changeHandler} name="cellphone" />
+            <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <input type="email" style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} value={cart.client.email || ""} onChange={changeHandler} name="email" />
+          </div>
 
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <p className={style.letras}>Canal de venta <ArrowDropDownIcon sx={{ fontSize: 18 }} /></p>
+            <select name="contact_via" onChange={changeHandler} value={cart.contact_via} >
+              <option value="INSTAGRAM">Instagram</option>
+              <option value="FACEBOOK">Facebook</option>
+              <option value="TIKTOK">Whats App</option>
+              <option value="REFERED">Refered</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "20px", margin: "12px 10px 12px 0px" }}>
+            <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <input type="text" value={cart.seller.name || ""} style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }} onChange={changeHandler} name="seller" />
+          </div>
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <p className={style.letras}>*Producto <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <select type="text" name="product_name" value={product.product_name || ""} onChange={changeHandler} className="custom-select sources">
+              <option key={product.product_name} value="">
+                Elija un modelo
+              </option>
+              {stocks.map((prod) => (
+                prod.stocks.length === 0 ? null : <option key={prod.name} value={prod.name}>{prod.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "44px" }}>
+            <p className={style.letras}>*IMEI <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+            <select type="text" value={product.serial_id || ""} onChange={changeHandler} name="serial_id">
+              <option key={product.serial_id} value="">
+                Elija un IMEI
+              </option>
+              {
+                inStock?.map(option => (
+                  option.serial_id === "" || cart.products.some(prod => prod.serial_id.includes(option.serial_id)) ? null : option.serial_id ? 
+                  <option key={option.serial_id} value={option.serial_id}>
+                    {option.serial_id}
+                  </option> : undefined
+                ))
+              }
+            </select>
+            {/*
+                      <p className={style.letras}>Color <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                      <p style={{ alignItems: "center", paddingLeft: "15px"}}>{product.color?.toUpperCase()}</p>
+                      */}
+          </div>
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <CalendarTransactions onDateChange={handleDateChange} />
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+          <div className={style.containerVentasPrecioUnitarioPago}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <p 
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                *Precio Unitario 
+                <ArrowRightIcon sx={{ fontSize: 18, marginRight: 1 }}/>
+              </p>
+              <input 
+                type="number" 
+                className={style.inputPrice} 
+                placeholder="$ 00000" 
+                value={sellPrice} 
+                onChange={changeHandler} 
+                name="sell_price" 
+              />
+            </div>
+            <Payment style={{ display: "flex", justifyContent: "flex-start" }} payment={handlePaymentChange} />
+          </div>
+
+          {/*
+                  <Divider variant="middle" component="li" sx={dividerStyle}/>
+                  
+                  <h2 style={{ fontSize: "15px" }}>Pago Parcial</h2>
+
+                  <div style={{ display: "flex", flexDirection: "row", alignItems: "center",  height: "20px", margin: "12px 10px 12px 0px" }}>
+                      <p className={style.letras}>Monto <ArrowRightIcon sx={{fontSize: 18}}/></p>
+                      <input 
+                      type="number" 
+                      value={cart.partial_payment || ""} 
+                      style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%"  }}
+                      onChange={changeHandler} 
+                      name="partial_payment"
+                      placeholder="$ 00000"
+                      />
+
+                  </div>
+                  */}
+
+          <Divider variant="middle" component="li" sx={dividerStyle} />
+
+
+          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+            <Button
+              className={style.ventasBtn}
+              variant="outlined"
+              size="small"
+              target="_blank"
+              style={buttonStyle}
+              onClick={changeHandler}>Agregar producto
+            </Button>
+
+            <Button
+              className={style.ventasBtn}
+              onClick={handleOpenExchange}
+              variant="outlined"
+              target="_blank"
+              style={buttonStyle}> Agregar canje
+            </Button>
+
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={openExchange}
+              onClose={handleCloseExchange}
+              closeAfterTransition>
+              <Fade in={openExchange}>
+                <Exchange handleCloseExchange={handleCloseExchange} exchangeCart={handleAddExchange} />
+              </Fade>
+            </Modal>
+
+          </div>
+          <div className={style.cuadroTotal}>
+            <p className={style.letras}>TOTAL</p>
+            <div id="cart" className={style.cart}>
+              {cart.products.map((prod, index) => (
+                <div 
+                  key={index} 
+                  style={{ 
+                    display: "grid", 
+                    gridTemplateRows: "repeat(1, 1fr)", 
+                    gridTemplateColumns: "repeat(6, 1fr)", 
+                    flexDirection: "row"
+                  }}
+                >
+                  <div style={{ gridColumn: "span 2" }}>
+                    {prod.product_name}
+                  </div>
+                  <div>{prod.serial_id}</div>
+                  <div>{prod.color?.toUpperCase()} </div>
+                  <div> {prod.battery_percent}%</div>
+                  <div style={{ marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>${prod.sell_price}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      target="_blank"
+                      onClick={() => deleteFromCart(index)}
+                      sx={{
+                        width: "10px",
+                        height: "10px",
+                        minWidth: 0,
+                        marginLeft: "5px",
+                        padding: "0px",
+                        backgroundColor: "red",
+                        borderColor: "white",
+                        boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
+                        '&:hover': {
+                          backgroundColor: "rgb(129, 0, 0)",
+                          borderColor: "white",
+                        }
+                      }}>
+                      <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
+                    </Button>
+                  </div>
                 </div>
-                */}
-
-        <Divider variant="middle" component="li" sx={dividerStyle} />
-
-
-        <div style={{ display: "flex", justifyContent: "flex-start" }}>
+              ))}
+            </div>
+            {cart.swap_products?.length > 0 ? <div id="cart" className={style.cart}>
+              {cart.swap_products?.map((prod, index) => (
+                <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
+                  <div style={{ gridColumn: "span 2" }}> {prod.product_name} </div>
+                  <div>{prod.serial_id}</div>
+                  <div>{prod.color?.toUpperCase()}</div>
+                  <div>{prod.battery_percent}%</div>
+                  <div style={{ marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>-${prod.buy_price}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      target="_blank"
+                      onClick={() => deleteFromExchangeCart(index)}
+                      sx={{
+                        width: "10px",
+                        height: "10px",
+                        minWidth: 0,
+                        marginLeft: "5px",
+                        padding: "0px",
+                        backgroundColor: "red",
+                        borderColor: "white",
+                        boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
+                        '&:hover': {
+                          backgroundColor: "rgb(129, 0, 0)",
+                          borderColor: "white",
+                        }
+                      }}>
+                      <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div> : <div></div>}
+            <h1 className={style.responsiveText}>${totalBuyPrice()}</h1>
+          </div>
           <Button
+            className={style.ventasBtn}
             variant="outlined"
             size="small"
             target="_blank"
-            style={buttonStyle}
-            onClick={changeHandler}>Agregar producto
+            onClick={() => handleOpenConfirm()}
+            style={buttonStyle}>Finalizar Venta
           </Button>
 
-          <Button
-            onClick={handleOpenExchange}
-            variant="outlined"
-            target="_blank"
-            style={buttonStyle}> Agregar canje
-          </Button>
-
-          <Modal
+          <Dialog
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            open={openExchange}
-            onClose={handleCloseExchange}
-            closeAfterTransition>
-            <Fade in={openExchange}>
-              <Exchange handleCloseExchange={handleCloseExchange} exchangeCart={handleAddExchange} />
-            </Fade>
-          </Modal>
-
-        </div>
-        <div className={style.cuadroTotal}>
-          <p className={style.letras}>TOTAL</p>
-          <div id="cart" className={style.cart}>
-            {cart.products.map((prod, index) => (
-              <div 
-                key={index} 
-                style={{ 
-                  display: "grid", 
-                  gridTemplateRows: "repeat(1, 1fr)", 
-                  gridTemplateColumns: "repeat(6, 1fr)", 
-                  flexDirection: "row"
-                }}
-              >
-                <div style={{ gridColumn: "span 2" }}>
-                  {prod.product_name}
-                </div>
-                <div>{prod.serial_id}</div>
-                <div>{prod.color?.toUpperCase()} </div>
-                <div> {prod.battery_percent}%</div>
-                <div style={{ marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>${prod.sell_price}
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    target="_blank"
-                    onClick={() => deleteFromCart(index)}
-                    sx={{
-                      width: "10px",
-                      height: "10px",
-                      minWidth: 0,
-                      marginLeft: "5px",
-                      padding: "0px",
-                      backgroundColor: "red",
-                      borderColor: "white",
-                      boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
-                      '&:hover': {
-                        backgroundColor: "rgb(129, 0, 0)",
-                        borderColor: "white",
-                      }
-                    }}>
-                    <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
-                  </Button>
-                </div>
+            open={openConfirm}
+            onClose={() => handleCloseConfirm()}
+            className={style.confirmationModal}
+            closeAfterTransition
+            disablePortal
+            style={{ position: "absolute", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "11px 15px 11px 15px" }}>
+              <div style={{ display: "flex", justifyContent: "space-evenly", height: "20px" }}>
+                <p style={{ marginTop: "-5px", fontWeight: "500", fontSize: "20px" }}>¿Quieres agregar esta venta?</p>
+                <button style={{
+                  marginTop: "-5px", height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
+                    cursor: "pointer",
+                  }
+                }} onClick={() => handleCloseConfirm()}>
+                  <img src={closeConfirm} alt="closeConfirm" style={{ width: "25px" }} />
+                </button>
               </div>
-            ))}
-          </div>
-          {cart.swap_products?.length > 0 ? <div id="cart" className={style.cart}>
-            {cart.swap_products?.map((prod, index) => (
-              <div key={index} style={{ display: "grid", gridTemplateRows: "repeat(1, 1fr)", gridTemplateColumns: "repeat(6, 1fr)", flexDirection: "row" }}>
-                <div style={{ gridColumn: "span 2" }}> {prod.product_name} </div>
-                <div>{prod.serial_id}</div>
-                <div>{prod.color?.toUpperCase()}</div>
-                <div>{prod.battery_percent}%</div>
-                <div style={{ marginRight: "20px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>-${prod.buy_price}
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    target="_blank"
-                    onClick={() => deleteFromExchangeCart(index)}
-                    sx={{
-                      width: "10px",
-                      height: "10px",
-                      minWidth: 0,
-                      marginLeft: "5px",
-                      padding: "0px",
-                      backgroundColor: "red",
-                      borderColor: "white",
-                      boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
-                      '&:hover': {
-                        backgroundColor: "rgb(129, 0, 0)",
-                        borderColor: "white",
-                      }
-                    }}>
-                    <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
-                  </Button>
-                </div>
+              {cart.products.length > 0 ? (cart.products.map((product, index) => (
+                <div key={index} style={{ marginTop: "5px" }}>
+                  <p style={{ fontWeight: "300", fontSize: "14px" }}>{product.product_name} ${product.sell_price}</p>
+                </div>)
+              )) : (<p></p>)}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  target="_blank"
+                  style={buttonStyle}
+                  onClick={() => finishSell()}>Confirmar
+                </Button>
               </div>
-            ))}
-          </div> : <div></div>}
-          <h1 className={style.responsiveText}>${totalBuyPrice()}</h1>
+            </div>
+          </Dialog>
+
+          <Dialog
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={openCheck}
+            onClose={() => handleCloseCheck()}
+            closeAfterTransition
+            disablePortal
+            style={{ position: "absolute", display: "flex" }}>
+            <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center", }}>
+              <p style={{ margin: "0px", textAlign: "center" }}>La venta fue agregada</p>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <img src={check} alt="Check" style={{ height: "43px", display: "grid", alignSelf: "center" }} />
+              </div>
+            </div>
+          </Dialog>
         </div>
-        <Button
-          variant="outlined"
-          size="small"
-          target="_blank"
-          onClick={() => handleOpenConfirm()}
-          style={buttonStyle}>Finalizar Venta
-        </Button>
 
-        <Dialog
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openConfirm}
-          onClose={() => handleCloseConfirm()}
-          className={style.confirmationModal}
-          closeAfterTransition
-          disablePortal
-          style={{ position: "absolute", justifyContent: "center", alignItems: "center" }}>
-          <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "11px 15px 11px 15px" }}>
-            <div style={{ display: "flex", justifyContent: "space-evenly", height: "20px" }}>
-              <p style={{ marginTop: "-5px", fontWeight: "500", fontSize: "20px" }}>¿Quieres agregar esta venta?</p>
-              <button style={{
-                marginTop: "-5px", height: "25px", width: "25px", borderColor: "transparent", backgroundColor: "transparent", '&:hover': {
-                  cursor: "pointer",
-                }
-              }} onClick={() => handleCloseConfirm()}>
-                <img src={closeConfirm} alt="closeConfirm" style={{ width: "25px" }} />
-              </button>
-            </div>
-            {cart.products.length > 0 ? (cart.products.map((product, index) => (
-              <div key={index} style={{ marginTop: "5px" }}>
-                <p style={{ fontWeight: "300", fontSize: "14px" }}>{product.product_name} ${product.sell_price}</p>
-              </div>)
-            )) : (<p></p>)}
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                variant="outlined"
-                size="small"
-                target="_blank"
-                style={buttonStyle}
-                onClick={() => finishSell()}>Confirmar
-              </Button>
-            </div>
-          </div>
-        </Dialog>
-
-        <Dialog
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openCheck}
-          onClose={() => handleCloseCheck()}
-          closeAfterTransition
-          disablePortal
-          style={{ position: "absolute", display: "flex" }}>
-          <div style={{ dispaly: "flex", minWidth: "100px", minHeight: "50px", padding: "20px", fontSize: "20px", fontWeight: "500", alignItems: "center", }}>
-            <p style={{ margin: "0px", textAlign: "center" }}>La venta fue agregada</p>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img src={check} alt="Check" style={{ height: "43px", display: "grid", alignSelf: "center" }} />
-            </div>
-          </div>
-        </Dialog>
       </div>
     </div>
   )

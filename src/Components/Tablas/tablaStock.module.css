@@ -1,5 +1,9 @@
 .tabla {
     margin: 10px 0px 10px 10px;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
+}
+
+.MuiButtonBase-root {
+    overflow: hidden !important;
 }
