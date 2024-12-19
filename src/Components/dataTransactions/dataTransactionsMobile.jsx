@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import style from "./dataTransactions.module.css"
 import { useDispatch, useSelector } from "react-redux";
-import { 
+import {
   getTransactionCards,
   updateFilters,
   resetFilters
- } from "../../Redux/actions";
+} from "../../Redux/actions";
 import { Divider } from "@mui/material";
-import CalendarFilters from "../Calendar/CalendarFilters";
+import CalendarFiltersMobile from "../Calendar/CalendarFiltersMobile";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // flechita
 import DeleteOutlineIcon from '@mui/icons-material/Delete'; //Tacho de basura de eliminar filtros
 import filtroIcon from "../../assets/filtro.png"
 
-const DataTransactions = ({ filters, setFilters }, ref) => {
+const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFilters }, ref) => {
 
   const cards = useSelector((state) => state.cards) || [];
   const products = useSelector((state) => state.products) || [];
@@ -155,14 +155,11 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
 
   return (
     <div className={style.containerTransactions}
-      style={{
-        maxWidth: "100%",
-        overflowX: "hidden"
-      }}
+      ref={ref}
     >
-      <img src={filtroIcon} alt="Filtro" style={{ display: "flex", alignSelf: "flex-end", height: "30px" }} />
+      <img src={filtroIcon} alt="Filtro" style={{ display: "flex", alignSelf: "flex-end", height: "30px", marginTop: '20px', marginRight:'15px' }} onClick={handleCloseFilters}/>
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: -10 }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '10px' }}>
         <button
           style={getButtonStyle('purchases')}
           onMouseEnter={(e) => {
@@ -211,63 +208,66 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/*Filtro Producto*/}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", minHeight: '46px' }}>
-        <div ref={dropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <div
-            onClick={toggleDropdownProduct}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              cursor: "pointer",
-              marginRight: "5px"
-            }}
-          >
-            Producto
-            <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} /> {/* Espacio entre "Producto" y flecha */}
-          </div>
-          {isOpenProduct && (
-            <div 
-            className={style.scroll} 
-            style={{
-              position: 'absolute',
-              fontSize: 14,
-              top: '100%',
-              left: 0,
-              zIndex: 1000,
-              backgroundColor: 'white',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              maxHeight: '200px',
-              overflowY: 'auto',
-              width: '185px' // Ancho del dropdown
-            }}>
-              <div onClick={() => handleProductSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
-              >
-                Todos los productos
-              </div>
-              {products && products.map(prod => (
-                <div
-                  key={prod.id}
-                  onClick={() => handleProductSelect(prod.id)}
-                  style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+      <div style={{alignItems: "center", minHeight: '46px', padding: '10px' }}>
+        <div className={style.dropdown}>
+          <div ref={dropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div
+              onClick={toggleDropdownProduct}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+              }}
+            >
+              Producto
+              <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} /> {/* Espacio entre "Producto" y flecha */}
+            </div>
+            {isOpenProduct && (
+              <div
+                className={style.scroll}
+                style={{
+                  position: 'absolute',
+                  fontSize: 14,
+                  top: '100%',
+                  left: 0,
+                  zIndex: 1001,
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                  width: '185px' // Ancho del dropdown
+                }}>
+                <div onClick={() => handleProductSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
                 >
-                  {capitalizeWords(prod.name)}
+                  Todos los productos
                 </div>
-              ))}
-            </div>
-          )}
+                {products && products.map(prod => (
+                  <div
+                    key={prod.id}
+                    onClick={() => handleProductSelect(prod.id)}
+                    style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                  >
+                    {capitalizeWords(prod.name)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div style={{  whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
+            {filters.filter_by_product
+              ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
+              : ""}
+          </div>
+
         </div>
-        <div style={{ marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
-          {filters.filter_by_product
-            ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
-            : ""}
-        </div>
-        <CalendarFilters
+        <CalendarFiltersMobile
           filters={filters}
           setFilters={setFilters}
         />
@@ -276,7 +276,7 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/* Filtro Proveedor */}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", minHeight: '46px' }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", minHeight: '46px', padding: '10px' }}>
         <div ref={dropdownRefSupplier} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <div
             onClick={toggleDropdownSupplier}
@@ -292,21 +292,21 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
             <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} />
           </div>
           {isOpenSupplier && (
-            <div 
-            className={style.scroll} 
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              fontSize: 14,
-              zIndex: 1000,
-              backgroundColor: 'white',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              maxHeight: '200px',
-              overflowY: 'auto',
-              width: '185px'
-            }}>
+            <div
+              className={style.scroll}
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                fontSize: 14,
+                zIndex: 1000,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '185px'
+              }}>
               <div onClick={() => handleSupplierSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
@@ -353,21 +353,21 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
             <ArrowDropDownIcon sx={{ fontSize: 18 }} />
           </div>
           {isOpenClient && (
-            <div className={style.scroll} 
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              zIndex: 1000,
-              fontSize: 14,
-              backgroundColor: 'white',
-              borderRadius: '8px',
-              border: '1px solid #ccc',
-              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
-              maxHeight: '200px',
-              overflowY: 'auto',
-              width: '170px',
-            }}>
+            <div className={style.scroll}
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                zIndex: 1000,
+                fontSize: 14,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                border: '1px solid #ccc',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '170px',
+              }}>
               <div onClick={() => handleClientSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
@@ -399,7 +399,7 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/* Filtro Vendedor */}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '10px' }}>
         <div ref={dropdownRefSeller} style={{ position: 'relative', display: 'flex', alignItems: 'center', minHeight: '46px' }}>
           <div
             onClick={toggleDropdownSeller}
@@ -415,20 +415,20 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
             <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} />
           </div>
           {isOpenSeller && (
-            <div 
-            className={style.scroll}
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              zIndex: 1000,
-              backgroundColor: 'white',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              maxHeight: '200px',
-              overflowY: 'auto',
-              width: '185px'
-            }}>
+            <div
+              className={style.scroll}
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                zIndex: 1000,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                width: '185px'
+              }}>
               <div onClick={() => handleSellerSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
@@ -547,7 +547,9 @@ const DataTransactions = ({ filters, setFilters }, ref) => {
       </div>
     </div>
   )
-}
+})
+
+DataTransactions.displayName = "DataTransactions"
 
 const dividerStyle = {
   borderColor: 'transparent',

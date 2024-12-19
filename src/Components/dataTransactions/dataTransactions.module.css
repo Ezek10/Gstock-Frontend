@@ -1,4 +1,21 @@
 .containerTransactions {
+  background-color: rgb(201, 201, 201);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100vw;
+  top: 0px;
+  height: max-content;
+  z-index: 1000 !important;
+  padding-bottom: 145px;
+}
+
+.dropdown{
+  display: flex;
+}
+
+@media screen and (min-width: 1024px) {
+  .containerTransactions {
     background-color: rgb(201, 201, 201);
     display: flex;
     position: fixed;
@@ -16,34 +33,46 @@
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: auto;
+  }
 }
 
 .containerTransactions select {
-    appearance: none;
-    background: transparent;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-    padding-left: 10px;
-    padding-right: 10px;
-    outline: none;
-    cursor: pointer;
-    width: 6vw;
-    font-size: 0.8vw;
- }
+  appearance: none;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
+  cursor: pointer;
+  width: 6vw;
+  font-size: 0.8vw;
+}
 
- .containerTransactions select::-ms-expand {
-    display: none;
+.containerTransactions select::-ms-expand {
+  display: none;
 }
 
 .containerTransactions option {
-    appearance: none;
-    border-radius: 20px;
-    border: none;
-    box-shadow: none;
+  appearance: none;
+  border-radius: 20px;
+  border: none;
+  box-shadow: none;
+}
+.cards {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  height: 10;
+  margin: 8px 0px 8px 6px;
+  text-overflow: ellipsis;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
 }
 
-.cards {
+@media screen and (min-width: 1024px) {
+  .cards {
     background-color: white;
     border-radius: 8px;
     width: 100%;
@@ -52,41 +81,41 @@
     text-overflow: ellipsis;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
     font-weight: 400;
-
+  }
 }
 
 .containerTransactions::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-    border-radius: 100%;
-    position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  position: absolute;
 }
 
 .containerTransactions::-webkit-scrollbar-track {
-    background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .containerTransactions::-webkit-scrollbar-thumb {
-    background-color: rgb(141, 141, 141);
-    border-radius: 5px;
-    
+  background-color: rgb(141, 141, 141);
+  border-radius: 5px;
+
 }
 
-.containerTransactions button{
-    cursor: pointer	;
+.containerTransactions button {
+  cursor: pointer;
 }
 
 .scroll::-webkit-scrollbar {
-    width: 20px !important;
+  width: 20px !important;
 }
 
 .scroll::-webkit-scrollbar-track {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
-  
+
 .scroll::-webkit-scrollbar-thumb {
-    background-color: #d6dee1 !important;
-    border-radius: 20px !important;
-    border: 6px solid transparent !important;
-    background-clip: content-box !important;
+  background-color: #d6dee1 !important;
+  border-radius: 20px !important;
+  border: 6px solid transparent !important;
+  background-clip: content-box !important;
 }

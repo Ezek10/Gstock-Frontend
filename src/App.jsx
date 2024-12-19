@@ -21,21 +21,21 @@ function App() {
   localStorage.setItem('access_token', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlemVxdWllbG1hcmNlbDJAZ21haWwuY29tIiwiYXVkIjoicHVibGljIiwiaXNzIjoiZ3N0b2NrLmZyYW5jZWxzb2Z0LmNvbSIsImV4cCI6MTc1OTg0NDk1OH0.fM46jlTddXv862Q12jyYKip3OGxjpNDSXm6g4cc4mYk");
 
   const get_all = () => {
-      dispatch(getLogo());
-      dispatch(getTransactionCards(null));
-      dispatch(getProductsStocks());
-      dispatch(getTransactions(null));
-      dispatch(getSuppliers());
-      dispatch(getSellers());
-      dispatch(getClients());
-      dispatch(getCurrentUser());
+    dispatch(getLogo());
+    dispatch(getTransactionCards(null));
+    dispatch(getProductsStocks());
+    dispatch(getTransactions(null));
+    dispatch(getSuppliers());
+    dispatch(getSellers());
+    dispatch(getClients());
+    dispatch(getCurrentUser());
   }
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
     const currentPath = window.location.pathname;
     const access_token = searchParams.get("access_token");
-    if (storedToken){
+    if (storedToken) {
       get_all()
     }
     if (currentPath === "/sso_login") {
@@ -58,7 +58,7 @@ function App() {
         // Si se recibe un nuevo token, se guarda en localStorage
         navigate('/home'); // Redirigir a /home después de guardar
       }
-      else{
+      else {
         navigate('/'); // Redirigir a / si no posee access_token
       }
     } else {

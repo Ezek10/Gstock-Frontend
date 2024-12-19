@@ -9,11 +9,14 @@ import Fade from '@mui/material/Fade';
 import Compras from "../../Components/Compras/Compras";
 import Ventas from "../../Components/Ventas/Ventas";
 import DataTransactions from "../dataTransactions/dataTransactions";
+import DataTransactionsMobile from "../dataTransactions/dataTransactionsMobile";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { IoIosSearch } from "react-icons/io";
 import GroupDetail from "../GroupDetail/GroupDetail";
-
+import ArrowRight from '@mui/icons-material/ArrowRight';
+import ArrowLeft from '@mui/icons-material/ArrowLeft';
+import { format } from 'date-fns';
 
 const Tabs = () => {
 
@@ -37,21 +40,27 @@ const [search, setSearch] = useState("");
 const [filteredStocks, setFilteredStocks] = useState([]);
 const [openDetail, setOpenDetail] = useState(false);
 const [selectedProduct, setSelectedProduct] = useState([]);
-
+const products = useSelector((state) => state.products) || [];
+const suppliers = useSelector((state) => state.suppliers) || [];
+const clients = useSelector((state) => state.clients) || [];
+const sellers = useSelector((state) => state.sellers) || [];
 // refs
 const modalRef = useRef(null);
 
 useEffect(() => {
-  setFilteredStocks(stocks); // Actualiza el estado local cuando stocks cambia
+  setFilteredStocks(stocks);
 }, [stocks]);
 
 const [openCompras, setOpenCompras] = useState(false);
+const [openFilters, setOpenFilters] = useState(false);
+
 const handleOpenCompras = () => setOpenCompras(true);
 const handleCloseCompras = () => setOpenCompras(false);
 
 const [openVentas, setOpenVentas] = useState(false);
 const handleOpenVentas = () => setOpenVentas(true);
 const handleCloseVentas = () => setOpenVentas(false);
+const handleCloseFilters = () => setOpenFilters(false);
 
 const handleSearch = (event) => {
   const search = event.target.value.toLowerCase();
@@ -257,12 +266,66 @@ return (
         </div>}
       {activetab === 1 &&
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: "10px" }}>
-          <div style={{ display: "flex", height: "100%" }}>
+          <div className={style.container1}>
+            <button 
+              className={`${openFilters ? style.btnOpenFilters : style.btnCloseFilters}`}
+              onClick={() => setOpenFilters(!openFilters)}
+            >
+              {
+                openFilters &&
+                <ArrowLeft sx={{ fontSize: 25, marginLeft: '-5px' }} />
+              } 
+              {
+                !openFilters &&
+                <ArrowRight sx={{ fontSize: 25, marginLeft: '-5px' }}/>
+              }
+            </button>
+
+            <div className={`${openFilters ? '' : style.containerFiltersMobile}`}>
+              <DataTransactionsMobile filters={filters} setFilters={setFilters} handleCloseFilters={handleCloseFilters}/>
+            </div>
+
+            <div className={style.container3}>
+              <p className="text-filter">Filtros marcados:</p>
+              <p className="text-filter">
+                {
+                  filters.filter_by_product && 
+                  <span>
+                    Producto: {filters.filter_by_product ? products.find(el => el.id === filters.filter_by_product).name : "-"}<br />
+                  </span>
+                }
+                {
+                  filters.filter_by_start_date && 
+                  <span>
+                    Fecha: {`${format(new Date(filters.filter_by_start_date * 1000), "dd/MM/yy")}`}<br /> 
+                  </span>
+                }
+                {
+                  filters.filter_by_supplier && 
+                  <span>
+                    Proveedor: {filters.filter_by_supplier ? suppliers.find(el => el.id === filters.filter_by_supplier).name : "-"}<br /> 
+                  </span>
+                }
+                {
+                  filters.filter_by_client && 
+                  <span>
+                    Cliente: {filters.filter_by_client ? clients.find(el => el.id === filters.filter_by_client).name : "-"}<br /> 
+                  </span>
+                }
+                {
+                  filters.filter_by_seller && 
+                  <span>
+                    Vendedor: {filters.filter_by_seller ? sellers.find(el => el.id === filters.filter_by_seller).name : "-"}<br /> 
+                  </span>
+                }
+              </p>
+            </div>
             <TablaTransactions filters={filters} />
 
             <div className={style.container2}>
               <DataTransactions filters={filters} setFilters={setFilters} />
             </div>
+
           </div>
         </div>}
     </div>

@@ -30,7 +30,7 @@ li{
 }
 
 select {
-  font-size: 12 !important;
+  font-size: 12px !important;
   height: 22px !important;
   margin: 12px 10px 12px 10px !important;
   min-width: 120px !important;

@@ -106,19 +106,11 @@ const TablaTransactions = ({ filters }) => {
     <div className={style.tabla}>
       <CustomTableContainer component={Paper}
         sx={{
-          overflowY: "scroll",
-          "&::-webkit-scrollbar": {
-            width: "7px",
-            borderRadius: "100%",
-            position: "absolute",
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "rgb(255, 255, 255)"
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgb(141, 141, 141)",
-            borderRadius: "5px",
-          }
+          tableLayout: "auto",
+          width: "86%",
+          margin: "auto",
+          padding: "0px",
+          zIndex: 1,
         }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -254,7 +246,6 @@ const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   position: "relative",
   width: "100%",
   height: "65vh",
-  overflow: "hidden"
 }));
 
 export default TablaTransactions;

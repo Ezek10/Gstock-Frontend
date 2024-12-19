@@ -72,8 +72,10 @@ Actualmente, dos plugins oficiales están disponibles:
 ## **Actualización Responsive**
 - [x] **Sección Stock**: tabla.
 - [x] **Sección Stock - GroupDetail**: tabla.
-- [ ] **Sección Transacciones**: tabla.
 - [x] **Sección Stock - Venta**.
 - [x] **Sección Stock - Compra**.
-- [ ] **Sección Transferencias - Compra**.
-- [ ] **Sección Transferencias - Venta**.
+- [x] **Sección Transacciones**: tabla.
+- [x] **Sección Transacciones - Filtros**: tabla.
+- [ ] **Sección Transferencias - Detalles**.
+- [ ] **Sección Transferencias - Detalles**.
+- [ ] **Sección Transferencias - Detalles - Canje**.

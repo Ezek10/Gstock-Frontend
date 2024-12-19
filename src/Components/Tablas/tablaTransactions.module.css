@@ -1,25 +1,38 @@
 .tabla {
-    margin: 1.5%;
+  margin: 10px 0px 10px 10px;
+  width: 100%;
+  overflow: hidden !important;
+}
+
+.MuiPaper-root {
+  overflow: hidden !important;
+}
+
+@media screen and (min-width: 1024px) {
+  .tabla {
+    margin: 10px 0px 10px 10px;
     width: 100%;
+    overflow: visible !important;
+  }
 }
 
 .tabla::-webkit-scrollbar {
-    width: 7px;
-    border-radius: 100%;
-    position: absolute;
+  width: 7px;
+  border-radius: 100%;
+  position: absolute;
 }
 
 .tabla::-webkit-scrollbar-track {
-    background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .tabla::-webkit-scrollbar-thumb {
-    background-color: rgb(141, 141, 141);
-    border-radius: 5px;
-    
+  background-color: rgb(141, 141, 141);
+  border-radius: 5px;
+
 }
 
 .tabla::-webkit-scrollbar-thumb:hover {
-    background: #555;
-    cursor: pointer;
+  background: #555;
+  cursor: pointer;
 }

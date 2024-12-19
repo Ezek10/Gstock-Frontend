@@ -1,15 +1,21 @@
 .letras {
-    margin: 0px;
-    display: flex;
-    align-items: center;
+  margin: 0px;
+  display: flex;
+  align-items: center;
 }
 
 .letrasWithMargin {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 1024px) {
+  .letrasWithMargin {
     margin: 7px;
-    display: flex;
-    align-items: center;
+  }
+
 }
 
 .date {
-    margin-left: 10px;
+  margin-left: 10px;
 }

@@ -50,7 +50,6 @@ const TablaStock = ({ stocks, onOpenDetail }) => {
         sx={{
           tableLayout: "auto",
           width: "86%",
-          overflowY: "hidden",
           margin: "auto",
           padding: "0px"
         }}>

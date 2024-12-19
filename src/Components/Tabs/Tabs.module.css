@@ -8,6 +8,77 @@
   flex-direction: column-reverse;
 }
 
+.container1 {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.containerFiltersMobile{
+  display: none;
+}
+
+.btnCloseFilters {
+  position: absolute;
+  height: 70vh;
+  top: 200px;
+  width: 30px;
+  z-index: 1000000 !important;
+  left: -3px;
+}
+
+.btnOpenFilters{
+  position: absolute;
+  height: 70vh;
+  top: 200px;
+  width: 30px;
+  z-index: 1002;
+  right: -3px;
+}
+
+.container2 {
+  display: none;
+}
+.container3 {
+  background-color: rgb(231, 231, 231);
+  padding: 25px;
+  height: auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .btnCloseFilters {
+    display: none;
+  }
+  .btnOpenFilters {
+    display: none;
+  }
+  .container2 {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .container3 {
+    display: none;
+  }
+}
+
+.dataTransactions{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0px;
+}
+
+
+
+.text-filter {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22.44px;
+}
+
 .stockPanel {
   background-color: #CECECE;
   padding-left: 25%;
