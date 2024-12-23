@@ -186,7 +186,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
           }
         }}><CloseIcon sx={{ fontSize: 15, fontWeight: "bold", color: "white" }} />
       </Button>
-      <div>
+      <div className={style.paddingLeft}>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <h2 style={{ fontSize: "20px", margin: "10px 10px 0px 0px" }}>Datos de la transacción</h2>
           <p style={{ margin: "-10px 10px 0px 0px" }}>Compra</p>

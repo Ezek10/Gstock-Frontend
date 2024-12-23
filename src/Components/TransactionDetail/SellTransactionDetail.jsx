@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import closeConfirm from "../../assets/closeConfirm.png"
 import Exchange from "../Exchange/Exchange";
+import zIndex from "@mui/material/styles/zIndex";
 
 const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction, setTransaction, updateTransaction }, ref) => {
 
@@ -229,47 +230,53 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
       </Button>
 
       <div>
-        <h2 style={{ fontSize: "20px", margin: "10px 10px 0px 0px" }}>Datos de la transacción</h2>
-        <p style={{ margin: "-10px 10px 0px 0px" }}>Venta</p>
+        <h2 className={style.dataTitle}>Datos de la transacción</h2>
+        <p className={style.dataSubtitle}>Venta</p>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
         <p className={style.letras}>*Cliente <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} value={capitalizeWords(updatedTransaction.client.name)} name="client" onChange={transactionDetailHandler} />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
-        <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-        <input type="text" style={{ height: "15px", margin: "0px 10px 0px 10px", width: "25%" }} value={updatedTransaction.client.cellphone} name="cellphone" onChange={transactionDetailHandler} />
-        <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-        <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%" }} value={capitalizeWords(updatedTransaction.client.email)} name="email" onChange={transactionDetailHandler} />
+      <div className={`${style.paddingLeft} ${style.rowLeft}`}>
+        <div className={style.rowIntern}>
+          <p className={style.letras}>Tel <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+          <input className={style.inputRow} type="text" style={{ height: "15px", margin: "0px 10px 0px 10px", width: "25%" }} value={updatedTransaction.client.cellphone} name="cellphone" onChange={transactionDetailHandler} />
+        </div>
+        <div className={style.rowIntern}>
+          <p className={style.letras}>Email <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
+          <input className={style.inputRow} type="text" style={{ height: "15px", margin: "0px 0px 0px 10px", width: "25%" }} value={capitalizeWords(updatedTransaction.client.email)} name="email" onChange={transactionDetailHandler} />
+        </div>
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-        <p className={style.letras}>
-          Canal de venta <ArrowDropDownIcon sx={{ fontSize: 18 }} />
-        </p>
-        <select 
-          name="contact_via" 
-          value={updatedTransaction.contact_via}
-          onChange={changeTransaction}
-        >
-          <option value="INSTAGRAM">Instagram</option>
-          <option value="FACEBOOK">Facebook</option>
-          <option value="TIKTOK">Whats App</option>
-          <option value="REFERED">Refered</option>
-          <option value="OTHER">Other</option>
-        </select>
+      <div className={`${style.paddingLeft} ${style.rowLeft}`}>
+        <div className={style.rowIntern}>
+          <p className={style.letras}>
+            Canal de venta <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+          </p>
+          <select 
+            name="contact_via" 
+            value={updatedTransaction.contact_via}
+            onChange={changeTransaction}
+          >
+            <option value="INSTAGRAM">Instagram</option>
+            <option value="FACEBOOK">Facebook</option>
+            <option value="TIKTOK">Whats App</option>
+            <option value="REFERED">Refered</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
         <CalendarTransactions value={transaction.date} onDateChange={handleDateChange} />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
         <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <input 
           type="text" 
@@ -281,7 +288,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
         <Payment value={transaction.payment_method} payment={handlePaymentChange} />
         <Button
           variant="outlined"
@@ -295,6 +302,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           open={openExchange}
+          className={style.modal}
           onClose={handleOpenExchange}
           closeAfterTransition
         >
@@ -325,9 +333,9 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             */}
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <h2>Nuevo producto</h2>
+      <h2 className={style.paddingLeft}>Nuevo producto</h2>
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
         <p className={style.letras}>
           *Producto 
           <ArrowRightIcon sx={{ fontSize: 18 }} />
@@ -347,7 +355,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
+      <div  className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
         <p className={style.letras}>*IMEI <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <select type="text" value={newProduct.serial_id || ""} onChange={handleCartChange} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
           <option key={newProduct.serial_id} value="">Elija un IMEI</option>
@@ -366,7 +374,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
         <p className={style.letras}>*Precio de venta <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <input type="text" style={{ height: "15px", margin: "0px 0px 0px 10px" }} value={newProduct.sell_price ?? ''} placeholder="$0000" name="sell_price" onChange={handleCartChange} />
       </div>
@@ -534,7 +542,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
               variant="outlined"
               size="small"
               target="_blank"
-              style={buttonStyle}
+              style={window.innerWidth >= 1024 ? buttonStyleDesktop : buttonStyle}
               onClick={deleteTransactionHandle}>Confirmar
             </Button>
           </div>
@@ -561,20 +569,24 @@ const buttonStyle = {
   borderColor: "transparent",
   borderRadius: "20px",
   height: "2.5em",
-  minWidth: "100px",
   width: "fit-content",
   paddingX: "4px",
-  marginTop: "5px",
-  marginBottom: "5px",
+  marginTop: "10px",
+  marginBottom: "10px",
+  marginLeft: "5px",
+  marginRight: "20px",
   textTransform: 'none',
   color: "white",
-  fontSize: "14",
-  fontWeight: 400,
   '&:hover': {
     color: "#fff",
     borderColor: "transparent",
     backgroundColor: "rgb(80, 80, 80)"
   }
+}
+
+const buttonStyleDesktop = {
+  ...buttonStyle,
+  marginLeft: "0px !important",
 }
 
 export default SellTransactionDetail;

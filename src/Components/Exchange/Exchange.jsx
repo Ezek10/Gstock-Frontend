@@ -81,28 +81,30 @@ const Exchange = React.forwardRef((props, ref) => {
           }
         }}><CloseIcon sx={{ fontSize: 15, fontWeight: "bold", color: "white" }} />
       </Button>
-      <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar canje</h2>
-      <p className={style.letras}>Proveedor Canje</p>
+      <div className={style.paddingLeft}>
+        <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar canje</h2>
+        <p className={style.letras}>Proveedor Canje</p>
+      </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar un producto</h2>
+      <h2 className={style.paddingLeft} style={{ fontSize: "20px", marginBottom: "10px" }}>Agregar un producto</h2>
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "15px", margin: "12px 10px 12px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "15px", margin: "12px 10px 12px 0px" }}>
         <p className={style.letras}>Producto<ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <input type="text" value={newProdExchange.product_name} onChange={changeHandler} name="product_name" />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "15px", margin: "12px 10px 12px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "15px", margin: "12px 10px 12px 0px" }}>
         <p className={style.letras}>Precio<ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <input type="text" placeholder="$0000" value={newProdExchange.buy_price} onChange={changeHandler} name="buy_price" />
       </div>
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px", width: "90%" }}>
+      <div className={style.paddingLeft} style={{ display: "grid", gridTemplateRows: "repeat(2, 1fr)", gridTemplateColumns: "repeat(4, 1fr)", gap: "0px", width: "90%" }}>
         <p style={{ marginTop: "5px", marginBottom: "3px", width: "60px" }}>Color</p>
         <p style={{ marginTop: "5px", marginBottom: "3px" }}>IMEI</p>
         <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
@@ -116,14 +118,17 @@ const Exchange = React.forwardRef((props, ref) => {
         <button style={{ height: "18px", margin: "0px", width: "88%", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", borderRadius: "20px", border: "transparent", fontSize: "1.7vh", "&:hover": { cursor: "pointer" } }} onClick={() => updateproductState()}>
           {newProdExchange.state === "AVAILABLE" ? "Disponible" : newProdExchange.state === "RESERVED" ? "Reservado" : newProdExchange.state === "DEFECTIVE" ? "Fallado" : "Roto"}</button>
       </div>
-      <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20px" }}
-        value={newProdExchange.observations} onChange={changeHandler} name="observations" />
+      <div className={style.paddingLeft} >
+        <input type="text" placeholder="Observaciones" style={{ margin: "0px 0px 10px 0px", width: "86%", borderRadius: "20px" }}
+          value={newProdExchange.observations} onChange={changeHandler} name="observations" />
+      </div>
 
       <Button
         variant="outlined"
         size="small"
         target="_blank"
-        style={buttonStyle}
+        className={style.marginLeft}
+        style={window.innerWidth >= 1024 ? buttonStyleDesktop : buttonStyle}
         onClick={() => changeHandler()}>Agregar producto
       </Button>
 
@@ -195,6 +200,7 @@ const buttonStyle = {
   paddingX: "4px",
   marginTop: "10px",
   marginBottom: "10px",
+  marginLeft: "5px",
   marginRight: "20px",
   textTransform: 'none',
   color: "white",
@@ -204,5 +210,11 @@ const buttonStyle = {
     backgroundColor: "rgb(80, 80, 80)"
   }
 }
+
+const buttonStyleDesktop = {
+  ...buttonStyle,
+  marginLeft: "0px !important",
+}
+
 
 export default Exchange;

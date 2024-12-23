@@ -1,4 +1,11 @@
 .containerTransactionDetail {
+  background-color: rgb(201, 201, 201);
+  width: 100%;
+  border: 5px solid red !important;
+}
+
+@media screen and (min-width: 1024px) {
+  .containerTransactionDetail {
     background-color: rgb(201, 201, 201);
     display: flex;
     position: fixed;
@@ -15,34 +22,35 @@
     z-index: 20;
     box-sizing: border-box;
     overflow: auto;
-}
-
-.containerTransactionDetail::-webkit-scrollbar {
+  }
+  .containerTransactionDetail::-webkit-scrollbar {
     width: 7px;
     border-radius: 100%;
     position: absolute;
-}
-
-.containerTransactionDetail::-webkit-scrollbar-track {
+  }
+  
+  .containerTransactionDetail::-webkit-scrollbar-track {
     background-color: rgb(255, 255, 255);
-}
-
-.containerTransactionDetail::-webkit-scrollbar-thumb {
+  }
+  
+  .containerTransactionDetail::-webkit-scrollbar-thumb {
     background-color: rgb(141, 141, 141);
     border-radius: 5px;
-    
+  
+  }
 }
+
 
 .letras {
-    margin: 0px;
-    display: flex;
-    align-items: center;
+  margin: 0px;
+  display: flex;
+  align-items: center;
 }
 
-.confirmationModal{
-    position: absolute;
-    font-size: 20px;
-    padding: "10px";
-    justify-content: center;
-    
+.confirmationModal {
+  position: absolute;
+  font-size: 20px;
+  padding: "10px";
+  justify-content: center;
+
 }
