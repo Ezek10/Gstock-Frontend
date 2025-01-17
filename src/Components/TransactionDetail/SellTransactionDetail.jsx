@@ -3,11 +3,11 @@ import { Button, Dialog, Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from '@mui/base/Modal';
 import Fade from '@mui/material/Fade';
-import { 
-  deleteTransaction, 
-  getTransactions, 
-  putTransactionSell, 
-  getProductsStocks 
+import {
+  deleteTransaction,
+  getTransactions,
+  putTransactionSell,
+  getProductsStocks
 } from "../../Redux/actions";
 import style from "./BuyTransactionDetail.module.css"
 import Payment from "../Payment/Payment";
@@ -52,9 +52,9 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
   const handleOpenCheck = () => setOpenCheck(true)
   const handleCloseCheck = () => setOpenCheck(false);
   const handleOpenExchange = () => {
-    if(openExchange){
+    if (openExchange) {
       setOpenExchange(false)
-    }else {
+    } else {
       setOpenExchange(true)
     }
   };
@@ -64,9 +64,9 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
     const value = event.target.value
 
     if (property === "product_name") {
-      if(value) {
+      if (value) {
         setNewProduct({ ...newProduct, product: { name: value } })
-      }else {
+      } else {
         setNewProduct({
           battery_percent: 0,
           buy_price: 0,
@@ -111,7 +111,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
   }
 
   const addProdHandler = () => {
-    if(newProduct.serial_id){ 
+    if (newProduct.serial_id) {
       const updatedProducts = [...updatedTransaction.products, newProduct]
       setUpdatedTransaction({ ...updatedTransaction, products: updatedProducts })
       setNewProduct({
@@ -158,13 +158,13 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
       name_seller: "name"
     }
 
-    if(primarySelected[event.target.name]){
+    if (primarySelected[event.target.name]) {
       setUpdatedTransaction({
         ...updatedTransaction,
         [event.target.name]: event.target.value
       })
     }
-    if(seller[event.target.name]) {
+    if (seller[event.target.name]) {
       setUpdatedTransaction({
         ...transaction,
         seller: {
@@ -180,10 +180,12 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
     setExchangeProducts(prevExchangeProducts => {
       const newExchangeProducts = [...prevExchangeProducts, ...exchangeCart];
       setUpdatedTransaction(prevProduct => {
-        return { ...prevProduct, swap_products: [
-          ...prevExchangeProducts,
-          ...exchangeCart
-        ], has_swap: true };
+        return {
+          ...prevProduct, swap_products: [
+            ...prevExchangeProducts,
+            ...exchangeCart
+          ], has_swap: true
+        };
       })
       return newExchangeProducts;
     })
@@ -259,8 +261,8 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
           <p className={style.letras}>
             Canal de venta <ArrowDropDownIcon sx={{ fontSize: 18 }} />
           </p>
-          <select 
-            name="contact_via" 
+          <select
+            name="contact_via"
             value={updatedTransaction.contact_via}
             onChange={changeTransaction}
           >
@@ -278,11 +280,11 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "10px 0px 10px 0px" }}>
         <p className={style.letras}>*Vendedor <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-        <input 
-          type="text" 
-          value={updatedTransaction.seller.name || ""} 
+        <input
+          type="text"
+          value={updatedTransaction.seller.name || ""}
           style={{ fontSize: 12, height: "15px", margin: "12px 10px 12px 10px", width: "40%" }}
-          onChange={changeTransaction} name="name_seller" 
+          onChange={changeTransaction} name="name_seller"
         />
       </div>
 
@@ -307,9 +309,9 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
           closeAfterTransition
         >
           <Fade in={openExchange}>
-            <Exchange 
-              handleCloseExchange={handleOpenExchange} 
-              exchangeCart={handleAddExchangeSellTransaction} 
+            <Exchange
+              handleCloseExchange={handleOpenExchange}
+              exchangeCart={handleAddExchangeSellTransaction}
             />
           </Fade>
         </Modal>
@@ -337,14 +339,14 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
         <p className={style.letras}>
-          *Producto 
+          *Producto
           <ArrowRightIcon sx={{ fontSize: 18 }} />
         </p>
-        <select 
-          type="text" 
-          name="product_name" 
-          value={newProduct.product.name || ""} 
-          onChange={handleCartChange} 
+        <select
+          type="text"
+          name="product_name"
+          value={newProduct.product.name || ""}
+          onChange={handleCartChange}
         >
           <option key={transaction.products.name} value="">Elija un modelo</option>
           {stock.map((prod) => (
@@ -355,7 +357,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
-      <div  className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
+      <div className={style.paddingLeft} style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px 0px 0px 0px" }}>
         <p className={style.letras}>*IMEI <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
         <select type="text" value={newProduct.serial_id || ""} onChange={handleCartChange} name="serial_id" style={{ fontSize: 12, height: "20px", margin: "12px 10px 12px 10px", width: "105px", borderRadius: "20px", border: "0px", paddingLeft: "5px" }}>
           <option key={newProduct.serial_id} value="">Elija un IMEI</option>
@@ -394,12 +396,12 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         <p className={style.letras}>TOTAL</p>
         <div id="cart" className={style.cart}>
           {updatedTransaction.products.map((product, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                display: "grid", 
-                gridTemplateRows: "repeat(1, 1fr)", 
-                gridTemplateColumns: "repeat(6, 1fr)", 
+            <div
+              key={index}
+              style={{
+                display: "grid",
+                gridTemplateRows: "repeat(1, 1fr)",
+                gridTemplateColumns: "repeat(6, 1fr)",
                 alignItems: "center"
               }}
             >
@@ -440,55 +442,55 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
             </div>)
           )}
         </div>
-        {updatedTransaction.swap_products?.length > 0 ? 
-        <div id="cart" className={style.cart}>
-          {updatedTransaction.swap_products?.map((prod, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                display: "grid", 
-                gridTemplateRows: "repeat(1, 1fr)", 
-                gridTemplateColumns: "repeat(6, 1fr)", 
-                flexDirection: "center",
-                alignItems: "center",
-                justifyContent: "space-between"
-              }}>
-              <div style={{ gridColumn: "span 2" }}>
-                { prod.product_name ? 
-                  capitalizeWords(prod.product_name)
-                  : capitalizeWords(prod.product.name)
-                }
-              </div>
-              <div>{prod.color ? capitalizeWords(prod.color) : ""}</div>
-              <div>{prod.battery_percent}%</div>
-              <div>
-                  -${prod.buy_price}
-              </div>
-              <Button
-                variant="outlined"
-                size="small"
-                target="_blank"
-                onClick={() => deleteFromExchangeCart(index)}
-                sx={{
-                  width: "10px",
-                  height: "10px",
-                  minWidth: 0,
-                  marginLeft: "5px",
-                  padding: "0px",
-                  backgroundColor: "red",
-                  borderColor: "white",
-                  justifySelf: "flex-end",
-                  boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
-                  '&:hover': {
-                    backgroundColor: "rgb(129, 0, 0)",
-                    borderColor: "white",
+        {updatedTransaction.swap_products?.length > 0 ?
+          <div id="cart" className={style.cart}>
+            {updatedTransaction.swap_products?.map((prod, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "grid",
+                  gridTemplateRows: "repeat(1, 1fr)",
+                  gridTemplateColumns: "repeat(6, 1fr)",
+                  flexDirection: "center",
+                  alignItems: "center",
+                  justifyContent: "space-between"
+                }}>
+                <div style={{ gridColumn: "span 2" }}>
+                  {prod.product_name ?
+                    capitalizeWords(prod.product_name)
+                    : capitalizeWords(prod.product.name)
                   }
-              }}>
-                <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
-              </Button>
-            </div>
-          ))}
-        </div> : <div></div>}
+                </div>
+                <div>{prod.color ? capitalizeWords(prod.color) : ""}</div>
+                <div>{prod.battery_percent}%</div>
+                <div>
+                  -${prod.buy_price}
+                </div>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  target="_blank"
+                  onClick={() => deleteFromExchangeCart(index)}
+                  sx={{
+                    width: "10px",
+                    height: "10px",
+                    minWidth: 0,
+                    marginLeft: "5px",
+                    padding: "0px",
+                    backgroundColor: "red",
+                    borderColor: "white",
+                    justifySelf: "flex-end",
+                    boxShadow: "1px 1px 0px rgba(0, 0, 0, 0.3)",
+                    '&:hover': {
+                      backgroundColor: "rgb(129, 0, 0)",
+                      borderColor: "white",
+                    }
+                  }}>
+                  <CloseIcon sx={{ fontSize: 10, fontWeight: "bold", color: "white" }} />
+                </Button>
+              </div>
+            ))}
+          </div> : <div></div>}
         <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)" }}>${totalSellPrice - totalSwapProducts}</h1>
       </div>
 

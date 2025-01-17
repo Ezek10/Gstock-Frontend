@@ -39,28 +39,26 @@ const Home = () => {
     <div className={style.container0}>
       <div className={style.container1}>
         <div className={style.header}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-              <div style={{ marginRight: '1px' }}>
+          <div className={style.headerElements} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {/* No me pregunten por qué está este div y span acá, no hacen nada últil. Por las dudas no lo borré pero le dejé un "display none" para que no interfiera */}
+              <div style={{ marginRight: '1px', display: 'none' }}>
                 <span>Elemento Izquierda</span>
               </div>
+              {/* ----------- */}
               <div
+                className={style.profileImage}
                 style={{
                   border: 'none',
                   backgroundColor: 'transparent',
-                  padding: 0,
                   cursor: currentUser.is_admin ? 'pointer' : 'default',
-                  position: 'absolute',
-                  top: '5%',
-                  left: '40%',
                   zIndex: 1000
                 }}
                 onClick={() => currentUser.is_admin ? navigate("/users") : null}
               >
                 <div
+                  className={style.profileSize}
                   style={{
-                    width: '60px',
-                    height: '60px',
                     borderRadius: '50%',
                     backgroundColor: 'white',
                     display: 'flex',
@@ -79,7 +77,6 @@ const Home = () => {
                       height: "100%",
                       width: "100%",
                       borderRadius: "50%",
-                      objectFit: "scale-down"
                     }}
                   />
                   {/* Botón para cambiar la imagen */}

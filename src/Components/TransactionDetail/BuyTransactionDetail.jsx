@@ -72,7 +72,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
   const updateproductState = (product, itemIndex) => {
     const newState = (states.indexOf(product.state) + 1) % states.length;
-    const updateProduct = {...newTransaction}
+    const updateProduct = { ...newTransaction }
     updateProduct.products[itemIndex].state = states[newState]
     setNewTransaction(updateProduct)
   }
@@ -124,13 +124,13 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
       alert("Faltan Productos")
       return
     }
-    try{
+    try {
       await dispatch(putTransactionBuy(newTransaction))
       dispatch(getTransactions())
       dispatch(getProductsStocks())
       dispatch(getSuppliers())
       alert("Modificacion realizada exitosamente")
-    }catch(error) {
+    } catch (error) {
       alert("Ups! Ocurrio un error, reintenta nuevamente mas tarde")
     }
   }
@@ -150,10 +150,10 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
   const listenerChangeInfoProduct = (e, idx) => {
     const property = e.target.name;
     const value = e.target.value;
-  
+
     setNewTransaction(prevTransaction => ({
       ...prevTransaction,
-      products: prevTransaction.products.map((prod, index) => 
+      products: prevTransaction.products.map((prod, index) =>
         index === idx
           ? { ...prod, [property]: value }
           : prod
@@ -228,11 +228,11 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "12px 0px 12px 0px" }}>
           <p className={style.letras}>Producto <ArrowRightIcon sx={{ fontSize: 18 }} /></p>
-          <input 
-            type="text" 
-            style={{ height: "15px", margin: "0px 0px 0px 10px" }} 
-            name="product_name" 
-            onChange={handleCartChange} 
+          <input
+            type="text"
+            style={{ height: "15px", margin: "0px 0px 0px 10px" }}
+            name="product_name"
+            onChange={handleCartChange}
           />
         </div>
 
@@ -263,14 +263,14 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
           <p className={style.letras}>TOTAL</p>
           <div id="cart" className={style.cart}>
             {newTransaction.products.length > 0 ? (newTransaction.products.map((product, index) => (
-              <div 
-                key={`${product.id} + ${index}`} 
-                style={{ 
-                    display: "grid",
-                    gridTemplateRows: "repeat(1, 1fr)", 
-                    gridTemplateColumns: "repeat(6, 1fr)", 
-                    alignItems: "center", 
-                  }}
+              <div
+                key={`${product.id} + ${index}`}
+                style={{
+                  display: "grid",
+                  gridTemplateRows: "repeat(1, 1fr)",
+                  gridTemplateColumns: "repeat(6, 1fr)",
+                  alignItems: "center",
+                }}
               >
                 <div style={{ gridColumn: "span 2" }}>{capitalizeWords(product.product_name)}</div>
                 <div style={{ marginLeft: "15px" }}>{capitalizeWords(product.color)}</div>
@@ -320,61 +320,61 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
               <p style={{ marginTop: "5px", marginBottom: "3px" }}>Batería</p>
               <p style={{ marginTop: "5px", marginBottom: "3px" }}>Precio de Venta</p>
               <p style={{ marginTop: "5px", marginBottom: "3px" }}>Estado</p>
-              <input 
-                type="text" 
-                style={{ height: "12px", margin: "0px", width: "70%" }} 
-                value={product.color ?? ''} 
-                name="color" 
+              <input
+                type="text"
+                style={{ height: "12px", margin: "0px", width: "70%" }}
+                value={product.color ?? ''}
+                name="color"
                 onChange={e => listenerChangeInfoProduct(e, index)}
               />
-              <input 
-                type="text" 
-                style={{ height: "12px", margin: "0px", width: "70%" }} 
-                value={product.serial_id ?? ''} 
-                name="serial_id" 
+              <input
+                type="text"
+                style={{ height: "12px", margin: "0px", width: "70%" }}
+                value={product.serial_id ?? ''}
+                name="serial_id"
                 onChange={e => listenerChangeInfoProduct(e, index)}
               />
-              <input 
-                type="number" 
-                style={{ height: "12px", margin: "0px", width: "70%" }} 
+              <input
+                type="number"
+                style={{ height: "12px", margin: "0px", width: "70%" }}
                 value={product.battery_percent ?? ''}
-                name="battery_percent" 
+                name="battery_percent"
                 onChange={e => listenerChangeInfoProduct(e, index)}
               />
-              <input 
-                type="number" 
-                style={{ height: "12px", margin: "0px", width: "70%" }} 
-                value={product.sell_price ?? ''} 
-                name="sell_price" 
+              <input
+                type="number"
+                style={{ height: "12px", margin: "0px", width: "70%" }}
+                value={product.sell_price ?? ''}
+                name="sell_price"
                 onChange={e => listenerChangeInfoProduct(e, index)}
               />
-              <button 
-                style={{ 
-                  height: "22px", 
-                  margin: "0px", 
-                  width: "88%", 
-                  boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)", 
-                  borderRadius: "20px", 
-                  border: "transparent", 
-                  fontSize: "1.7vh", 
-                  textAlign: "center" 
-                }} 
+              <button
+                style={{
+                  height: "22px",
+                  margin: "0px",
+                  width: "88%",
+                  boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.3)",
+                  borderRadius: "20px",
+                  border: "transparent",
+                  fontSize: "1.7vh",
+                  textAlign: "center"
+                }}
                 onClick={() => updateproductState(product, index)}
               >
-                  {
-                    product.state === "AVAILABLE" ? "Disponible" 
-                    : product.state === "RESERVED" ? "Reservado" 
-                    : product.state === "DEFECTIVE" ? "Fallado" 
-                    : "Roto"
-                  }
+                {
+                  product.state === "AVAILABLE" ? "Disponible"
+                    : product.state === "RESERVED" ? "Reservado"
+                      : product.state === "DEFECTIVE" ? "Fallado"
+                        : "Roto"
+                }
               </button>
             </div>
-            <input 
-              type="text" 
-              placeholder="Observaciones" 
+            <input
+              type="text"
+              placeholder="Observaciones"
               name="observations"
               value={product.observations ?? ''}
-              style={{ margin: "10px 0px 10px 0px", width: "95%", borderRadius: "20spx" }} 
+              style={{ margin: "10px 0px 10px 0px", width: "95%", borderRadius: "20spx" }}
               onChange={e => listenerChangeInfoProduct(e, index)}
             />
             <Divider variant="middle" component="li" sx={dividerStyle} />

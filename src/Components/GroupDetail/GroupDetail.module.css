@@ -7,10 +7,10 @@
   top: 0px;
 }
 
-.containerGroupDetailIntern{ 
-  padding-left: 2.5%;
-  padding-top: 1%;
-  padding-right: 1%;
+.containerGroupDetailIntern {
+  margin: auto;
+  margin-top: 1rem;
+  width: 85%;
 }
 
 @media screen and (min-width: 1024px) {
