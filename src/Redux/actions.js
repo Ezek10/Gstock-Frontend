@@ -71,6 +71,7 @@ const getHeaders = () => ({
 
 const handleUnauthorizedError = (error) => {
   if (error.response && error.response.status === 401) {
+    localStorage.removeItem("access_token")
     window.location.href = `${USER_URL}/refresh_token`;
   }
 };
