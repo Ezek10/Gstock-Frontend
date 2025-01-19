@@ -37,12 +37,14 @@ const Users = () => {
     const handleNewUser = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setNewUser({...newUser, [property]: value, name: value.split("@")[0]})
+        setNewUser({...newUser, [property]: value})
     }    
 
-    const submitNewUser = () => {
-        postNewUser(newUser)
+    const submitNewUser = async () => {
+        await postNewUser(newUser);
+        dispatch(getUsers());
     }
+
     const capitalizeWords = (str) => {
         if (!str) {return str}
         return str
@@ -53,13 +55,15 @@ const Users = () => {
     const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
     const handleOpenDelete = (i) => {
         setSelectedUser(i)
-        setOpenDeleteModal(true);}
-        const handleCloseDelete = () => setOpenDeleteModal(false);
-        
-        const handleDeleteUser = () => { 
-            dispatch(deleteUser(users[selectedUser].id))
-            getUsers()
-        }
+        setOpenDeleteModal(true);
+    }
+    const handleCloseDelete = () => setOpenDeleteModal(false);
+
+    const handleDeleteUser = async () => { 
+        await deleteUser(users[selectedUser].id);
+        dispatch(getUsers());
+        setSelectedUser(null);
+    }
 
     const [ openAddUserModal, setOpenAddUserModal ] = useState(false);
     const handleOpenAdd = () => {
@@ -115,8 +119,10 @@ const Users = () => {
                 <div>
                     <h2 style={{padding: "20px 0px 0px 40px", margin: "0px", fontSize: "36px", boxSizing: "border-box", fontWeight: "400"}}>Crear usuario nuevo</h2>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Usuario</p>
+                        <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Email</p>
                         <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email"/>
+                        <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Nombre</p>
+                        <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="Nombre" onChange={handleNewUser} name="name"/>
                         <button onClick={()=>{submitNewUser(), handleOpenAdd()}} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white"}}>Aceptar</button>
                     </div>
                 </div>
