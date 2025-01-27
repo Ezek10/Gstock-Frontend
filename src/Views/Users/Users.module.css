@@ -74,12 +74,13 @@
 @media screen and (min-width: 1024px) {
 
     .iHateYou {
-        flex-direction: row;
+        flex-direction: row-reverse;
     }
 
     .activeUsers {
         width: 70vw;
         overflow-y: auto;
+        background-color: white;
     }
 
     .activeUsers h2 {
@@ -93,6 +94,10 @@
     .activeUsers div div {
         width: 80%;
         margin: 10px 0px 10px 0px;
+    }
+
+    .createUser {
+        background-color: #D9D9D9;
     }
 
     .createUser h2 {
