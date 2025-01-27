@@ -157,8 +157,6 @@ const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFil
     <div className={style.containerTransactions}
       ref={ref}
     >
-      <img src={filtroIcon} alt="Filtro" style={{ display: "flex", alignSelf: "flex-end", height: "30px", marginTop: '20px', marginRight:'15px' }} onClick={handleCloseFilters}/>
-
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '10px' }}>
         <button
           style={getButtonStyle('purchases')}
@@ -208,7 +206,7 @@ const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFil
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/*Filtro Producto*/}
-      <div style={{alignItems: "center", minHeight: '46px', padding: '10px' }}>
+      <div style={{ alignItems: "start", display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div className={style.dropdown}>
           <div ref={dropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
             <div
@@ -260,13 +258,18 @@ const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFil
               </div>
             )}
           </div>
-          <div style={{  whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
+          <div style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
             {filters.filter_by_product
               ? capitalizeWords(products.find(p => p.id === filters.filter_by_product)?.name || '')
               : ""}
           </div>
 
         </div>
+
+        <Divider variant="middle" component="li" sx={dividerStyle} />
+
+
+        {/*Filtro Fecha*/}
         <CalendarFiltersMobile
           filters={filters}
           setFilters={setFilters}
@@ -276,131 +279,137 @@ const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFil
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/* Filtro Proveedor */}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", minHeight: '46px', padding: '10px' }}>
-        <div ref={dropdownRefSupplier} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <div
-            onClick={toggleDropdownSupplier}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              cursor: "pointer",
-              marginRight: "5px"
-            }}
-          >
-            Proveedor
-            <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} />
-          </div>
-          {isOpenSupplier && (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "start", gap: '10px' }}>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div ref={dropdownRefSupplier} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
             <div
-              className={style.scroll}
+              onClick={toggleDropdownSupplier}
               style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                fontSize: 14,
-                zIndex: 1000,
-                backgroundColor: 'white',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                maxHeight: '200px',
-                overflowY: 'auto',
-                width: '185px'
-              }}>
-              <div onClick={() => handleSupplierSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
-              >
-                Todos los proveedores
-              </div>
-              {suppliers && suppliers.map(sup => (
-                <div
-                  key={sup.id}
-                  onClick={() => handleSupplierSelect(sup.id)}
-                  style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+              }}
+            >
+              Proveedor
+              <ArrowDropDownIcon sx={{ fontSize: 18, marginLeft: '5px' }} />
+            </div>
+            {isOpenSupplier && (
+              <div
+                className={style.scroll}
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  fontSize: 14,
+                  zIndex: 1000,
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                  width: '185px'
+                }}>
+                <div onClick={() => handleSupplierSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
                 >
-                  {capitalizeWords(sup.name)}
+                  Todos los proveedores
                 </div>
-              ))}
-            </div>
-          )}
+                {suppliers && suppliers.map(sup => (
+                  <div
+                    key={sup.id}
+                    onClick={() => handleSupplierSelect(sup.id)}
+                    style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                  >
+                    {capitalizeWords(sup.name)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div style={{ marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
+            {filters.filter_by_supplier
+              ? capitalizeWords(suppliers.find(s => s.id === filters.filter_by_supplier)?.name || '')
+              : ""}
+
+          </div>
         </div>
-        <div style={{ marginLeft: '5px', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 14, fontWeight: 275 }}>
-          {filters.filter_by_supplier
-            ? capitalizeWords(suppliers.find(s => s.id === filters.filter_by_supplier)?.name || '')
-            : ""}
-
-        </div>
 
 
+        <Divider variant="middle" component="li" sx={dividerStyle} />
 
         {/* Filtro Clientes */}
 
-        <div ref={dropdownRefClient} style={{ position: 'relative' }}>
-          <div
-            onClick={toggleDropdownClient}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              cursor: "pointer",
-              marginRight: "5px"
-            }}
-          >
-            Cliente
-            <ArrowDropDownIcon sx={{ fontSize: 18 }} />
-          </div>
-          {isOpenClient && (
-            <div className={style.scroll}
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div ref={dropdownRefClient} style={{ position: 'relative' }}>
+            <div
+              onClick={toggleDropdownClient}
               style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                zIndex: 1000,
-                fontSize: 14,
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                border: '1px solid #ccc',
-                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                maxHeight: '200px',
-                overflowY: 'auto',
-                width: '170px',
-              }}>
-              <div onClick={() => handleClientSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
-              >
-                Todos los clientes
-              </div>
-              {clients && clients.map(client => (
-                <div
-                  key={client.id}
-                  onClick={() => handleClientSelect(client.id)}
-                  style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                cursor: "pointer",
+                marginRight: "5px"
+              }}
+            >
+              Cliente
+              <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+            </div>
+            {isOpenClient && (
+              <div className={style.scroll}
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  zIndex: 1000,
+                  fontSize: 14,
+                  backgroundColor: 'white',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                  width: '170px',
+                }}>
+                <div onClick={() => handleClientSelect(null)} style={{ padding: '5px 10px', cursor: 'pointer' }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
                 >
-                  {capitalizeWords(client.name)}
+                  Todos los clientes
                 </div>
-              ))}
-            </div>
-          )}
+                {clients && clients.map(client => (
+                  <div
+                    key={client.id}
+                    onClick={() => handleClientSelect(client.id)}
+                    style={{ padding: '5px 10px', cursor: 'pointer', transition: 'background-color 0.2s ease', }} // transicion de fondo
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4285F4'; }} // color gris de fondo al pasar el mouse
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'white'; }} // restablecer fondo al salir el mouse
+                  >
+                    {capitalizeWords(client.name)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div style={{ marginLeft: '10px', fontSize: 14, fontWeight: 275 }}>
+            {filters.filter_by_client
+              ? capitalizeWords(clients.find(c => c.id === filters.filter_by_client)?.name || '')
+              : ""}
+          </div>
         </div>
-        <div style={{ marginLeft: '10px', fontSize: 14, fontWeight: 275 }}>
-          {filters.filter_by_client
-            ? capitalizeWords(clients.find(c => c.id === filters.filter_by_client)?.name || '')
-            : ""}
-        </div>
+
       </div>
 
 
       <Divider variant="middle" component="li" sx={dividerStyle} />
 
       {/* Filtro Vendedor */}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '10px' }}>
-        <div ref={dropdownRefSeller} style={{ position: 'relative', display: 'flex', alignItems: 'center', minHeight: '46px' }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+        <div ref={dropdownRefSeller} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <div
             onClick={toggleDropdownSeller}
             style={{
@@ -488,9 +497,6 @@ const DataTransactions = React.forwardRef(({ filters, setFilters, handleCloseFil
         margin: '0',  // Elimina cualquier margen existente
         width: '100%',  // Asegura que el divisor ocupe todo el ancho
       }} />
-
-      {/* Separador */}
-      <p style={{ fontSize: 5 }}> </p>
 
       {/* Tarjeta de ganancias */}
       <div className={style.cards}>

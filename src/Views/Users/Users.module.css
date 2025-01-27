@@ -1,4 +1,4 @@
-.usersContainer{
+.usersContainer {
     height: 100vh;
     width: 100vw;
 }
@@ -25,12 +25,81 @@
     align-items: center;
 }
 
+.iHateYou {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 82vh;
+    gap: 25px;
+    overflow: scroll;
+}
+
 .activeUsers {
     background-color: #D9D9D9;
     height: 100%;
-    width: 70vw;
     box-sizing: border-box;
-    overflow-y: auto;
+}
+
+.activeUsers h2 {
+    width: 85%;
+    margin: 10px auto;
+    font-size: 28px;
+    box-sizing: border-box;
+    font-weight: 400;
+}
+
+.activeUsers div {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 85%;
+    margin: auto;
+    gap: 10px;
+}
+
+.activeUsers div div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.createUser h2 {
+    padding: 20px 0px 0px 40px;
+    margin: 0px;
+    font-size: 28px;
+    box-sizing: border-box;
+    font-weight: 400;
+}
+
+@media screen and (min-width: 1024px) {
+
+    .iHateYou {
+        flex-direction: row;
+    }
+
+    .activeUsers {
+        width: 70vw;
+        overflow-y: auto;
+    }
+
+    .activeUsers h2 {
+        padding: 20px 0px 0px 70px;
+        margin: 0px;
+        font-size: 36px;
+        box-sizing: border-box;
+        font-weight: 400;
+    }
+
+    .activeUsers div div {
+        width: 80%;
+        margin: 10px 0px 10px 0px;
+    }
+
+    .createUser h2 {
+        padding: 20px 0px 0px 40px;
+        margin: 0px;
+        font-size: 36px;
+    }
 }
 
 .activeUsers::-webkit-scrollbar {
@@ -45,7 +114,7 @@
 .activeUsers::-webkit-scrollbar-thumb {
     background-color: rgb(141, 141, 141);
     border-radius: 5px;
-    
+
 }
 
 .activeUsers::-webkit-scrollbar-thumb:hover {
@@ -57,9 +126,7 @@
     cursor: pointer;
 }
 
-.deleteModal{
+.deleteModal {
     position: absolute;
     font-size: 20px;
-    padding: "10px";
-
 }

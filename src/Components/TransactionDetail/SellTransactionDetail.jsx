@@ -494,7 +494,7 @@ const SellTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction
         <h1 style={{ margin: "0px", color: "rgb(149, 148, 148)" }}>${totalSellPrice - totalSwapProducts}</h1>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%", alignItems: "center" }}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
         <Button
           variant="outlined"
           size="small"
@@ -576,7 +576,7 @@ const buttonStyle = {
   marginTop: "10px",
   marginBottom: "10px",
   marginLeft: "5px",
-  marginRight: "20px",
+  marginRight: "auto",
   textTransform: 'none',
   color: "white",
   '&:hover': {

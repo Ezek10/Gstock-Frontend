@@ -67,7 +67,7 @@ const CalendarFilters = ({ filters, setFilters }) => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
+    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
       {/* Hacemos cliqueable la palabra "Fecha" y el icono */}
       <span
         ref={anchorSpanRef} // Usamos esta referencia para el Popper
@@ -137,7 +137,7 @@ const CalendarFilters = ({ filters, setFilters }) => {
                   left: "-70px",
                   border: "2px solid black",
                 },
-                '.rdrMonthAndYearPickers select': {padding: '0px !important', fontSize: '12px'},
+                '.rdrMonthAndYearPickers select': { padding: '0px !important', fontSize: '12px' },
                 '.rdrDay_day': { color: '#000000' },
                 '.rdrStartEdge': { backgroundColor: '#000000' },
                 '.rdrEndEdge': { backgroundColor: '#000000' },

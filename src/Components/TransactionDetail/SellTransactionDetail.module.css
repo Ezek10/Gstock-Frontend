@@ -1,6 +1,7 @@
 .containerTransactionDetail {
   background-color: rgb(201, 201, 201);
   width: 100%;
+  /*Alguien me explica por qué está esto ↓ acá? */
   border: 5px solid red !important;
 }
 

@@ -271,13 +271,20 @@ const Tabs = () => {
                 className={`${openFilters ? style.btnOpenFilters : style.btnCloseFilters}`}
                 onClick={() => setOpenFilters(!openFilters)}
               >
+
+                {openFilters && (
+                  <>
+                    <img className={style.filterMobileImg} src='./src/assets/filtroMobile.png' alt="" />
+                    <img src='./src/assets/openFilters.png' alt="" />
+                  </>
+                )}
                 {
-                  openFilters &&
-                  <ArrowLeft sx={{ fontSize: 25, marginLeft: '-5px' }} />
-                }
-                {
-                  !openFilters &&
-                  <ArrowRight sx={{ fontSize: 25, marginLeft: '-5px' }} />
+                  !openFilters && (
+                    <>
+                      <img className={style.filterMobileImg} src='./src/assets/filtroMobile2.png' alt="" />
+                      <img src='./src/assets/openFilters.png' alt="" style={{ transform: 'scaleX(-1)' }} />
+                    </>
+                  )
                 }
               </button>
 

@@ -3,14 +3,16 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 100vw;
+  width: 100%;
   top: 0px;
   height: max-content;
   z-index: 1000 !important;
-  padding-bottom: 145px;
+  gap: 10px;
+  padding: 30px 7.5% 100px 7.5%;
+  box-sizing: border-box;
 }
 
-.dropdown{
+.dropdown {
   display: flex;
 }
 
@@ -60,12 +62,11 @@
   border: none;
   box-shadow: none;
 }
+
 .cards {
   background-color: white;
   border-radius: 8px;
-  width: 90%;
-  height: 10;
-  margin: 8px 0px 8px 6px;
+  width: 100%;
   text-overflow: ellipsis;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   font-weight: 400;

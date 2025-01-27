@@ -380,7 +380,7 @@ const BuyTransactionDetail = React.forwardRef(({ handleCloseDetail, transaction,
             <Divider variant="middle" component="li" sx={dividerStyle} />
           </div>))) : (<div></div>)}
 
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
           <Button
             variant="outlined"
             size="small"
