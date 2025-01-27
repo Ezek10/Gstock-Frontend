@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./GroupDetail.module.css"
 import { Button, Dialog, Divider } from "@mui/material";
-import { deleteProducts, putProductDetail, putProductStock } from "../../Redux/actions";
+import { deleteProducts, getProductsStocks, putProductDetail, putProductStock } from "../../Redux/actions";
 import { useDispatch } from "react-redux";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -58,6 +58,7 @@ const GroupDetail = React.forwardRef(({ handleCloseDetail, products, setProducts
     products.stocks.forEach(element => {
       dispatch(putProductDetail(element))
     });
+    dispatch(getProductsStocks())
   }
 
   const updateproductState = (product, itemIndex) => {

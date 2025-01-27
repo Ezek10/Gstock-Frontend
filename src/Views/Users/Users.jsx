@@ -40,9 +40,11 @@ const Users = () => {
         setNewUser({ ...newUser, [property]: value, name: value.split("@")[0] })
     }
 
-    const submitNewUser = () => {
-        postNewUser(newUser)
+    const submitNewUser = async () => {
+        await postNewUser(newUser);
+        dispatch(getUsers());
     }
+
     const capitalizeWords = (str) => {
         if (!str) { return str }
         return str

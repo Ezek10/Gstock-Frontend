@@ -71,6 +71,7 @@ const getHeaders = () => ({
 
 const handleUnauthorizedError = (error) => {
   if (error.response && error.response.status === 401) {
+    localStorage.removeItem("access_token")
     window.location.href = `${USER_URL}/refresh_token`;
   }
 };
@@ -337,23 +338,13 @@ export const putUser = (user) => {
   }
 }
 
-export const deleteUser = (userId) => {
-  return async function (dispatch) {
-    try {
-      dispatch({ type: DELETE_USER_REQUEST })
-      await axios.delete(`${USER_URL}/users/delete`, { params: { "user_id": userId }, ...getHeaders() });
-
-      dispatch({
-        type: DELETE_USER_SUCCESS,
-        payload: userId
-      })
-    } catch (error) {
-      handleUnauthorizedError(error)
-      dispatch({
-        type: DELETE_USER_FAILURE,
-        payload: error.message
-      })
-    }
+export const deleteUser = async (userId) => {
+  try {
+    const response = await axios.delete(`${USER_URL}/users/delete`, { params: { "user_id": userId }, ...getHeaders() });
+    return response.data;
+  } catch (error) {
+    handleUnauthorizedError(error)
+    throw new Error(error.response?.data?.message || "Error al borrar al usuario");
   }
 }
 
