@@ -80,6 +80,7 @@ input {
 
 .profileSize {
     height: 50px;
+    width: 50px;
 }
 
 @media screen and (min-width: 1024px) {
@@ -96,5 +97,6 @@ input {
 
     .profileSize {
         height: 65px;
+        width: 65px;
     }
 }
