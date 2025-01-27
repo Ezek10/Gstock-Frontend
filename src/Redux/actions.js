@@ -318,7 +318,6 @@ export const postNewUser = async (user) => {
     return response.data;
   } catch (error) {
     handleUnauthorizedError(error)
-    throw new Error(error.response?.data?.message || "Error al crear un usuario nuevo");
   }
 };
 

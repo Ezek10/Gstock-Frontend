@@ -37,11 +37,13 @@ const Users = () => {
     const handleNewUser = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setNewUser({ ...newUser, [property]: value, name: value.split("@")[0] })
-    }
+        setNewUser({...newUser, [property]: value})
+    }    
 
     const submitNewUser = async () => {
+        if (!newUser.name) {newUser.name = newUser.email.split("@")[0]}
         await postNewUser(newUser);
+        setNewUser({name: "", email: ""});
         dispatch(getUsers());
     }
 
@@ -59,9 +61,10 @@ const Users = () => {
     }
     const handleCloseDelete = () => setOpenDeleteModal(false);
 
-    const handleDeleteUser = () => {
-        dispatch(deleteUser(users[selectedUser].id))
-        getUsers()
+    const handleDeleteUser = async () => { 
+        await deleteUser(users[selectedUser].id);
+        dispatch(getUsers());
+        setSelectedUser(null);
     }
 
     const [openAddUserModal, setOpenAddUserModal] = useState(false);
@@ -120,8 +123,10 @@ const Users = () => {
                 <div className={style.createUser}>
                     <h2>Crear usuario nuevo</h2>
                     <div style={{ display: "flex", flexDirection: "column" }}>
-                        <p style={{ fontSize: "24px", margin: "0px 0px 0px 40px" }}>Usuario</p>
-                        <input type="text" style={{ width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid" }} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email" />
+                        <p style={{ fontSize: "24px", margin: "0px 0px 0px 40px" }}>Email</p>
+                        <input type="text" style={{ width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid" }} placeholder="tuemail@ejemplo.com" value={newUser.email} onChange={handleNewUser} name="email" />
+                        <p style={{fontSize: "24px", margin: "0px 0px 0px 40px"}}>Nombre</p>
+                        <input type="text" style={{width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid"}} placeholder="Nombre" value={newUser.name} onChange={handleNewUser} name="name"/>
                         <button onClick={() => { submitNewUser(), handleOpenAdd() }} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white" }}>Aceptar</button>
                     </div>
                 </div>
