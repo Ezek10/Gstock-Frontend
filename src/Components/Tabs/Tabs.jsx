@@ -293,8 +293,8 @@ const Tabs = () => {
               </div>
 
               <div className={style.container3}>
-                <p className="text-filter">Filtros marcados:</p>
-                <p className="text-filter">
+                <p className={style.textFilter}>Filtros marcados:</p>
+                <p className={style.textFilter}>
                   {
                     filters.filter_by_product &&
                     <span>

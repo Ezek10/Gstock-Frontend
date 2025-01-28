@@ -104,13 +104,13 @@ const Users = () => {
             <div className={style.iHateYou}>
                 <div className={style.activeUsers}>
                     <h2>Usuarios activos</h2>
-                    <div>
+                    <div className={style.userList}>
                         {users.map((user, index) => (
                             <div key={index}>
-                                <img src={user.image ? user.image : logoReverse} alt="Profile" style={{ height: "40px", backgroundColor: "white", padding: "5px", borderRadius: "50px", boxShadow: "3px 3px 8px rgba(0, 0, 0, 0.2)" }} />
-                                <p style={{ fontSize: "24px", paddingRight: 10, margin: "0px 0px 0px 40px", textAlign: "left", flex: "1" }}>{capitalizeWords(user.name)}</p>
-                                <button onClick={() => handleOpenDelete(index)} style={{ border: "none", marginRight: 0, backgroundColor: "white", height: "20px", width: "20px", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "20px" }}>
-                                    <img src={deleteUserIcon} alt="Delete" style={{ height: "20px", marginRight: 0 }} />
+                                <img src='./src/assets/openFilters.png' alt="" style={{ paddingTop: '7px', paddingLeft: '15px', transform: 'scaleX(-1)' }} />
+                                <p style={{ fontSize: "24px", paddingRight: 0, margin: 0, textAlign: "left", flex: "1" }}>{capitalizeWords(user.name)}</p>
+                                <button onClick={() => handleOpenDelete(index)} style={{ borderRadius: "20px", whiteSpace: 'nowrap', border: "0px transparent", padding: "5px 10px 5px 10px", marginLeft: '10px', background: "red", color: "white" }}>
+                                    Eliminar usuario
                                 </button>
                             </div>
                         ))}
@@ -119,10 +119,10 @@ const Users = () => {
 
                 <div className={style.createUser}>
                     <h2>Crear usuario nuevo</h2>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                        <p style={{ fontSize: "24px", margin: "0px 0px 0px 40px" }}>Usuario</p>
-                        <input type="text" style={{ width: "250px", borderRadius: "5px", margin: "0px 0px 0px 40px", border: "1px gray solid" }} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email" />
-                        <button onClick={() => { submitNewUser(), handleOpenAdd() }} style={{ borderRadius: "20px", margin: "20px 0px 0px 40px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white" }}>Aceptar</button>
+                    <div>
+                        <p>Usuario</p>
+                        <input type="text" style={{ width: "250px", borderRadius: "5px", border: "1px gray solid" }} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email" />
+                        <button onClick={() => { submitNewUser(), handleOpenAdd() }} style={{ borderRadius: "20px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white" }}>Aceptar</button>
                     </div>
                 </div>
             </div>

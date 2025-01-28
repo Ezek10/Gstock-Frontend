@@ -30,13 +30,16 @@
     flex-direction: column-reverse;
     height: 82vh;
     gap: 25px;
-    overflow: scroll;
+    max-height: 82vh;
+    overflow: hidden;
 }
 
 .activeUsers {
     background-color: #D9D9D9;
     height: 100%;
     box-sizing: border-box;
+    overflow-y: scroll;
+    padding-bottom: 15px;
 }
 
 .activeUsers h2 {
@@ -47,13 +50,14 @@
     font-weight: 400;
 }
 
-.activeUsers div {
+.activeUsers .userList {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     width: 85%;
-    margin: auto;
+    margin: 0 auto;
     gap: 10px;
+    overflow: scroll;
 }
 
 .activeUsers div div {
@@ -63,12 +67,39 @@
     width: 100%;
 }
 
+.createUser {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+}
+
 .createUser h2 {
-    padding: 20px 0px 0px 40px;
-    margin: 0px;
+    width: 85%;
+    margin: 0 auto;
     font-size: 28px;
     box-sizing: border-box;
     font-weight: 400;
+}
+
+.createUser div {
+    width: 85%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    >p {
+        font-size: 24px;
+    }
+
+    >* {
+        margin: 0;
+    }
+
+    >button {
+        margin-top: 1rem;
+    }
 }
 
 @media screen and (min-width: 1024px) {
@@ -78,32 +109,53 @@
     }
 
     .activeUsers {
-        width: 70vw;
-        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 2rem;
+        width: 65dvw;
+        overflow: initial;
         background-color: white;
     }
 
     .activeUsers h2 {
-        padding: 20px 0px 0px 70px;
-        margin: 0px;
+        padding: 0;
+        margin: 0 auto;
         font-size: 36px;
         box-sizing: border-box;
         font-weight: 400;
     }
 
     .activeUsers div div {
-        width: 80%;
-        margin: 10px 0px 10px 0px;
+        width: 90%;
+        margin: 0;
     }
 
     .createUser {
+        width: 35dvw;
         background-color: #D9D9D9;
+        gap: 20px;
+        justify-content: flex-start;
+        padding-top: 2rem;
     }
 
     .createUser h2 {
-        padding: 20px 0px 0px 40px;
-        margin: 0px;
+        padding: 0;
+        width: 80%;
         font-size: 36px;
+    }
+
+    .createUser div {
+        gap: 15px;
+        width: 80%;
+    }
+
+    .createUser div p {
+        font-size: 24px;
+    }
+
+    .createUser div button {
+        margin: 0;
     }
 }
 
