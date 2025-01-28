@@ -37,11 +37,13 @@ const Users = () => {
     const handleNewUser = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setNewUser({ ...newUser, [property]: value, name: value.split("@")[0] })
+        setNewUser({ ...newUser, [property]: value })
     }
 
     const submitNewUser = async () => {
+        if (!newUser.name) { newUser.name = newUser.email.split("@")[0] }
         await postNewUser(newUser);
+        setNewUser({ name: "", email: "" });
         dispatch(getUsers());
     }
 
@@ -59,9 +61,10 @@ const Users = () => {
     }
     const handleCloseDelete = () => setOpenDeleteModal(false);
 
-    const handleDeleteUser = () => {
-        dispatch(deleteUser(users[selectedUser].id))
-        getUsers()
+    const handleDeleteUser = async () => {
+        await deleteUser(users[selectedUser].id);
+        dispatch(getUsers());
+        setSelectedUser(null);
     }
 
     const [openAddUserModal, setOpenAddUserModal] = useState(false);
