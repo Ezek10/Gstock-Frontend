@@ -245,7 +245,7 @@ const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   boxShadow: "0px 0px 0px 0px transparent",
   position: "relative",
   width: "100%",
-  height: "65vh",
+  height: "65dvh",
 }));
 
 export default TablaTransactions;

@@ -115,7 +115,7 @@ const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   background: "linear-gradient(to bottom, rgb(220, 220, 220), rgb(255, 255, 255))",
   boxShadow: "0px 0px 0px 0px transparent",
   width: "100%",
-  height: "auto",
+  height: "65dvh",
   overflowY: "auto",
   position: "relative",
 }));

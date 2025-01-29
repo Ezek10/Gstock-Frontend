@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./Users.module.css"
 import Button from '@mui/material/Button';
-import logoReverse from "../../assets/logoReverse.png"
 import logo from "../../assets/logo.png"
 import deleteUserIcon from "../../assets/closeConfirm.png"
 import { Dialog } from "@mui/material";
@@ -111,7 +110,7 @@ const Users = () => {
                         {users.map((user, index) => (
                             <div key={index}>
                                 <img src='./src/assets/openFilters.png' alt="" style={{ paddingTop: '7px', paddingLeft: '15px', transform: 'scaleX(-1)' }} />
-                                <p style={{ fontSize: "24px", paddingRight: 0, margin: 0, textAlign: "left", flex: "1" }}>{capitalizeWords(user.name)}</p>
+                                <p style={{ overflow:"hidden", textOverflow: "ellipsis", fontSize: "24px", paddingRight: 0, margin: 0, textAlign: "left", flex: "1" }}>{capitalizeWords(user.name)}</p>
                                 <button onClick={() => handleOpenDelete(index)} style={{ borderRadius: "20px", whiteSpace: 'nowrap', border: "0px transparent", padding: "5px 10px 5px 10px", marginLeft: '10px', background: "red", color: "white" }}>
                                     Eliminar usuario
                                 </button>
@@ -123,8 +122,10 @@ const Users = () => {
                 <div className={style.createUser}>
                     <h2>Crear usuario nuevo</h2>
                     <div>
-                        <p>Usuario</p>
-                        <input type="text" style={{ width: "250px", borderRadius: "5px", border: "1px gray solid" }} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email" />
+                        <p>Email</p>
+                        <input type="text" style={{ width: "250px", borderRadius: "5px", border: "1px gray solid" }} value={newUser.email} placeholder="tuemail@ejemplo.com" onChange={handleNewUser} name="email" />
+                        <p>Nombre</p>
+                        <input type="text" style={{ width: "250px", borderRadius: "5px", border: "1px gray solid" }} value={newUser.name} placeholder="username" onChange={handleNewUser} name="name" />
                         <button onClick={() => { submitNewUser(), handleOpenAdd() }} style={{ borderRadius: "20px", width: "fit-content", border: "0px transparent", padding: "5px 10px 5px 10px", background: "black", color: "white" }}>Aceptar</button>
                     </div>
                 </div>
