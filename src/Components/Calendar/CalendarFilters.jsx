@@ -69,18 +69,18 @@ const CalendarFilters = ({ filters, setFilters }) => {
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "42px" }}>
             {/* Hacemos cliqueable la palabra "Fecha" y el icono */}
-            <span 
+            <span
                 ref={anchorSpanRef} // Usamos esta referencia para el Popper
-                onClick={handleCalendar} 
+                onClick={handleCalendar}
                 style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             >
                 <p className={style.letrasWithMargin}>
                     Fecha <ArrowDropDownIcon sx={{ fontSize: 18 }} />
                 </p>
             </span>
-            
+
             {/* Mostramos la fecha seleccionada, pero sin hacerla cliqueable */}
-            <div 
+            <div
                 style={{
                     ...botonCopiar, // Mantiene los estilos de botón
                     display: 'flex',
@@ -91,22 +91,22 @@ const CalendarFilters = ({ filters, setFilters }) => {
                     border: '1px solid #ccc',
                     padding: '1px',
                     borderRadius: '5px',
-                    height: '2.1em'
+                    height: 'auto'
                 }}
             >
-                {filters.filter_by_start_date 
+                {filters.filter_by_start_date
                     ? `${format(new Date(filters.filter_by_start_date * 1000), "dd/MM/yy")} 
-                       - ${format(new Date(filters.filter_by_end_date * 1000), "dd/MM/yy")}` 
+                       - ${format(new Date(filters.filter_by_end_date * 1000), "dd/MM/yy")}`
                     : ''
                 }
             </div>
-            
+
             <Popper
                 open={openCalendar}
                 ref={anchorCalendarRef}
                 anchorEl={anchorSpanRef.current}  // Usamos el nuevo span como ancla
                 placement="bottom-end"
-                style={{ zIndex: "10", borderRadius: "5px"}}
+                style={{ zIndex: "10", borderRadius: "5px" }}
                 modifiers={[
                     {
                         name: 'preventOverflow',
@@ -126,7 +126,7 @@ const CalendarFilters = ({ filters, setFilters }) => {
                 ]}
                 transition>
                 {({ TransitionProps }) => (
-                    <Fade { ...TransitionProps } timeout={350}>
+                    <Fade {...TransitionProps} timeout={350}>
                         <Box
                             sx={{
                                 '.rdrDateDisplayWrapper': { display: 'none' },
@@ -172,10 +172,11 @@ const botonCopiar = {
     height: "2.1em",
     whiteSpace: "nowrap",
     width: "11.3em",
-    '&:hover':{
+    '&:hover': {
         color: "#fff",
         borderColor: "transparent",
-        backgroundColor: "rgb(80, 80, 80)"}
+        backgroundColor: "rgb(80, 80, 80)"
+    }
 }
 
 export default CalendarFilters;
