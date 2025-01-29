@@ -14,23 +14,24 @@
   }
 }
 
-.tabla::-webkit-scrollbar {
+.tabla>div::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
   border-radius: 100%;
   position: absolute;
 }
 
-.tabla::-webkit-scrollbar-track {
+.tabla>div::-webkit-scrollbar-track {
   background-color: rgb(255, 255, 255);
 }
 
-.tabla::-webkit-scrollbar-thumb {
+.tabla>div::-webkit-scrollbar-thumb {
   background-color: rgb(141, 141, 141);
   border-radius: 5px;
 
 }
 
-.tabla::-webkit-scrollbar-thumb:hover {
+.tabla>div::-webkit-scrollbar-thumb:hover {
   background: #555;
   cursor: pointer;
 }

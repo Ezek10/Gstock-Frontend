@@ -126,6 +126,28 @@
         font-weight: 400;
     }
 
+    .userList::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+        border-radius: 100%;
+        position: absolute;
+    }
+
+    .userList::-webkit-scrollbar-track {
+        background-color: rgb(255, 255, 255);
+    }
+
+    .userList::-webkit-scrollbar-thumb {
+        background-color: rgb(141, 141, 141);
+        border-radius: 5px;
+
+    }
+
+    .userList::-webkit-scrollbar-thumb:hover {
+        background: #555;
+        cursor: pointer;
+    }
+
     .activeUsers div div {
         width: 90%;
         margin: 0;
