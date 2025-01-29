@@ -1,17 +1,24 @@
-
 .containerExchange {
   background-color: rgb(201, 201, 201);
   position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 7.5%;
+  padding-left: 7.5%;
+  z-index: 99999;
 }
-.paddingLeft{
+
+.paddingLeft {
   padding-left: 5px;
 }
+
 .marginLeft {
   margin-left: 5px;
 }
+
 .cuadroTotal {
   min-height: 130px;
   height: 20vh;
@@ -29,16 +36,20 @@
   flex-direction: column;
   flex-wrap: nowrap;
 }
+
 @media screen and (min-width: 1024px) {
   .paddingLeft {
     padding-left: 0px;
   }
+
   .marginLeft {
     margin-left: 0px;
   }
-  .cuadroTotal{
+
+  .cuadroTotal {
     margin-left: 0px;
   }
+
   .containerExchange {
     background-color: rgb(201, 201, 201);
     display: flex;
@@ -58,11 +69,11 @@
     box-sizing: border-box;
     overflow-y: auto;
   }
-  
+
   .containerExchange input {
     height: 15px;
   }
-  
+
   .containerExchange select {
     width: max-content;
     height: 18px;
