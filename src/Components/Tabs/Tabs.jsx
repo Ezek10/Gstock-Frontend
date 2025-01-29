@@ -304,7 +304,7 @@ const Tabs = () => {
                   {
                     filters.filter_by_start_date &&
                     <span>
-                      Fecha: {`${format(new Date(filters.filter_by_start_date * 1000), "dd/MM/yy")}`}<br />
+                      Fecha: {`${format(new Date(filters.filter_by_start_date * 1000), "dd/MM/yy")} - ${format(new Date(filters.filter_by_end_date * 1000), "dd/MM/yy")}`}<br />
                     </span>
                   }
                   {
