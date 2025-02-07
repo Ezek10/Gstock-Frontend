@@ -247,6 +247,11 @@
   box-sizing: border-box;
 }
 
+@media (min-width: 1024px) {
+  .container{
+    height: 100%;
+  }
+}
 
 
 .tabs {

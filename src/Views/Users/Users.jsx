@@ -31,6 +31,7 @@ const Users = () => {
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         getLogout();
+        navigate("/");
     };
 
     const handleNewUser = (event) => {
